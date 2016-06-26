@@ -4,7 +4,7 @@
     </div>
     <div class="widget-body bordered-left bordered-warning">
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#searchModal">جستجو</button>
-        <div class="pull-left">تعداد <span class="badge badge-green">{{ number_format($datas->total()) }}</span></div>
+        <div class="pull-left">تعداد <span class="badge badge-green">{{ number_format($items->total()) }}</span></div>
         {!! Form::open(['method'=>'GET']) !!}
         <div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">

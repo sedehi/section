@@ -41,19 +41,19 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @forelse($datas as $data)
+                            @forelse($items as $item)
                                 <tr>
                                     <td width="70">
                                         <div class="checkbox" style="width: 20px">
                                             <label>
-                                                {!! Form::checkbox('deleteId[]',$data->id,null,['class' => 'colored-danger deleteId']) !!}
+                                                {!! Form::checkbox('deleteId[]',$item->id,null,['class' => 'colored-danger deleteId']) !!}
                                                 <span class="text"></span>
                                             </label>
                                         </div>
                                     </td>
-                                    <td>{{ $data->name }}</td>
+                                    <td>{{ $item->name }}</td>
                                     <td>
-                                        <a class="btn btn-info btn-sm" href="{{ action('{{{section}}}\Controllers\AdminController@edit',[$data->id]) }}">ویرایش</a>
+                                        <a class="btn btn-info btn-sm" href="{{ action('{{{section}}}\Controllers\AdminController@edit',[$item->id]) }}">ویرایش</a>
                                     </td>
                                 </tr>
                             @empty
@@ -66,7 +66,7 @@
                         {!! Form::close() !!}
                     </div>
                     <br>
-                    {!! $datas->appends(Request::except('page'))->render() !!}
+                    {!! $items->appends(Request::except('page'))->render() !!}
                 </div>
             </div>
         </div>
