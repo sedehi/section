@@ -1,0 +1,17 @@
+<?php
+/*
+use Faker\Factory as Faker;
+
+$factory->define(App\User::class, function ($faker) {
+
+    $faker = Faker::create('fa_IR');
+
+    return [
+        'name'           => $faker->name,
+        'email'          => $faker->email,
+        'password'       => bcrypt(str_random(10)),
+        'remember_token' => str_random(10),
+    ];
+});
+
+*/

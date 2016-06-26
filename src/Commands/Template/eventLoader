@@ -1,0 +1,7 @@
+<?php
+
+return [
+    '{{{appName}}}Http\Controllers\{{{section}}}\Events\AuthLoginEvent' => [
+        '{{{appName}}}Http\Controllers\{{{section}}}\Listeners\AuthLoginEventListener',
+    ],
+];

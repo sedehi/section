@@ -1,0 +1,28 @@
+{
+  "name": "sedehi/section",
+  "description": "",
+  "keywords": [
+    "section"
+  ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Navid Sedehi",
+      "email": "navid.sedehi@gmail.com",
+      "homepage": "http://sedehi.ir"
+    }
+  ],
+  "require": {
+    "php": ">=5.4.0",
+    "illuminate/support": "5.0.*|5.1.*|5.2.*"
+  },
+  "autoload": {
+    "classmap": [
+      "src/migrations"
+    ],
+    "psr-0": {
+      "Sedehi\\Section\\": "src/"
+    }
+  },
+  "minimum-stability": "stable"
+}
