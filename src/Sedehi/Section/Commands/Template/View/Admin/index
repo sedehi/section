@@ -1,0 +1,77 @@
+@extends('views.layouts.admin.master')
+@section('content')
+    <div class="row">
+        @include('views.errors.errors')
+        <div class="col-lg-12 col-sm-12 col-xs-12">
+            @include('{{{section}}}.views.admin.search')
+        </div>
+        {!! Form::open(['action'=>['{{{section}}}\Controllers\AdminController@destroy',1],'method' =>'DELETE']) !!}
+        <div class="col-xs-12 col-md-12">
+            <div class="widget">
+                <div class="widget-header  with-footer">
+                    <span class="widget-caption">
+						<button  type="submit" class="btn btn-danger white btnDelete">حذف انتخاب شده های</button>
+					</span>
+
+                    <div class="widget-buttons">
+                        <a href="tables-simple.html#" data-toggle="maximize">
+                            <i class="fa fa-expand"></i>
+                        </a>
+                        <a href="tables-simple.html#" data-toggle="collapse">
+                            <i class="fa fa-minus"></i>
+                        </a>
+
+                    </div>
+                </div>
+                <div class="widget-body">
+                    <div class="flip-scroll">
+                        <table class="table table-bordered table-striped table-condensed flip-content">
+                            <thead class="flip-content bordered-palegreen">
+                            <tr>
+                                <th>
+                                    <div class="checkbox" style="width: 15px">
+                                        <label>
+                                            {!! Form::checkbox('',1,null,['class' => 'colored-danger','id' => 'check-all']) !!}
+                                            <span class="text"></span>
+                                        </label>
+                                    </div>
+                                </th>
+                                <th>نام</th>
+                                <th>عملیات</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @forelse($datas as $data)
+                                <tr>
+                                    <td width="70">
+                                        <div class="checkbox" style="width: 20px">
+                                            <label>
+                                                {!! Form::checkbox('deleteId[]',$data->id,null,['class' => 'colored-danger deleteId']) !!}
+                                                <span class="text"></span>
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td>{{ $data->name }}</td>
+                                    <td>
+                                        <a class="btn btn-info btn-sm" href="{{ action('{{{section}}}\Controllers\AdminController@edit',[$data->id]) }}">ویرایش</a>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="20" class="text-center">اطلاعاتی برای نمایش وجود ندارد</td>
+                                </tr>
+                            @endforelse
+                            </tbody>
+                        </table>
+                        {!! Form::close() !!}
+                    </div>
+                    <br>
+                    {!! $datas->appends(Request::except('page'))->render() !!}
+                </div>
+            </div>
+        </div>
+    </div>
+
+@endsection
+
+

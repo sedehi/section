@@ -1,0 +1,21 @@
+<?php
+
+return [
+    '{{{name}}}' => [
+        'title'   => '{{{title}}}',
+        'icon'    => 'fa fa-home',
+        'badge'   => function () {
+            //return 1;
+        },
+        'submenu' => [
+            'Index' => [
+                'title'  => 'لیست',
+                'action' => '{{{Classname}}}\Controllers\AdminController@index'
+            ],
+            'Add'   => [
+                'title'  => 'ایجاد',
+                'action' => '{{{Classname}}}\Controllers\AdminController@create'
+            ],
+        ]
+    ],
+];
