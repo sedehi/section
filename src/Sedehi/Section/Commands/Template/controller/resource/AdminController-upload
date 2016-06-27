@@ -14,9 +14,9 @@ class {{{name}}} extends Controller
 
     public function index()
     {
-        $datas = {{{section}}}::searchable()->sortable()->paginate(20);
+        $items = {{{section}}}::searchable()->sortable()->paginate(20);
 
-        return view('{{{section}}}.views.admin.index', compact('datas'));
+        return view('{{{section}}}.views.admin.index', compact('items'));
     }
 
     public function create()
@@ -26,8 +26,8 @@ class {{{name}}} extends Controller
 
     public function store(AdminRequest $request)
     {
-        $data             = new {{{section}}}();
-        $data->name       = $request->get('name');
+        $item             = new {{{section}}}();
+        $item->name       = $request->get('name');
         if ($request->hasFile('file')) {
 
             $file            = $request->file('file');
@@ -35,9 +35,9 @@ class {{{name}}} extends Controller
 
             $fileName = Helper::generateFileName($destinationPath, $file->guessExtension(), '', 20);
             Image::make($file->getRealPath())->save($destinationPath.$fileName);
-            $data->file = $fileName;
+            $item->file = $fileName;
         }
-        $data->save();
+        $item->save();
 
         return redirect()->action('{{{section}}}\Controllers\AdminController@index')->with('success', 'اطلاعات با موفقیت ذخیره شد');
 
@@ -45,28 +45,28 @@ class {{{name}}} extends Controller
 
     public function edit($id)
     {
-        $data = {{{section}}}::findOrFail($id);
-        return view('{{{section}}}.views.admin.edit', compact('data'));
+        $item = {{{section}}}::findOrFail($id);
+        return view('{{{section}}}.views.admin.edit', compact('item'));
     }
 
     public function update(AdminRequest $request, $id)
     {
-        $data = {{{section}}}::findOrFail($id);
-        $data->name       = $request->get('name');
+        $item = {{{section}}}::findOrFail($id);
+        $item->name       = $request->get('name');
         if ($request->hasFile('file')) {
 
             $file            = $request->file('file');
             $destinationPath = public_path($this->uploadPath);
 
-            if (File::exists($destinationPath.$data->file)) {
-                File::delete($destinationPath.$data->file);
+            if (File::exists($destinationPath.$item->file)) {
+                File::delete($destinationPath.$item->file);
             }
 
             $fileName = Helper::generateFileName($destinationPath, $file->guessExtension(), '', 20);
             Image::make($file->getRealPath())->save($destinationPath.$fileName);
-            $data->file = $fileName;
+            $item->file = $fileName;
         }
-        $data->save();
+        $item->save();
 
         return redirect()->action('{{{section}}}\Controllers\AdminController@index')->with('success', 'اطلاعات با موفقیت ذخیره شد');
 
@@ -74,12 +74,12 @@ class {{{name}}} extends Controller
 
     public function destroy(AdminRequest $request)
     {
-        $datas           = {{{section}}}::whereIn('id', $request->get('deleteId'))->get();
-        $destinationPath = public_path('uploads/{{{nameLower}}}/');
+        $items           = {{{section}}}::whereIn('id', $request->get('deleteId'))->get();
+        $destinationPath = public_path($this->uploadPath);
 
-        foreach ($datas as $data) {
-            if (File::exists($destinationPath.$data->file)) {
-                File::delete($destinationPath.$data->file);
+        foreach ($items as $item) {
+            if (File::exists($destinationPath.$item->file)) {
+                File::delete($destinationPath.$item->file);
             }
         }
         {{{section}}}::whereIn('id', $request->get('deleteId'))->delete();

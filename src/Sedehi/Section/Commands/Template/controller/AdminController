@@ -13,9 +13,9 @@ class {{{name}}} extends Controller
 
     public function getIndex()
     {
-        $datas = {{{section}}}::searchable()->sortable()->paginate(20);
+        $items = {{{section}}}::searchable()->sortable()->paginate(20);
 
-        return view('{{{section}}}.views.admin.index', compact('datas'));
+        return view('{{{section}}}.views.admin.index', compact('items'));
     }
 
     public function getAdd()
@@ -26,24 +26,24 @@ class {{{name}}} extends Controller
     public function postAdd(AdminRequest $request)
     {
 
-        $data             = new {{{section}}}();
-        $data->name       = $request->get('name');
-        $data->save();
+        $item             = new {{{section}}}();
+        $item->name       = $request->get('name');
+        $item->save();
 
         return redirect()->action('{{{section}}}\Controllers\AdminController@getIndex')->with('success', 'اطلاعات با موفقیت ذخیره شد');
     }
 
     public function getEdit($id)
     {
-        $data = {{{section}}}::findOrFail($id);
-        return view('{{{section}}}.views.admin.edit', compact('data'));
+        $item = {{{section}}}::findOrFail($id);
+        return view('{{{section}}}.views.admin.edit', compact('item'));
     }
 
     public function postEdit(AdminRequest $request,$id)
     {
-        $data = {{{section}}}::findOrFail($id);
-        $data->name       = $request->get('name');
-        $data->save();
+        $item = {{{section}}}::findOrFail($id);
+        $item->name       = $request->get('name');
+        $item->save();
 
         return redirect()->action('{{{section}}}\Controllers\AdminController@getIndex')->with('success', 'اطلاعات با موفقیت ذخیره شد');
     }
