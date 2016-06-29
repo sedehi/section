@@ -7,6 +7,9 @@ use {{{appName}}}Http\Controllers\Controller;
 use {{{appName}}}Http\Controllers\{{{section}}}\Models\{{{section}}};
 use {{{appName}}}Http\Controllers\{{{section}}}\Requests\AdminRequest;
 use Illuminate\Http\Request;
+use {{{appName}}}Libs\Helper;
+use File;
+use Image;
 
 class {{{name}}} extends Controller
 {
