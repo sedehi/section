@@ -10,7 +10,7 @@
                     </div>
 
                     <div class="widget-body">
-                        {!! Form::model($item,['action'=> ['{{{name}}}\Controllers\AdminController@update',$item->id],'files'=>true]) !!}
+                        {!! Form::model($item,['action'=> ['{{{section}}}\Controllers\AdminController@update',$item->id],'files'=>true]) !!}
                         @include('{{{section}}}.views.admin.form')
                         <div class="clearfix"></div>
                         <input type="submit" class="btn btn-info" value="ذخیره"/>
