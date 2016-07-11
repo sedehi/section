@@ -15,15 +15,17 @@ class {{{className}}} extends Request {
 	public function authorize()
 	{
 		/*
+		if (auth()->user()->hasPermission('{{{lowerSection}}}.onlybyuser')) {
         $action = explode('@', $this->route()->getActionName());
         $action = end($action);
         switch ($action) {
             case 'destroy':
-                return {{{section}}}::where('admin_id',auth()->user()->id)->find($this->route()->parameter('role'))->count();
+                return {{{section}}}::where('author_id',auth()->user()->id)->whereIn('id', $this->request->get('deleteId'))->count();
                 break;
             case 'update':
-                return {{{section}}}::where('admin_id',auth()->user()->id)->find($this->route()->parameter('role'))->count();
+                return {{{section}}}::where('author_id',auth()->user()->id)->find($this->route()->parameter('{{{lowerSection}}}'));
                 break;
+        }
         }
         */
         return true;

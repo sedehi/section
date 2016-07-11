@@ -41,7 +41,7 @@ class SectionFactory extends Command
     public function handle()
     {
         $this->makeDirectory(ucfirst($this->argument('section')), 'database/');
-        if (File::exists(app_path('Http/Controllers/'.$this->argument('section').'/database/factory.php'))) {
+        if (File::exists(app_path('Http/Controllers/'.ucfirst($this->argument('section')).'/database/factory.php'))) {
             $this->error('factory already exists.');
         } else {
             $data = File::get(__DIR__.'/Template/factory');
