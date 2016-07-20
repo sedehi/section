@@ -39,6 +39,10 @@ class SectionMigrate extends Command
      */
     public function handle()
     {
+        $this->call('migrate',
+                    ['--path' => 'app/Http/Controllers/Role/database/migrations/']);
+        $this->call('migrate', ['--path' => 'app/Http/Controllers/User/database/migrations/']);
+
         foreach (File::directories(app_path('Http/Controllers')) as $directory) {
             $this->call('migrate',
                         ['--path' => 'app/Http/Controllers/'.File::name($directory).'/database/migrations/']);
