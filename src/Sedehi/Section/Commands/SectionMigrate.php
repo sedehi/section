@@ -4,6 +4,7 @@ namespace Sedehi\Section\Commands;
 
 use Illuminate\Console\Command;
 use File;
+use DB;
 
 class SectionMigrate extends Command
 {
@@ -39,9 +40,11 @@ class SectionMigrate extends Command
      */
     public function handle()
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         foreach (File::directories(app_path('Http/Controllers')) as $directory) {
             $this->call('migrate',
                         ['--path' => 'app/Http/Controllers/'.File::name($directory).'/database/migrations/']);
         }
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }
