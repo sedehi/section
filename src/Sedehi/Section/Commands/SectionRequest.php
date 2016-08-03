@@ -43,7 +43,7 @@ class SectionRequest extends Command
     {
         $this->makeDirectory($this->argument('section'), 'Requests/');
 
-        if (File::exists(app_path('Http/Controllers/'.ucfirst($this->argument('section')).'/'.ucfirst($this->argument('name')).'.php'))) {
+        if (File::exists(app_path('Http/Controllers/'.ucfirst($this->argument('section')).'/Requests/'.ucfirst($this->argument('name')).'.php'))) {
             $this->error('Form Request already exists.');
         } else {
             if ($this->option('admin')) {
