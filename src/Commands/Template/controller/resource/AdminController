@@ -1,6 +1,6 @@
 <?php
 
-namespace {{{appName}}}Http\Controllers\{{{section}}}\Controllers;
+namespace {{{namespace}}};
 
 use {{{appName}}}Http\Requests;
 use {{{appName}}}Http\Controllers\Controller;
@@ -13,14 +13,14 @@ class {{{name}}} extends Controller
 
     public function index()
     {
-        $items = {{{section}}}::searchable()->sortable()->paginate(20);
+        $items = {{{section}}}::filter()->paginate(20);
 
-        return view('{{{section}}}.views.admin.index', compact('items'));
+        return view('{{{section}}}.views{{{viewType}}}.index', compact('items'));
     }
 
     public function create()
     {
-        return view('{{{section}}}.views.admin.add');
+        return view('{{{section}}}.views{{{viewType}}}.add');
     }
 
     public function store(AdminRequest $request)
@@ -36,7 +36,7 @@ class {{{name}}} extends Controller
     public function edit($id)
     {
         $item = {{{section}}}::findOrFail($id);
-        return view('{{{section}}}.views.admin.edit', compact('item'));
+        return view('{{{section}}}.views{{{viewType}}}.edit', compact('item'));
     }
 
     public function update(AdminRequest $request, $id)
