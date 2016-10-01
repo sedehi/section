@@ -37,7 +37,7 @@ class SectionMigrateRefresh extends Command
      * @return mixed
      */
     public function handle()
-    {//
+    {
         if (!is_null($this->argument('section'))) {
 
             Artisan::call('migrate:refresh', [
