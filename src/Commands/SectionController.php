@@ -51,26 +51,26 @@ class SectionController extends Command
         $this->makeDirectory($this->argument('section'), 'Controllers/');
 
         $this->controllerName = ucfirst($this->argument('section')).'/Controllers/'.ucfirst($this->argument('name'));
-        $this->namespace      = $this->getAppNamespace().'Http\Controllers\\'.ucfirst($this->argument("section")).'\\Controllers';
+        $this->namespace      = $this->getAppNamespace().'Http/Controllers/'.ucfirst($this->argument("section")).'/Controllers';
 
         if ($this->option('site')) {
             $this->makeDirectory($this->argument('section'), 'Controllers/Site/');
             $this->controllerName = ucfirst($this->argument('section')).'/Controllers/Site/'.ucfirst($this->argument('name'));
-            $this->namespace      = $this->getAppNamespace().'Http\Controllers\\'.ucfirst($this->argument("section")).'\\Controllers\Site';
+            $this->namespace      = $this->getAppNamespace().'Http/Controllers/'.ucfirst($this->argument("section")).'/Controllers/Site';
             $this->type           = '.site';
         }
 
         if ($this->option('admin')) {
             $this->makeDirectory($this->argument('section'), 'Controllers/Admin/');
             $this->controllerName = ucfirst($this->argument('section')).'/Controllers/Admin/'.ucfirst($this->argument('name'));
-            $this->namespace      = $this->getAppNamespace().'Http\Controllers\\'.ucfirst($this->argument("section")).'\\Controllers\Admin';
+            $this->namespace      = $this->getAppNamespace().'Http/Controllers/'.ucfirst($this->argument("section")).'/Controllers/Admin';
             $this->type           = '.admin';
         }
 
         if ($this->option('api')) {
             $this->makeDirectory($this->argument('section'), 'Controllers/Api/');
             $this->controllerName = ucfirst($this->argument('section')).'/Controllers/Api/'.ucfirst($this->argument('name'));
-            $this->namespace      = $this->getAppNamespace().'Http\Controllers\\'.ucfirst($this->argument("section")).'\\Controllers\Api';
+            $this->namespace      = $this->getAppNamespace().'Http/Controllers/'.ucfirst($this->argument("section")).'/Controllers/Api';
             $this->type           = '.api';
         }
     }

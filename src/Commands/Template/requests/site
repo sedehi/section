@@ -1,10 +1,10 @@
 <?php
 
-namespace {{{appName}}}Http\Controllers\{{{section}}}\Requests;
+namespace {{{namespace}}};
 
-use {{{appName}}}Http\Requests\Request;
+use Illuminate\Foundation\Http\FormRequest;
 
-class {{{className}}} extends Request {
+class {{{className}}} extends FormRequest {
 
 	/**
 	 * Determine if the user is authorized to make this request.

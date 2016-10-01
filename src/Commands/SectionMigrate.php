@@ -47,7 +47,6 @@ class SectionMigrate extends Command
         foreach ($dirs as $directory) {
             $this->call('migrate', ['--path' => 'app/Http/Controllers/'.File::name($directory).'/database/migrations/']);
         }
-
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }

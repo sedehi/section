@@ -34,6 +34,33 @@ class SectionRequest extends Command
         parent::__construct();
     }
 
+    private function init()
+    {
+
+        $this->makeDirectory($this->argument('section'), 'Requests');
+
+        $this->requestsName = ucfirst($this->argument('section')).'/Requests';
+        $this->namespace    = $this->getAppNamespace().'Http\Controllers\\'.ucfirst($this->argument("section")).'\Requests';
+
+        if ($this->option('site')) {
+            $this->makeDirectory($this->argument('section'), 'Requests/Site/');
+            $this->requestsName = ucfirst($this->argument('section')).'/Requests/Site';
+            $this->namespace    = $this->getAppNamespace().'Http\Controllers\\'.ucfirst($this->argument("section")).'\Requests\Site';
+        }
+
+        if ($this->option('admin')) {
+            $this->makeDirectory($this->argument('section'), 'Requests/Admin/');
+            $this->requestsName = ucfirst($this->argument('section')).'/Requests/Admin';
+            $this->namespace    = $this->getAppNamespace().'Http\Controllers\\'.ucfirst($this->argument("section")).'\Requests\Admin';
+        }
+
+        if ($this->option('api')) {
+            $this->makeDirectory($this->argument('section'), 'Requests/Api/');
+            $this->requestsName = ucfirst($this->argument('section')).'/Requests/Api';
+            $this->namespace    = $this->getAppNamespace().'Http\Controllers\\'.ucfirst($this->argument("section")).'\Requests\Api';
+        }
+    }
+
     /**
      * Execute the console command.
      *
@@ -41,22 +68,23 @@ class SectionRequest extends Command
      */
     public function handle()
     {
-        $this->makeDirectory($this->argument('section'), 'Requests/');
+        $this->init();
 
-        if (File::exists(app_path('Http/Controllers/'.ucfirst($this->argument('section')).'/Requests/'.ucfirst($this->argument('name')).'.php'))) {
+        if (File::exists(app_path('Http/Controllers/'.$this->requestsName.'/'.ucfirst($this->argument('name')).'.php'))) {
             $this->error('Form Request already exists.');
         } else {
-            if ($this->option('admin')) {
+            if ($this->option('crud')) {
                 $data = File::get(__DIR__.'/Template/requests/admin');
             } else {
                 $data = File::get(__DIR__.'/Template/requests/site');
             }
             $data = str_replace('{{{name}}}', ucfirst($this->argument('name')), $data);
+            $data = str_replace('{{{namespace}}}', $this->namespace, $data);
             $data = str_replace('{{{section}}}', ucfirst($this->argument('section')), $data);
             $data = str_replace('{{{lowerSection}}}', strtolower($this->argument('section')), $data);
             $data = str_replace('{{{appName}}}', $this->getAppNamespace(), $data);
             $data = str_replace('{{{className}}}', ucfirst($this->argument('name')), $data);
-            File::put(app_path('Http/Controllers/'.ucfirst($this->argument('section')).'/Requests/'.ucfirst($this->argument('name')).'.php'),
+            File::put(app_path('Http/Controllers/'.$this->requestsName.'/'.ucfirst($this->argument('name')).'.php'),
                       $data);
             $this->info('Form Request created successfully.');
         }
