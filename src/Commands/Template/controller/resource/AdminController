@@ -29,7 +29,7 @@ class {{{name}}} extends Controller
         $item->name       = $request->get('name');
         $item->save();
 
-        return redirect()->action('{{{section}}}\Controllers\AdminController@index')->with('success', 'اطلاعات با موفقیت ذخیره شد');
+        return redirect()->action('{{{section}}}\Controllers\{{{name}}}@index')->with('success', 'اطلاعات با موفقیت ذخیره شد');
 
     }
 
@@ -45,7 +45,7 @@ class {{{name}}} extends Controller
         $item->name       = $request->get('name');
         $item->save();
 
-        return redirect()->action('{{{section}}}\Controllers\AdminController@index')->with('success', 'اطلاعات با موفقیت ذخیره شد');
+        return redirect()->action('{{{section}}}\Controllers\{{{name}}}@index')->with('success', 'اطلاعات با موفقیت ذخیره شد');
 
     }
 
