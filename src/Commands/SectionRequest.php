@@ -15,7 +15,7 @@ class SectionRequest extends Command
      *
      * @var string
      */
-    protected $signature = 'section:request {section : The name of the section}  {name : The name of the controller} {--admin}';
+    protected $signature = 'section:request {section : The name of the section}  {name : The name of the controller} {--crud} {--admin} {--api} {--site}';
 
     /**
      * The console command description.
