@@ -14,7 +14,7 @@ class SectionMigrate extends Command
      *
      * @var string
      */
-    protected $signature = 'section:migrate';
+    protected $signature = 'section:migrate {--seed}';
 
     /**
      * The console command description.
@@ -43,12 +43,19 @@ class SectionMigrate extends Command
     public function handle()
     {
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+
         $dirs = array_sort_recursive(File::directories(app_path('Http/Controllers')));
+
         foreach ($dirs as $directory) {
             $this->call('migrate', [
                 '--path' => 'app/Http/Controllers/'.File::name($directory).'/database/migrations/',
             ]);
         }
+
+        if ($this->option('seed')) {
+            $this->call('db:seed');
+        }
+
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }

@@ -12,7 +12,7 @@ class SectionMigrateRefresh extends Command
      *
      * @var string
      */
-    protected $signature = 'section:migrate-refresh {section? : The name of the section}';
+    protected $signature = 'section:migrate-refresh  {--seed}';
 
     /**
      * The console command description.
@@ -43,6 +43,10 @@ class SectionMigrateRefresh extends Command
         $this->call('section:migrate-reset');
         $this->info('Running section:migrate ...');
         $this->call('section:migrate');
+
+        if ($this->option('seed')) {
+            $this->call('db:seed');
+        }
 
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
