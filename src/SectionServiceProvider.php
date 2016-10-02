@@ -10,6 +10,7 @@ use Sedehi\Section\Commands\SectionFactory;
 use Sedehi\Section\Commands\SectionJob;
 use Sedehi\Section\Commands\SectionMigrate;
 use Sedehi\Section\Commands\SectionMigrateRefresh;
+use Sedehi\Section\Commands\SectionMigrateReset;
 use Sedehi\Section\Commands\SectionMigration;
 use Sedehi\Section\Commands\SectionModel;
 use Sedehi\Section\Commands\SectionPolicy;
@@ -48,6 +49,9 @@ class SectionServiceProvider extends ServiceProvider
         $this->app->bind('sedehi::command.section.migrate-refresh', function ($app) {
             return new SectionMigrateRefresh();
         });
+        $this->app->bind('sedehi::command.section.migrate-reset', function ($app) {
+            return new SectionMigrateReset();
+        });
         $this->app->bind('sedehi::command.section.migration', function ($app) {
             return new SectionMigration();
         });
@@ -75,6 +79,7 @@ class SectionServiceProvider extends ServiceProvider
                             'sedehi::command.section.job',
                             'sedehi::command.section.migrate',
                             'sedehi::command.section.migrate-refresh',
+                            'sedehi::command.section.migrate-reset',
                             'sedehi::command.section.migration',
                             'sedehi::command.section.model',
                             'sedehi::command.section.policy',
