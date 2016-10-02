@@ -69,6 +69,5 @@ class SectionMigrateReset extends Command
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
         $this->info('All migrations rolled back successfully.');
-
     }
 }

@@ -41,14 +41,9 @@ class SectionMigrateRefresh extends Command
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
 
         $this->call('section:migrate-reset');
-
         $this->info('Running section:migrate ...');
-
         $this->call('section:migrate');
 
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
-
-        $this->info('All migrations refreshed successfully.');
-
     }
 }
