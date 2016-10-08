@@ -4,6 +4,7 @@ namespace Sedehi\Section;
 
 use Illuminate\Support\ServiceProvider;
 use Sedehi\Section\Commands\SectionAdd;
+use Sedehi\Section\Commands\SectionAuth;
 use Sedehi\Section\Commands\SectionController;
 use Sedehi\Section\Commands\SectionEvent;
 use Sedehi\Section\Commands\SectionFactory;
@@ -74,6 +75,9 @@ class SectionServiceProvider extends ServiceProvider
         $this->app->bind('sedehi::command.section.test', function ($app) {
             return new SectionTest();
         });
+        $this->app->bind('sedehi::command.section.auth', function ($app) {
+            return new SectionAuth();
+        });
 
         $this->commands([
                             'sedehi::command.section.make',
@@ -90,7 +94,8 @@ class SectionServiceProvider extends ServiceProvider
                             'sedehi::command.section.policy',
                             'sedehi::command.section.request',
                             'sedehi::command.section.seed',
-                            'sedehi::command.section.test'
+                            'sedehi::command.section.test',
+                            'sedehi::command.section.auth'
                         ]);
     }
 

@@ -1,0 +1,57 @@
+<?php
+
+namespace {{{appName}}}Http\Controllers\Auth\Requests;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class SiteRequest extends FormRequest
+{
+
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
+    {
+        return true;
+    }
+
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
+    {
+        $action = explode('@', $this->route()->getActionName());
+        $action = end($action);
+        switch ($action) {
+            case'login':
+                return [
+                    'email'     => 'required|email',
+                    'password'  => 'required|min:6',
+                    'captcha'   => $this->session()->get('captcha_required').'captcha',
+                ];
+                break;
+            case'reminder':
+                return [
+                    'email'   => 'required|email',
+                    'captcha' => 'required|captcha',
+
+                ];
+                break;
+            case'resetPassword':
+                return [
+                    'email'    => 'required|email',
+                    'password' => 'required|min:6|confirmed',
+                    'token'    => 'required'
+                ];
+                break;
+        }
+
+        return [];
+    }
+
+}

@@ -1,0 +1,31 @@
+﻿@extends('views.layouts.site.master')
+@section('title','ثبت نام')
+@section('content')
+    <div class="container">
+        <div class="row">
+            <div class="col-md-offset-5 col-md-3">
+                @include('views.errors.errors')
+                {!! Form::open(['action' => 'Auth\Controllers\SiteController@postSignup']) !!}
+                <div class="form-login">
+                    <h4>ثبت نام</h4>
+                    {!! Form::text('email',null,['class' => 'form-control input-sm chat-input','placeholder' => 'ایمیل']) !!}
+                    <br>
+                    {!! Form::password('password',['class' => 'form-control input-sm chat-input','placeholder' => 'رمز عبور']) !!}
+                    <br>
+                    {!! Form::password('password_confirmation',['class' => 'form-control input-sm chat-input','placeholder' => 'تکرار رمز عبور']) !!}
+                    <br>
+                    {!!Form::text('captcha',null, ['class'=>'form-control col-md-4','placeholder'=>'کد امنیتی'])!!}
+                    {!! captcha_img() !!}
+
+                    <div class="wrapper">
+                        <span class="group-btn">
+                            {!! Form::submit('ثبت نام',['class' => 'btn btn-primary btn-md']) !!}
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+            {!! Form::close() !!}
+        </div>
+    </div>
+@endsection

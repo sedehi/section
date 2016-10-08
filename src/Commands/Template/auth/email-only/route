@@ -1,0 +1,9 @@
+Route::group(['middleware' => 'throttle'], function () {
+    Route::get('login', 'Auth\Controllers\SiteController@showLoginForm');
+    Route::post('login', 'Auth\Controllers\SiteController@login');
+    Route::get('logout', 'Auth\Controllers\SiteController@logout');
+    Route::get('reminder', 'Auth\Controllers\SiteController@showReminderForm');
+    Route::post('reminder', 'Auth\Controllers\SiteController@reminder');
+    Route::get('reset-password/{token}', 'Auth\Controllers\SiteController@showResetPasswordForm');
+    Route::post('reset-password', 'Auth\Controllers\SiteController@resetPassword');
+});

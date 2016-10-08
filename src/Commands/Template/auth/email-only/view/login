@@ -1,0 +1,31 @@
+﻿@extends('views.layouts.site.master')
+@section('title','ورود')
+@section('content')
+    <div class="container">
+        <div class="row">
+            <div class="col-md-offset-5 col-md-3">
+                @include('views.errors.errors')
+                {!! Form::open(['action' => 'Auth\Controllers\SiteController@login']) !!}
+                <div class="form-login">
+                    <h4>ورود به پنل کاربر</h4>
+                    {!! Form::text('email',null,['class' => 'form-control input-sm chat-input','placeholder' => 'ایمیل یا موبایل']) !!}
+                    <br>
+                    {!! Form::password('password',['class' => 'form-control input-sm chat-input','placeholder' => 'رمز عبور']) !!}
+                    <br>
+                    @if(session()->has('captcha_required'))
+                        {!!Form::text('captcha',null, ['class'=>'form-control col-md-4','placeholder'=>'کد امنیتی'])!!}
+                        {!! captcha_img() !!}
+                    @endif
+                    <div class="wrapper">
+                        <a href="{{ action('Auth\Controllers\SiteController@showReminderForm') }}">رمز عبور را فراموش کردم</a>
+                        <span class="group-btn">
+                            {!! Form::submit('ورود',['class' => 'btn btn-primary btn-md pull-left']) !!}
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+            {!! Form::close() !!}
+        </div>
+    </div>
+@endsection
