@@ -1,17 +1,17 @@
 <?php
 
-namespace {{{appName}}}Http\Controllers\Auth\Controllers;
+namespace {{{appName}}}Http\Controllers\Auth\Controllers\Site;
 
 use {{{appName}}}Http\Controllers\Auth\Mail\PasswordReminderMail;
+use {{{appName}}}Http\Controllers\Auth\Requests\Site\AuthRequest;
 use Carbon\Carbon;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use {{{appName}}}Http\Controllers\Auth\Models\PasswordReminder;
-use {{{appName}}}Http\Controllers\Auth\Requests\SiteRequest;
 use {{{appName}}}Http\Controllers\Controller;
 use {{{appName}}}Http\Controllers\User\Models\User;
 use Illuminate\Support\Facades\Mail;
 
-class SiteController extends Controller
+class AuthController extends Controller
 {
     use AuthenticatesUsers;
 
@@ -23,7 +23,7 @@ class SiteController extends Controller
         return view('Auth.views.site.login');
     }
 
-    public function login(SiteRequest $request)
+    public function login(AuthRequest $request)
     {
         $credentials = $request->only(['email','password']);
 
@@ -39,7 +39,7 @@ class SiteController extends Controller
             if (auth()->user()->ban) {
                 auth()->logout();
 
-                return redirect()->action('Auth\Controllers\SiteController@showLoginForm')
+                return redirect()->action('Auth\Controllers\Site\AuthController@showLoginForm')
                                 ->with('error', 'حساب کاربری شما مسدود شده است');
             }
 
@@ -62,7 +62,7 @@ class SiteController extends Controller
             $request->session()->put('captcha_required', 'required|');
         }
 
-        return redirect()->action('Auth\Controllers\SiteController@showLoginForm')
+        return redirect()->action('Auth\Controllers\Site\AuthController@showLoginForm')
                         ->with('error', 'اطلاعات وارد شده اشتباه می باشد');
     }
 
@@ -71,17 +71,17 @@ class SiteController extends Controller
         return view('Auth.views.site.reminder');
     }
 
-    public function reminder(SiteRequest $request)
+    public function reminder(AuthRequest $request)
     {
         $user = User::where('email', $request->get('email'))->first();
         if (is_null($user)) {
             return redirect()
-                ->action('Auth\Controllers\SiteController@getReminder')
+                ->action('Auth\Controllers\Site\AuthController@getReminder')
                 ->with('error', 'ایمیل وارد شده صحیح نمی باشد');
         }
         if ($user->ban == 1) {
             return redirect()
-                ->action('Auth\Controllers\SiteController@getReminder')
+                ->action('Auth\Controllers\Site\AuthController@getReminder')
                 ->with('error', 'حساب کاربری شما مسدود شده است');
         }
 
@@ -90,7 +90,7 @@ class SiteController extends Controller
         if (!is_null($reminder)) {
             if ($reminder->created_at->diffInMinutes() < 10) {
                 return redirect()
-                    ->action('Auth\Controllers\SiteController@showReminderForm')
+                    ->action('Auth\Controllers\Site\AuthController@showReminderForm')
                     ->with('error',
                            'لطفا پوشه spam را چک کنید اگر ایمیلی دریافت نکردید لطفا '.(10 - $reminder->created_at->diffInMinutes()).' دقیقه دیگر درخواست رمز عبور دهید');
             }
@@ -109,7 +109,7 @@ class SiteController extends Controller
         Mail::to($request->get('email'))->send(new PasswordReminderMail($reminder));
 
         return redirect()
-            ->action('Auth\Controllers\SiteController@showReminderForm')
+            ->action('Auth\Controllers\Site\AuthController@showReminderForm')
             ->with('success', 'ایمیل بازیابی رمز عبور ارسال شد لطفا ایمیل خود را چک کنید');
     }
 
@@ -118,19 +118,19 @@ class SiteController extends Controller
         return view('Auth.views.site.reset-password')->with('token', $token);
     }
 
-    public function resetPassword(SiteRequest $request)
+    public function resetPassword(AuthRequest $request)
     {
         $user = User::where('email', $request->get('email'))->first();
 
         if (is_null($user)) {
             return redirect()
-                ->action('Auth\Controllers\SiteController@showResetPasswordForm', [$request->get('token')])
+                ->action('Auth\Controllers\Site\AuthController@showResetPasswordForm', [$request->get('token')])
                 ->with('error', 'ایمیل وارد شده صحیح نمی باشد');
         }
 
         if ($user->ban == 1) {
             return redirect()
-                ->action('Auth\Controllers\SiteController@showResetPasswordForm', [$request->get('token')])
+                ->action('Auth\Controllers\Site\AuthController@showResetPasswordForm', [$request->get('token')])
                 ->with('error', 'حساب کاربری شما مسدود شده است');
         }
 
@@ -138,7 +138,7 @@ class SiteController extends Controller
 
         if (is_null($reminder)) {
             return redirect()
-                ->action('Auth\Controllers\SiteController@showResetPasswordForm', [$request->get('token')])
+                ->action('Auth\Controllers\Site\AuthController@showResetPasswordForm', [$request->get('token')])
                 ->with('error', 'اطلاعات وارد شده صحیح نمی باشد');
         }
 
@@ -146,7 +146,7 @@ class SiteController extends Controller
             $reminder->delete();
 
             return redirect()
-                ->action('Auth\Controllers\SiteController@showResetPasswordForm', [$request->get('token')])
+                ->action('Auth\Controllers\Site\AuthController@showResetPasswordForm', [$request->get('token')])
                 ->with('error', 'کد یکتا منقضی شده');
         }
 
@@ -155,7 +155,7 @@ class SiteController extends Controller
         $reminder->delete();
 
         return redirect()
-            ->action('Auth\Controllers\SiteController@showLoginForm')
+            ->action('Auth\Controllers\Site\AuthController@showLoginForm')
             ->with('success', 'رمز عبور با موفقیت تغییر کرد');
     }
 
@@ -164,5 +164,27 @@ class SiteController extends Controller
         auth()->logout();
 
         return redirect()->action('HomeController@index');
+    }
+
+    public function showSignupForm()
+    {
+        return view('Auth.views.site.signup');
+    }
+
+    public function signup(AuthRequest $request)
+    {
+        session()->increment('signup_attempts');
+
+        $user = new User();
+        $user->email = $request->email;
+        $user->password = bcrypt($request->password);
+
+        if ($user->save()) {
+            session()->forget('signup_attempts');
+            return redirect()->action('Auth\Controllers\Site\AuthController@showLoginForm')
+                                ->with('success','ثبت نام با موفقیت انجام شد');
+        }
+
+        abort(500);
     }
 }

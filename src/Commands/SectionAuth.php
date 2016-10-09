@@ -85,75 +85,102 @@ class SectionAuth extends Command
         {
             $type = $this->ask('What type of auth do you want ? ');
         }
-//        dd($this->getAppNamespace());
 
         switch ($type) {
             case 1:
 
                 // Create Controller
-                if (File::exists(app_path('Http/Controllers/Auth/Controllers/SiteController.php'))) {
-                    $this->warn('SiteController already exists.');
+                if (File::exists(app_path('Http/Controllers/Auth/Controllers/Site/AuthController.php'))) {
+                    $this->warn('AuthController already exists.');
                 } else {
-                    $this->makeDirectory('Auth','Controllers');
-                    $data = File::get(__DIR__.'/Template/auth/email-only/controller/SiteController');
+                    $this->makeDirectory('Auth','Controllers/Site');
+                    $data = File::get(__DIR__.'/Template/auth/email-only/controller/AuthController.stub');
                     $data = str_replace('{{{appName}}}', $this->getAppNamespace(), $data);
-                    File::put(app_path('Http/Controllers/Auth/Controllers/SiteController.php'),$data);
-                    $this->info('SiteController created successfully.');
+                    File::put(app_path('Http/Controllers/Auth/Controllers/Site/AuthController.php'),$data);
+                    $this->info('AuthController created successfully.');
                 }
 
-                // Create Mail
+                // Create Mailable Class
                 if (File::exists(app_path('Http/Controllers/Auth/Mail/PasswordReminderMail.php'))) {
                     $this->warn('PasswordReminderMail already exists.');
                 } else {
                     $this->makeDirectory('Auth','Mail');
-                    $data = File::get(__DIR__.'/Template/auth/email-only/mail/PasswordReminder');
+                    $data = File::get(__DIR__.'/Template/auth/email-only/mail/PasswordReminder.stub');
                     $data = str_replace('{{{appName}}}', $this->getAppNamespace(), $data);
                     File::put(app_path('Http/Controllers/Auth/Mail/PasswordReminderMail.php'),$data);
                     $this->info('PasswordReminderMail created successfully.');
                 }
 
-                // Create SiteRequest
-                if (File::exists(app_path('Http/Controllers/Auth/Requests/SiteRequest.php'))) {
-                    $this->warn('SiteRequest already exists.');
+                // Create Mailable views
+                $mailViews = ['reminder','reminder-simple'];
+
+                $this->makeDirectory('Auth','views/emails');
+
+                foreach ($mailViews as $viewName) {
+                    if (File::exists(app_path('Http/Controllers/Auth/views/emails/'.$viewName.'.blade.php'))) {
+                        $this->warn($viewName.'.blade.php already exists.');
+                    } else {
+                        $data = File::get(__DIR__.'/Template/auth/email-only/view/emails/'.$viewName.'.stub');
+                        File::put(app_path('Http/Controllers/Auth/views/emails/'.$viewName.'.blade.php'),$data);
+                        $this->info($viewName.'.blade.php created successfully.');
+                    }
+                }
+
+                // Create AuthRequest
+                if (File::exists(app_path('Http/Controllers/Auth/Requests/Site/AuthRequest.php'))) {
+                    $this->warn('AuthRequest already exists.');
                 } else {
-                    $this->makeDirectory('Auth','Requests');
-                    $data = File::get(__DIR__.'/Template/auth/email-only/request/SiteRequest');
+                    $this->makeDirectory('Auth','Requests/Site');
+                    $data = File::get(__DIR__.'/Template/auth/email-only/request/site/AuthRequest.stub');
                     $data = str_replace('{{{appName}}}', $this->getAppNamespace(), $data);
-                    File::put(app_path('Http/Controllers/Auth/Requests/SiteRequest.php'),$data);
-                    $this->info('SiteRequest created successfully.');
+                    File::put(app_path('Http/Controllers/Auth/Requests/Site/AuthRequest.php'),$data);
+                    $this->info('AuthRequest created successfully.');
                 }
 
                 // Create views
-                if (File::isDirectory(app_path('Http/Controllers/Auth/views/site'))) {
-                    $this->warn('views/site folder already exists.');
-                } else {
-                    $this->makeDirectory('Auth','views/site');
+                $viewNames = ['login','reminder','reset-password','signup',];
 
-                    $data = File::get(__DIR__.'/Template/auth/email-only/view/login');
-                    File::put(app_path('Http/Controllers/Auth/views/site/login.blade.php'),$data);
-                    $this->info('Login view created successfully.');
+                $this->makeDirectory('Auth','views/site');
 
-                    $data = File::get(__DIR__.'/Template/auth/email-only/view/reminder');
-                    File::put(app_path('Http/Controllers/Auth/views/site/reminder.blade.php'),$data);
-                    $this->info('Reminder view created successfully.');
-
-                    $data = File::get(__DIR__.'/Template/auth/email-only/view/reset-password');
-                    File::put(app_path('Http/Controllers/Auth/views/site/reset-password.blade.php'),$data);
-                    $this->info('Password reset view created successfully.');
-
+                foreach ($viewNames as $viewName) {
+                    if (File::exists(app_path('Http/Controllers/Auth/views/site/'.$viewName.'.blade.php'))) {
+                        $this->warn($viewName.'.blade.php already exists.');
+                    } else {
+                        $data = File::get(__DIR__.'/Template/auth/email-only/view/site/'.$viewName.'.stub');
+                        File::put(app_path('Http/Controllers/Auth/views/site/'.$viewName.'.blade.php'),$data);
+                        $this->info($viewName.'.blade.php created successfully.');
+                    }
                 }
 
                 // Create Route
-                if (!File::exists(app_path('Http/Controllers/Auth/route.php'))) {
-                    $data = File::get(__DIR__.'/Template/auth/email-only/route');
-                    File::put(app_path('Http/Controllers/Auth/route.php'),$data);
+                $webRoutePath = app_path('Http/Controllers/Auth/routes/web.php');
+
+                if (File::exists($webRoutePath)) {
+                    $data = File::get(__DIR__.'/Template/auth/route.stub');
+
+                    $written = File::append($webRoutePath,"\n\n");
+
+                    if ($written === false) {
+                        $this->error('Can\'t write to web.php file');
+                    }
+
+                    File::append($webRoutePath,$data);
+
+                    $this->info('Auth routes added to web.php successfully.');
+                } else {
+                    $this->makeDirectory('Auth','routes');
+                    $data = File::get(__DIR__.'/Template/auth/route.stub');
+                    File::put(app_path('Http/Controllers/Auth/routes/web.php'),"<?php\n\n".$data);
                     $this->info('Route file created successfully.');
                 }
 
                 break;
+            case 2:
+                $this->error('Not Readey Yet !');
+                break;
+            case 3:
+                $this->error('Not Readey Yet !');
+                break;
         }
-
-        $this->info('Auth files created successfully.');
     }
-
 }

@@ -1,0 +1,19 @@
+﻿@extends('views.layouts.site.master')
+@section('title','ثبت نام')
+@section('content')
+    @include('views.errors.errors')
+    {!! Form::open(['action' => 'Auth\Controllers\Site\AuthController@signup']) !!}
+        <h4>ثبت نام</h4>
+        {!! Form::text('email',null,['class' => 'form-control input-sm chat-input','placeholder' => 'ایمیل']) !!}
+        <br>
+        {!! Form::password('password',['class' => 'form-control input-sm chat-input','placeholder' => 'رمز عبور']) !!}
+        <br>
+        {!! Form::password('password_confirmation',['class' => 'form-control input-sm chat-input','placeholder' => 'تکرار رمز عبور']) !!}
+        <br>
+        @if(session()->get('signup_attempts') > 1)
+            {!!Form::text('captcha',null, ['class'=>'form-control col-md-4','placeholder'=>'کد امنیتی'])!!}
+            {!! captcha_img() !!}
+        @endif
+        {!! Form::submit('ثبت نام',['class' => 'btn btn-primary btn-md']) !!}
+    {!! Form::close() !!}
+@endsection

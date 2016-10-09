@@ -1,10 +1,10 @@
 <?php
 
-namespace {{{appName}}}Http\Controllers\Auth\Requests;
+namespace {{{appName}}}Http\Controllers\Auth\Requests\Site;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SiteRequest extends FormRequest
+class AuthRequest extends FormRequest
 {
 
     /**
@@ -48,6 +48,19 @@ class SiteRequest extends FormRequest
                     'password' => 'required|min:6|confirmed',
                     'token'    => 'required'
                 ];
+                break;
+            case'signup':
+
+                $rules = [
+                    'email'     => 'required|email|max:255|unique:users',
+                    'password'  => 'required|min:6|confirmed'
+                ];
+
+                if ($this->session()->get('signup_attempts') > 1) {
+                    return array_add($rules,'captcha','required|captcha');
+                }
+
+                return $rules;
                 break;
         }
 

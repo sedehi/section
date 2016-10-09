@@ -1,0 +1,13 @@
+@extends('views.layouts.site.master')
+@section('title','بازیابی رمز عبور')
+@section('content')
+    @include('views.errors.errors')
+    {!! Form::open(['action' => 'Auth\Controllers\Site\AuthController@reminder']) !!}
+        {!! Form::text('email',null,['class' => 'form-control input-sm chat-input','placeholder' => 'ایمیل']) !!}
+        <br>
+        {!!Form::text('captcha',null, ['class'=>'form-control col-md-4','placeholder'=>'کد امنیتی'])!!}
+        {!! captcha_img() !!}
+        <br>
+        {!! Form::submit('بازیابی',['class' => 'btn btn-primary btn-md']) !!}
+    {!! Form::close() !!}
+@endsection
