@@ -3,7 +3,8 @@
 namespace Sedehi\Section\Commands;
 
 use Illuminate\Console\Command;
-use File;
+use Illuminate\Support\Facades\File;
+
 class SectionTest extends Command
 {
     use \Illuminate\Console\AppNamespaceDetectorTrait, SectionsTrait;
