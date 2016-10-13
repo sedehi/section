@@ -2,16 +2,16 @@
 
 namespace {{{appName}}}Http\Controllers\{{{section}}}\Jobs;
 
-use {{{appName}}}Jobs\Job;
+use Illuminate\Bus\Queueable;
 
-class {{{name}}} extends Job
+class {{{name}}}
 {
+    use Queueable;
 
     public function __construct()
     {
 
     }
-
 
     public function handle()
     {

@@ -3,8 +3,6 @@
 namespace {{{appName}}}Http\Controllers\{{{section}}}\Listeners;
 
 use {{{appName}}}Http\Controllers\{{{section}}}\Events\{{{name}}};
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class {{{name}}}Listener
 {

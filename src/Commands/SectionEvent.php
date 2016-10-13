@@ -56,7 +56,6 @@ class SectionEvent extends Command
             $this->info('event created successfully.');
         }
 
-
         $this->makeDirectory($this->argument('section'), 'Listeners');
 
         if (File::exists(app_path('Http/Controllers/'.ucfirst($this->argument('section')).'/Listeners/'.ucfirst($this->argument('name')).'Listener.php'))) {
