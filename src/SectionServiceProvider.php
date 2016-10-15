@@ -15,6 +15,7 @@ use Sedehi\Section\Commands\SectionMigrateReset;
 use Sedehi\Section\Commands\SectionMigrateRollback;
 use Sedehi\Section\Commands\SectionMigration;
 use Sedehi\Section\Commands\SectionModel;
+use Sedehi\Section\Commands\SectionNotification;
 use Sedehi\Section\Commands\SectionPolicy;
 use Sedehi\Section\Commands\SectionRequest;
 use Sedehi\Section\Commands\SectionSeed;
@@ -78,6 +79,9 @@ class SectionServiceProvider extends ServiceProvider
         $this->app->bind('sedehi::command.section.auth', function ($app) {
             return new SectionAuth();
         });
+        $this->app->bind('sedehi::command.section.notification', function ($app) {
+            return new SectionNotification();
+        });
 
         $this->commands([
                             'sedehi::command.section.make',
@@ -95,7 +99,8 @@ class SectionServiceProvider extends ServiceProvider
                             'sedehi::command.section.request',
                             'sedehi::command.section.seed',
                             'sedehi::command.section.test',
-                            'sedehi::command.section.auth'
+                            'sedehi::command.section.auth',
+                            'sedehi::command.section.notification',
                         ]);
     }
 
