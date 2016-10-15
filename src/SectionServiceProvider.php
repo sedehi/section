@@ -9,6 +9,7 @@ use Sedehi\Section\Commands\SectionController;
 use Sedehi\Section\Commands\SectionEvent;
 use Sedehi\Section\Commands\SectionFactory;
 use Sedehi\Section\Commands\SectionJob;
+use Sedehi\Section\Commands\SectionMail;
 use Sedehi\Section\Commands\SectionMigrate;
 use Sedehi\Section\Commands\SectionMigrateRefresh;
 use Sedehi\Section\Commands\SectionMigrateReset;
@@ -82,6 +83,9 @@ class SectionServiceProvider extends ServiceProvider
         $this->app->bind('sedehi::command.section.notification', function ($app) {
             return new SectionNotification();
         });
+        $this->app->bind('sedehi::command.section.mail', function ($app) {
+            return new SectionMail();
+        });
 
         $this->commands([
                             'sedehi::command.section.make',
@@ -101,6 +105,7 @@ class SectionServiceProvider extends ServiceProvider
                             'sedehi::command.section.test',
                             'sedehi::command.section.auth',
                             'sedehi::command.section.notification',
+                            'sedehi::command.section.mail',
                         ]);
     }
 

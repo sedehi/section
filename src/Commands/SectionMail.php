@@ -5,7 +5,7 @@ namespace Sedehi\Section\Commands;
 use Illuminate\Console\Command;
 use File;
 
-class SectionNotification extends Command
+class SectionMail extends Command
 {
 
     use SectionsTrait, \Illuminate\Console\AppNamespaceDetectorTrait;
@@ -15,14 +15,14 @@ class SectionNotification extends Command
      *
      * @var string
      */
-    protected $signature = 'section:notification {section : The name of the section}  {name : The name of the notification}';
+    protected $signature = 'section:mail {section : The name of the section}  {name : The name of the mail}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Create a new notification class in section';
+    protected $description = 'Create a new mail class in section';
 
     /**
      * Create a new command instance.
@@ -41,19 +41,19 @@ class SectionNotification extends Command
      */
     public function handle()
     {
-        $this->makeDirectory($this->argument('section'), 'Notifications/');
+        $this->makeDirectory($this->argument('section'), 'Mail/');
 
-        if (File::exists(app_path('Http/Controllers/'.ucfirst($this->argument('section')).'/Notifications/'.ucfirst($this->argument('name')).'.php'))) {
-            $this->error('notification already exists.');
+        if (File::exists(app_path('Http/Controllers/'.ucfirst($this->argument('section')).'/Mail/'.ucfirst($this->argument('name')).'.php'))) {
+            $this->error('mail already exists.');
         } else {
-            $data = File::get(__DIR__.'/Template/notification.stub');
+            $data = File::get(__DIR__.'/Template/mail.stub');
 
             $data = str_replace('{{{name}}}', ucfirst($this->argument('name')), $data);
             $data = str_replace('{{{section}}}', ucfirst($this->argument('section')), $data);
             $data = str_replace('{{{appName}}}', $this->getAppNamespace(), $data);
-            File::put(app_path('Http/Controllers/'.ucfirst($this->argument('section')).'/Notifications/'.ucfirst($this->argument('name')).'.php'),
+            File::put(app_path('Http/Controllers/'.ucfirst($this->argument('section')).'/Mail/'.ucfirst($this->argument('name')).'.php'),
                       $data);
-            $this->info('notification created successfully.');
+            $this->info('mail created successfully.');
         }
     }
 }
