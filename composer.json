@@ -17,7 +17,7 @@
     "illuminate/support": "5.0.*|5.1.*|5.2.*|5.3.*"
   },
   "autoload": {
-    "psr-0": {
+    "psr-4": {
       "Sedehi\\Section\\": "src/"
     }
   },
