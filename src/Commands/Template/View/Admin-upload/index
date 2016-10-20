@@ -1,59 +1,50 @@
 @extends('views.layouts.admin.master')
 @section('content')
-    <div class="row">
-        @include('views.errors.errors')
-        <div class="col-lg-12 col-sm-12 col-xs-12">
-            @include('{{{section}}}.views.admin.search')
-        </div>
-        {!! Form::open(['action'=>['{{{section}}}\Controllers\AdminController@destroy',1],'method' =>'DELETE']) !!}
-        <div class="col-xs-12 col-md-12">
-            <div class="widget">
-                <div class="widget-header  with-footer">
-                    <span class="widget-caption">
-						<button  type="submit" class="btn btn-danger white btnDelete">حذف انتخاب شده های</button>
-					</span>
+    @include('{{{section}}}.views.admin.{{{name}}}.search')
 
-                    <div class="widget-buttons">
-                        <a href="tables-simple.html#" data-toggle="maximize">
-                            <i class="fa fa-expand"></i>
-                        </a>
-                        <a href="tables-simple.html#" data-toggle="collapse">
-                            <i class="fa fa-minus"></i>
-                        </a>
-
+    <div id="top_bar">
+        <div class="md-top-bar">
+            <div class="uk-width-large-1-1 uk-container-center">
+                <div class="uk-clearfix">
+                    <div class="md-top-bar-actions-right">
+                        <div class="md-btn-group">
+                            {!! Form::open(['action'=>['{{{section}}}\Controllers\{{{controller}}}@destroy',1],'method' =>'DELETE']) !!}
+                            <button type="submit" class="md-btn md-btn-danger md-btn-small md-btn-wave-light waves-effect" style="margin-left: 15px !important;">حذف</button>
+                            <a class="md-btn md-btn-primary md-btn-small md-btn-wave-light waves-effect" href="#" style="margin-left: 15px !important;" id="sidebar_secondary_toggle">جستجو</a>
+                            @if(count(request()->except(['page'])))
+                                <a class="md-btn md-btn-warning md-btn-small md-btn-wave-light waves-effect" href="" style="margin-left: 15px !important;">تمامی اطلاعات</a>
+                            @endif
+                        </div>
                     </div>
                 </div>
-                <div class="widget-body">
-                    <div class="flip-scroll">
-                        <table class="table table-bordered table-striped table-condensed flip-content">
-                            <thead class="flip-content bordered-palegreen">
+            </div>
+        </div>
+    </div>
+
+    <div id="page_content">
+        <div id="page_content_inner">
+            <div class="md-card uk-margin-medium-bottom">
+                <div class="md-card-content">
+                    <div class="uk-overflow-container">
+                        <table class="uk-table uk-table-nowrap table_check">
+                            <thead>
                             <tr>
-                                <th>
-                                    <div class="checkbox" style="width: 15px">
-                                        <label>
-                                            {!! Form::checkbox('',1,null,['class' => 'colored-danger','id' => 'check-all']) !!}
-                                            <span class="text"></span>
-                                        </label>
-                                    </div>
+                                <th class="uk-width-1-10  uk-text-center small_col">
+                                    {!! Form::checkbox('',1,null,['class' => 'colored-check_all','data-md-icheck']) !!}
                                 </th>
-                                <th>نام</th>
-                                <th>عملیات</th>
+                                <th class="uk-width-2-10 uk-text-center">نام</th>
+                                <th class="uk-width-2-10 uk-text-center">.....</th>
                             </tr>
                             </thead>
                             <tbody>
                             @forelse($items as $item)
-                                <tr>
-                                    <td width="70">
-                                        <div class="checkbox" style="width: 20px">
-                                            <label>
-                                                {!! Form::checkbox('deleteId[]',$item->id,null,['class' => 'colored-danger deleteId']) !!}
-                                                <span class="text"></span>
-                                            </label>
-                                        </div>
+                                <tr class="uk-text-center">
+                                    <td class="uk-text-center uk-table-middle small_col">
+                                        {!! Form::checkbox('deleteId[]',$item->id,null,['class' => 'check_row','data-md-icheck']) !!}
                                     </td>
                                     <td>{{ $item->name }}</td>
-                                    <td>
-                                        <a class="btn btn-info btn-sm" href="{{ action('{{{section}}}\Controllers\AdminController@edit',[$item->id]) }}">ویرایش</a>
+                                    <td class="uk-text-center">
+                                        <a href="{!! action('{{{section}}}\Controllers\{{{controller}}}@edit',$item->id) !!}"><i class="md-icon material-icons">&#xE254;</i></a>
                                     </td>
                                 </tr>
                             @empty
@@ -65,13 +56,9 @@
                         </table>
                         {!! Form::close() !!}
                     </div>
-                    <br>
-                    {!! $items->appends(Request::except('page'))->render() !!}
+                    {!! $items->appends(Request::except('page'))->render('views.vendor.pagination.uikit') !!}
                 </div>
             </div>
         </div>
     </div>
-
 @endsection
-
-

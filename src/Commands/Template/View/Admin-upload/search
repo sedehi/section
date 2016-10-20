@@ -6,14 +6,15 @@
             <li>
                 <div class="timeline timeline_small uk-margin-bottom">
                     {!! Form::open() !!}
-                    <div class="uk-form-row">
+                    <div class="uk-form-row searchPanel">
+
                         <div class="uk-grid" data-uk-grid-margin>
                             <div class="uk-width-medium-1-1">
                                 {!! Form::label('name','نام') !!}
                                 {!! Form::text('name',null,['class'=>'md-input']) !!}
                             </div>
                         </div>
-                        {{--<div class="uk-grid" data-uk-grid-margin>
+                       {{-- <div class="uk-grid" data-uk-grid-margin>
                             <div class="uk-width-medium-1-1">
                                 {!! Form::select('select',['' => '.....',1=>'تست',2=>'تست دو'],null,['class'=>'md-input']) !!}
                             </div>
@@ -68,15 +69,15 @@
                             <div class="uk-width-medium-1-1">
                                 <div class="uk-input-group">
                                     <span class="uk-input-group-addon"><i class="uk-input-group-icon uk-icon-calendar"></i></span>
-                                    <label for="uk_dp_start">Start Date</label>
-                                    <input class="md-input date" type="text">
+                                    {!! Form::label('start_date','تاریخ شروع') !!}
+                                    {!! Form::text('start_date',null,['class' => 'md-input date','id' => 'start_date']) !!}
                                 </div>
                             </div>
                             <div class="uk-width-medium-1-1">
                                 <div class="uk-input-group">
                                     <span class="uk-input-group-addon"><i class="uk-input-group-icon uk-icon-calendar"></i></span>
-                                    <label for="uk_dp_end">End Date</label>
-                                    <input class="md-input date" type="text">
+                                    {!! Form::label('end_date','تاریخ شروع') !!}
+                                    {!! Form::text('end_date',null,['class' => 'md-input date','id' => 'end_date']) !!}
                                 </div>
                             </div>
                         </div>--}}

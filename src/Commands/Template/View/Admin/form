@@ -1,4 +1,91 @@
- <div class="form-group">
-    {!! Form::label('name','نام') !!}
-    {!! Form::text('name',null,['class'=>'form-control']) !!}
+<div class="uk-grid" data-uk-grid-margin>
+    <div class="uk-width-medium-1-1">
+        {!! Form::label('name','نام') !!}
+        {!! Form::text('name',null,['class'=>'md-input']) !!}
+    </div>
 </div>
+{{--<div class="uk-grid" data-uk-grid-margin>
+    <div class="uk-width-medium-1-1">
+        {!! Form::select('select',['' => '.....',1=>'تست',2=>'تست دو'],null,['class'=>'md-input']) !!}
+    </div>
+</div>
+
+<div class="uk-grid" data-uk-grid-margin>
+
+    <div class="uk-width-medium-1-1">
+        <span class="icheck-inline">
+            {!! Form::radio('radio',1,null,['data-md-icheck','id'=>'radio1']) !!}
+            {!! Form::label('radio1','یک',['class' => 'inline-label']) !!}
+        </span>
+
+        <span class="icheck-inline">
+            {!! Form::radio('radio',2,null,['data-md-icheck','id'=>'radio2']) !!}
+            {!! Form::label('radio2','دو',['class' => 'inline-label']) !!}
+        </span>
+
+        <span class="icheck-inline">
+            {!! Form::radio('radio',3,null,['data-md-icheck','id'=>'radio3']) !!}
+            {!! Form::label('radio3','سه',['class' => 'inline-label']) !!}
+        </span>
+    </div>
+</div>
+<div class="uk-grid" data-uk-grid-margin>
+
+    <div class="uk-width-medium-1-1">
+        <span class="icheck-inline">
+            {!! Form::checkbox('check',1,null,['data-switchery','id' => 'check1']) !!}
+            {!! Form::label('check1','چک',['class' => 'inline-label']) !!}
+        </span>
+
+        <span class="icheck-inline">
+            {!! Form::checkbox('check',1,null,['data-switchery','id' => 'check']) !!}
+            {!! Form::label('check','چک',['class' => 'inline-label']) !!}
+        </span>
+    </div>
+</div>
+<div class="uk-grid" data-uk-grid-margin>
+
+    <div class="uk-width-medium-1-1">
+        <span class="icheck-inline">
+            {!! Form::checkbox('check',1,null,['data-md-icheck','id' => 'check2']) !!}
+            {!! Form::label('check2','چک',['class' => 'inline-label']) !!}
+        </span>
+
+        <span class="icheck-inline">
+            {!! Form::checkbox('check',1,null,['data-md-icheck','id' => 'check3']) !!}
+            {!! Form::label('check3','چک',['class' => 'inline-label']) !!}
+        </span>
+    </div>
+</div>
+<div class="uk-grid" data-uk-grid-margin>
+    <div class="uk-width-medium-1-1">
+        {!! Form::textarea('text',null,['class' => 'ckeditor']) !!}
+    </div>
+</div>
+<div class="uk-grid" data-uk-grid-margin>
+    <div class="uk-width-medium-1-2">
+        <div class="uk-input-group">
+            <span class="uk-input-group-addon"><i class="uk-input-group-icon uk-icon-calendar"></i></span>
+            {!! Form::label('start_date','تاریخ شروع') !!}
+            {!! Form::text('start_date',null,['class' => 'md-input date','id' => 'start_date']) !!}
+        </div>
+    </div>
+    <div class="uk-width-medium-1-2">
+        <div class="uk-input-group">
+            <span class="uk-input-group-addon"><i class="uk-input-group-icon uk-icon-calendar"></i></span>
+            {!! Form::label('end_date','تاریخ شروع') !!}
+            {!! Form::text('end_date',null,['class' => 'md-input date','id' => 'end_date']) !!}
+        </div>
+    </div>
+</div>
+<div class="uk-grid" data-uk-grid-margin>
+    <div class="uk-width-medium-1-1">
+        <div class="uk-input-group">
+            <span class="uk-input-group-addon"><i class="uk-input-group-icon uk-icon-calendar"></i></span>
+            {!! Form::label('datetime','تاریخ و ساعت') !!}
+            {!! Form::text('datetime',null,['class' => 'md-input dateTime','id' => 'datetime','timestamp' => '.datetime_timestamp']) !!}
+            {!! Form::hidden('datetime_timestamp','',['class' => 'datetime_timestamp']) !!}
+        </div>
+    </div>
+</div>--}}
+
