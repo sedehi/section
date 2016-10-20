@@ -10,7 +10,7 @@
                     </div>
 
                     <div class="widget-body">
-                        {!! Form::open(['action'=> '{{{section}}}\Controllers\{{{controller}}}@store']) !!}
+                        {!! Form::open(['action'=> '{{{section}}}\Controllers\Admin\{{{controller}}}@store']) !!}
                         <div class="uk-form-row searchPanel">
                             @include('{{{section}}}.views.admin.{{{name}}}.form')
                             <div class="uk-grid" data-uk-grid-margin>

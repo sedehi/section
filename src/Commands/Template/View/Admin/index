@@ -5,7 +5,7 @@
         <div class="col-lg-12 col-sm-12 col-xs-12">
             @include('{{{section}}}.views.admin.search')
         </div>
-        {!! Form::open(['action'=>['{{{section}}}\Controllers\{{{name}}}@destroy',1],'method' =>'DELETE']) !!}
+        {!! Form::open(['action'=>['{{{section}}}\Controllers\Admin\{{{controller}}}@destroy',1],'method' =>'DELETE']) !!}
         <div class="col-xs-12 col-md-12">
             <div class="widget">
                 <div class="widget-header  with-footer">
@@ -53,7 +53,7 @@
                                     </td>
                                     <td>{{ $item->name }}</td>
                                     <td>
-                                        <a class="btn btn-info btn-sm" href="{{ action('{{{section}}}\Controllers\{{{name}}}@edit',[$item->id]) }}">ویرایش</a>
+                                        <a class="btn btn-info btn-sm" href="{{ action('{{{section}}}\Controllers\Admin\{{{controller}}}@edit',[$item->id]) }}">ویرایش</a>
                                     </td>
                                 </tr>
                             @empty
