@@ -5,7 +5,7 @@ namespace {{{namespace}}};
 use {{{appName}}}Http\Requests;
 use {{{appName}}}Http\Controllers\Controller;
 use {{{appName}}}Http\Controllers\{{{section}}}\Models\{{{section}}};
-use {{{appName}}}Http\Controllers\{{{section}}}\Requests\AdminRequest;
+use {{{appName}}}Http\Controllers\{{{section}}}\Requests\{{{type}}}{{{onlyName}}}Request;
 use Illuminate\Http\Request;
 
 class {{{name}}} extends Controller
@@ -15,41 +15,41 @@ class {{{name}}} extends Controller
     {
         $items = {{{section}}}::filter()->latest()->paginate(20);
 
-        return view('{{{section}}}.views{{{viewType}}}.index', compact('items'));
+        return view('{{{section}}}.views.{{{viewType}}}.{{{sectionLower}}}.index', compact('items'));
     }
 
     public function create()
     {
-        return view('{{{section}}}.views{{{viewType}}}.add');
+        return view('{{{section}}}.views{{{viewType}}}.{{{sectionLower}}}.add');
     }
 
-    public function store(AdminRequest $request)
+    public function store({{{onlyName}}}Request $request)
     {
         $item             = new {{{section}}}();
         $item->name       = $request->get('name');
         $item->save();
 
-        return redirect()->action('{{{section}}}\Controllers\{{{name}}}@index')->with('success', 'اطلاعات با موفقیت ذخیره شد');
+        return redirect()->action('{{{section}}}\Controllers\{{{type}}}{{{name}}}@index')->with('success', 'اطلاعات با موفقیت ذخیره شد');
 
     }
 
     public function edit($id)
     {
         $item = {{{section}}}::findOrFail($id);
-        return view('{{{section}}}.views{{{viewType}}}.edit', compact('item'));
+        return view('{{{section}}}.views{{{viewType}}}.{{{sectionLower}}}.edit', compact('item'));
     }
 
-    public function update(AdminRequest $request, $id)
+    public function update({{{onlyName}}}Request $request, $id)
     {
         $item             = {{{section}}}::findOrFail($id);
         $item->name       = $request->get('name');
         $item->save();
 
-        return redirect()->action('{{{section}}}\Controllers\{{{name}}}@index')->with('success', 'اطلاعات با موفقیت ذخیره شد');
+        return redirect()->action('{{{section}}}\Controllers\{{{type}}}{{{name}}}@index')->with('success', 'اطلاعات با موفقیت ذخیره شد');
 
     }
 
-    public function destroy(AdminRequest $request)
+    public function destroy({{{onlyName}}}Request $request)
     {
         {{{section}}}::whereIn('id', $request->get('deleteId'))->delete();
 

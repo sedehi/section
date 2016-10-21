@@ -110,7 +110,22 @@ class SectionController extends Command
         }
 
         if (!is_null($data)) {
+            $type = '';
+            switch ($this->type) {
+                case '.site':
+                    $type = 'Site\\';
+                    break;
+                case '.api':
+                    $type = 'Api\\';
+                    break;
+                case '.admin':
+                    $type = 'Admin\\';
+                    break;
+            }
+
             $data = str_replace('{{{name}}}', ucfirst($this->argument('name')), $data);
+            $data = str_replace('{{{onlyName}}}', str_replace("Controller", "", ucfirst($this->argument('name'))), $data);
+            $data = str_replace('{{{type}}}', $type, $data);
             $data = str_replace('{{{viewType}}}', $this->type, $data);
             $data = str_replace('{{{section}}}', ucfirst($this->argument('section')), $data);
             $data = str_replace('{{{sectionLower}}}', strtolower($this->argument('section')), $data);
