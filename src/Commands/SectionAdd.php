@@ -40,13 +40,12 @@ class SectionAdd extends Command
      */
     public function handle()
     {
-        $adminController = $siteController = false;
+        $adminController = $siteController = $apiController = false;
         if ($this->confirm('Do you want create model ? [y|n]', true)) {
             $this->makeModel();
         }
         if ($this->confirm('Do you want create admin controller ? [y|n]', true)) {
             $adminController = true;
-            $this->makeDirectory($this->argument('name'), 'views/admin/');
 
             if ($this->confirm('Do you want upload picture in admin ? [y|n]', true)) {
                 $this->makeAdminControllerWithUpload();
@@ -57,6 +56,10 @@ class SectionAdd extends Command
         if ($this->confirm('Do you want create site controller ? [y|n]', true)) {
             $siteController = true;
             $this->makeSiteController();
+        }
+        if ($this->confirm('Do you want create api controller ? [y|n]', true)) {
+            $apiController = true;
+            $this->makeApiController();
         }
         if ($this->confirm('Do you want create form request ? [y|n]', true)) {
             $this->makeRequest($adminController, $siteController);
@@ -72,7 +75,7 @@ class SectionAdd extends Command
             $this->makeRole($title);
         }
         if ($this->confirm('Do you want create route ? [y|n]', true)) {
-            $this->makeRoute();
+            $this->makeRoute($adminController, $siteController, $apiController);
         }
     }
 
@@ -86,52 +89,49 @@ class SectionAdd extends Command
     {
 
         $this->call('section:controller', [
-            'section'    => $this->argument('name'),
-            'name'       => 'adminController',
-            '--resource' => true,
+            'section' => $this->argument('name'),
+            'name'    => ucfirst($this->argument('name')).'Controller',
+            '--admin' => true,
+            '--crud'  => true,
+            '--resource'  => true,
+
         ]);
 
-        foreach (File::files(__DIR__.'/Template/View/Admin') as $templateFile) {
-            if (File::exists(app_path('Http/Controllers/'.ucfirst($this->argument('name')).'/views/admin/'.File::name($templateFile).'.blade.php'))) {
-                $this->error('Admin '.File::name($templateFile).' view already exists.');
-            } else {
-                $data = File::get(__DIR__.'/Template/View/Admin/'.File::name($templateFile));
-                $data = str_replace('{{{section}}}', ucfirst($this->argument('name')), $data);
-                File::put(app_path('Http/Controllers/'.ucfirst($this->argument('name')).'/views/admin/'.File::name($templateFile).'.blade.php'),
-                          $data);
-                $this->info('Admin '.File::name($templateFile).' view created successfully.');
-            }
-        }
+        $this->call('section:view', [
+            'section'    => $this->argument('name'),
+            'name'       => strtolower($this->argument('name')),
+            'controller' => ucfirst($this->argument('name')).'Controller',
+            '--admin'    => true,
+
+        ]);
     }
 
     private function makeAdminControllerWithUpload()
     {
         $this->call('section:controller', [
             'section'    => $this->argument('name'),
-            'name'       => 'adminController',
+            'name'       => ucfirst($this->argument('name')).'Controller',
             '--upload'   => true,
             '--resource' => true,
+            '--admin'    => true,
         ]);
 
-        foreach (File::files(__DIR__.'/Template/View/Admin-upload') as $templateFile) {
-            if (File::exists(app_path('Http/Controllers/'.ucfirst($this->argument('name')).'/views/admin/'.File::name($templateFile).'.blade.php'))) {
-                $this->error('Admin '.File::name($templateFile).' view already exists.');
-            } else {
-                $data = File::get(__DIR__.'/Template/View/Admin-upload/'.File::name($templateFile));
-                $data = str_replace('{{{section}}}', ucfirst($this->argument('name')), $data);
-                File::put(app_path('Http/Controllers/'.ucfirst($this->argument('name')).'/views/admin/'.File::name($templateFile).'.blade.php'),
-                          $data);
-                $this->info('Admin '.File::name($templateFile).' view created successfully.');
-            }
-        }
+        $this->call('section:view', [
+            'section'    => $this->argument('name'),
+            'name'       => strtolower($this->argument('name')),
+            'controller' => ucfirst($this->argument('name')).'Controller',
+            '--upload'   => true,
+            '--admin'    => true,
+
+        ]);
     }
 
     private function makeSiteController()
     {
         $this->call('section:controller', [
             'section' => ucfirst($this->argument('name')),
-            'name'    => 'SiteController',
-            '--plain' => true
+            'name'    => ucfirst($this->argument('name')).'Controller',
+            '--site'  => true
         ]);
         if (!File::isDirectory(app_path('Http/Controllers/'.ucfirst($this->argument('name')).'/views/site/'))) {
 
@@ -140,20 +140,33 @@ class SectionAdd extends Command
         }
     }
 
+    private function makeApiController()
+    {
+        $this->call('section:controller', [
+            'section' => ucfirst($this->argument('name')),
+            'name'    => ucfirst($this->argument('name')).'Controller',
+            '--api'   => true
+        ]);
+    }
+
     private function makeRequest($adminController, $siteController)
     {
         if ($adminController) {
             $this->call('section:request', [
                 'section' => $this->argument('name'),
-                'name'    => 'AdminRequest',
+                'name'    => ucfirst($this->argument('name')).'Request',
                 '--admin' => true,
+                '--crud'  => true,
             ]);
         }
 
         if ($siteController) {
             $this->call('section:request', [
                 'section' => $this->argument('name'),
-                'name'    => 'SiteRequest',
+                'name'    => ucfirst($this->argument('name')).'Request',
+                '--site'  => true,
+                '--crud'  => true,
+
             ]);
         }
     }
@@ -188,21 +201,35 @@ class SectionAdd extends Command
         }
     }
 
-    private function makeRoute()
+    private function makeRoute($adminController, $siteController, $apiController)
     {
 
-        $this->makeDirectory($this->argument('name'));
+        $this->makeDirectory($this->argument('name'), 'routes');
 
-        if (File::exists(app_path('Http/Controllers/'.ucfirst($this->argument('name')).'/'.'route.php'))) {
-            $this->error('routes already exists.');
-        } else {
-            File::put(app_path('Http/Controllers/'.ucfirst($this->argument('name')).'/'.'route.php'), '<?php ');
-            $data = File::get(__DIR__.'/Template/routeAdmin');
-            $data = str_replace('{{{name}}}', ucfirst($this->argument('name')), $data);
-            $data = str_replace('{{{url}}}', strtolower($this->argument('name')), $data);
-            File::append(app_path('Http/Controllers/'.ucfirst($this->argument('name')).'/'.'route.php'), $data);
+        if ($adminController || $siteController) {
+            if (File::exists(app_path('Http/Controllers/'.ucfirst($this->argument('name')).'/routes/'.'web.php'))) {
+                $this->error('routes already exists.');
+            } else {
+                File::put(app_path('Http/Controllers/'.ucfirst($this->argument('name')).'/routes/'.'web.php'),
+                          '<?php ');
+                $data = File::get(__DIR__.'/Template/routeAdmin');
+                $data = str_replace('{{{name}}}', ucfirst($this->argument('name')), $data);
+                $data = str_replace('{{{controller}}}', ucfirst($this->argument('name')).'Controller', $data);
+                $data = str_replace('{{{url}}}', strtolower($this->argument('name')), $data);
+                File::append(app_path('Http/Controllers/'.ucfirst($this->argument('name')).'/routes/'.'web.php'),
+                             $data);
 
-            $this->info('routes created successfully.');
+                $this->info('routes created successfully.');
+            }
+        }
+        if ($apiController) {
+            if (File::exists(app_path('Http/Controllers/'.ucfirst($this->argument('name')).'/routes/'.'api.php'))) {
+                $this->error('api route already exists.');
+            } else {
+                File::put(app_path('Http/Controllers/'.ucfirst($this->argument('name')).'/routes/'.'api.php'), '<?php ');
+
+                $this->info('api route created successfully.');
+            }
         }
     }
 
