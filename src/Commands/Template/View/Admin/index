@@ -14,7 +14,7 @@
                             @endif
                             <a class="md-btn md-btn-primary md-btn-small md-btn-wave-light waves-effect" href="#" style="margin-left: 15px !important;" id="sidebar_secondary_toggle">جستجو</a>
                             @if(count(request()->except(['page'])))
-                                <a class="md-btn md-btn-warning md-btn-small md-btn-wave-light waves-effect" href="" style="margin-left: 15px !important;">تمامی اطلاعات</a>
+                                <a class="md-btn md-btn-warning md-btn-small md-btn-wave-light waves-effect" href="{!! action('{{{section}}}\Controllers\Admin\{{{controller}}}@index') !!}" style="margin-left: 15px !important;">تمامی اطلاعات</a>
                             @endif
                         </div>
                     </div>
