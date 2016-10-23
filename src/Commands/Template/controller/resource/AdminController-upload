@@ -63,7 +63,6 @@ class {{{name}}} extends Controller
             if (File::exists($destinationPath.$item->file)) {
                 File::delete($destinationPath.$item->file);
             }
-master
             $fileName = generateFileName($destinationPath, $file->guessExtension(), '', 20);
             Image::make($file->getRealPath())->save($destinationPath.$fileName);
             $item->file = $fileName;

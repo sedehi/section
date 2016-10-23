@@ -32,7 +32,7 @@
                             <thead>
                             <tr>
                                 <th class="uk-width-1-10  uk-text-center small_col">
-                                    {!! Form::checkbox('',1,null,['class' => 'colored-check_all','data-md-icheck']) !!}
+                                    {!! Form::checkbox('',1,null,['class' => 'check_all','data-md-icheck']) !!}
                                 </th>
                                 <th class="uk-width-2-10 uk-text-center">نام</th>
                                 <th class="uk-width-2-10 uk-text-center">تاریخ درج</th>
