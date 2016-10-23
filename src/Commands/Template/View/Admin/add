@@ -1,25 +1,24 @@
 @extends('views.layouts.admin.master')
 @section('content')
-    <div class="page-body">
-        <div class="row">
-            <div class="col-lg-12 col-sm-12 col-xs-12">
-                @include('views.errors.errors')
-                <div class="widget flat radius-bordered">
-                    <div class="widget-header bg-blue">
-                        <span class="widget-caption"></span>
-                    </div>
-
-                    <div class="widget-body">
-                        {!! Form::open(['action'=> '{{{section}}}\Controllers\Admin\{{{controller}}}@store']) !!}
-                        <div class="uk-form-row searchPanel">
-                            @include('{{{section}}}.views.admin.{{{name}}}.form')
-                            <div class="uk-grid" data-uk-grid-margin>
-                                <div class="uk-width-medium-1-1">
-                                    <button type="submit" class="md-btn md-btn-primary md-btn-wave-light waves-effect waves-button waves-light " style="margin-top: 10px">ذخیره</button>
+    <div id="page_content">
+        <div id="page_content_inner">
+            <h3 class="heading_b uk-margin-bottom" id="adminBreadcrumb"></h3>
+            <div class="md-card">
+                <div class="md-card-content">
+                    <div class="uk-grid" data-uk-grid-margin>
+                        <div class="uk-width-1-1">
+                            @include('views.errors.errors')
+                            {!! Form::open(['action'=> '{{{section}}}\Controllers\Admin\{{{controller}}}@store']) !!}
+                            <div class="uk-form-row searchPanel">
+                                @include('{{{section}}}.views.admin.{{{name}}}.form')
+                                <div class="uk-grid" data-uk-grid-margin>
+                                    <div class="uk-width-medium-1-1">
+                                        <button type="submit" class="md-btn md-btn-primary md-btn-wave-light waves-effect waves-button waves-light " style="margin-top: 10px">ذخیره</button>
+                                    </div>
                                 </div>
                             </div>
+                            {!! Form::close() !!}
                         </div>
-                        {!! Form::close() !!}
                     </div>
                 </div>
             </div>
