@@ -195,6 +195,7 @@ class SectionAdd extends Command
         } else {
             $data = File::get(__DIR__.'/Template/roles');
             $data = str_replace('{{{name}}}', strtolower($this->argument('name')), $data);
+            $data = str_replace('{{{ucFirstname}}}', ucfirst($this->argument('name')), $data);
             $data = str_replace('{{{title}}}', $title, $data);
             File::put(app_path('Http/Controllers/'.ucfirst($this->argument('name')).'/roles.php'), $data);
             $this->info('role created successfully.');
