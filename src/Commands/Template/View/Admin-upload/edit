@@ -10,10 +10,15 @@
                     </div>
 
                     <div class="widget-body">
-                        {!! Form::model($item,['action'=> ['{{{section}}}\Controllers\AdminController@update',$item->id],'method' => 'PUT','files'=>true]) !!}
-                        @include('{{{section}}}.views.admin.form')
-                        <div class="clearfix"></div>
-                        <input type="submit" class="btn btn-info" value="ذخیره"/>
+                        {!! Form::model($item,['action'=> ['{{{section}}}\Controllers\{{{controller}}}@update',$item->id],'method' => 'PUT','files'=>true]) !!}
+                        <div class="uk-form-row searchPanel">
+                            @include('{{{section}}}.views.admin.{{{name}}}.form')
+                            <div class="uk-grid" data-uk-grid-margin>
+                                <div class="uk-width-medium-1-1">
+                                    <button type="submit" class="md-btn md-btn-primary md-btn-wave-light waves-effect waves-button waves-light " style="margin-top: 10px">ذخیره</button>
+                                </div>
+                            </div>
+                        </div>
                         {!! Form::close() !!}
                     </div>
                 </div>

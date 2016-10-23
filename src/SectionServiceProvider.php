@@ -21,6 +21,7 @@ use Sedehi\Section\Commands\SectionPolicy;
 use Sedehi\Section\Commands\SectionRequest;
 use Sedehi\Section\Commands\SectionSeed;
 use Sedehi\Section\Commands\SectionTest;
+use Sedehi\Section\Commands\SectionView;
 
 class SectionServiceProvider extends ServiceProvider
 {
@@ -86,6 +87,9 @@ class SectionServiceProvider extends ServiceProvider
         $this->app->bind('sedehi::command.section.mail', function ($app) {
             return new SectionMail();
         });
+        $this->app->bind('sedehi::command.section.view', function ($app) {
+            return new SectionView();
+        });
 
         $this->commands([
                             'sedehi::command.section.make',
@@ -106,6 +110,7 @@ class SectionServiceProvider extends ServiceProvider
                             'sedehi::command.section.auth',
                             'sedehi::command.section.notification',
                             'sedehi::command.section.mail',
+                            'sedehi::command.section.view',
                         ]);
     }
 

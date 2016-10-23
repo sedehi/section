@@ -1,4 +1,4 @@
 
-Route::group(['prefix' => config('site.admin'), 'middleware' => ['admin'],'namespace' =>'{{{name}}}\Controllers' ], function () {
-    Route::resource('{{{url}}}', 'AdminController',['except' => ['show']]);
+Route::group(['prefix' => config('site.admin'), 'middleware' => ['admin'],'namespace' =>'{{{name}}}\Controllers\Admin' ], function () {
+    Route::resource('{{{url}}}', '{{{controller}}}',['except' => ['show']]);
 });
