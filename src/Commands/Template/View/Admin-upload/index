@@ -9,7 +9,7 @@
                     <div class="md-top-bar-actions-right">
                         <div class="md-btn-group">
                             {!! Form::open(['action'=>['{{{section}}}\Controllers\Admin\{{{controller}}}@destroy',1],'method' =>'DELETE']) !!}
-                            @if(permission('{{{section}}}.{{{controller}}}@destroy'))
+                            @if(permission('{{{section}}}.{{{controller}}}.destroy'))
                                 <button type="submit" class="md-btn md-btn-danger md-btn-small md-btn-wave-light waves-effect" style="margin-left: 15px !important;">حذف</button>
                             @endif
                             <a class="md-btn md-btn-primary md-btn-small md-btn-wave-light waves-effect" href="#" style="margin-left: 15px !important;" id="sidebar_secondary_toggle">جستجو</a>
