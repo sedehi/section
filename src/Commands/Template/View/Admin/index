@@ -35,6 +35,7 @@
                                     {!! Form::checkbox('',1,null,['class' => 'colored-check_all','data-md-icheck']) !!}
                                 </th>
                                 <th class="uk-width-2-10 uk-text-center">نام</th>
+                                <th class="uk-width-2-10 uk-text-center">تاریخ درج</th>
                                 <th class="uk-width-2-10 uk-text-center">.....</th>
                             </tr>
                             </thead>
@@ -45,7 +46,9 @@
                                         {!! Form::checkbox('deleteId[]',$item->id,null,['class' => 'check_row','data-md-icheck']) !!}
                                     </td>
                                     <td>{{ $item->name }}</td>
-                                    <td class="uk-text-center">
+                                    <td>
+                                        <span data-uk-tooltip title="{{ $item->created_at->diffForHumans() }}">{{ jdate('H:i d-m-Y',$item->created_at->timestamp) }}</span>
+                                    </td>                                    <td class="uk-text-center">
                                         @if(permission('{{{section}}}.{{{controller}}}@edit'))
                                             <a href="{!! action('{{{section}}}\Controllers\Admin\{{{controller}}}@edit',$item->id) !!}"><i class="md-icon material-icons">&#xE254;</i></a>
                                         @endif
