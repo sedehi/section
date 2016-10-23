@@ -9,12 +9,12 @@
                     <div class="md-top-bar-actions-right">
                         <div class="md-btn-group">
                             {!! Form::open(['action'=>['{{{section}}}\Controllers\Admin\{{{controller}}}@destroy',1],'method' =>'DELETE']) !!}
-                            @if(permission('{{{section}}}.{{{controller}}}@destroy'))
+                            @if(permission('{{{section}}}.{{{controller}}}.destroy'))
                                 <button type="submit" class="md-btn md-btn-danger md-btn-small md-btn-wave-light waves-effect" style="margin-left: 15px !important;">حذف</button>
                             @endif
                             <a class="md-btn md-btn-primary md-btn-small md-btn-wave-light waves-effect" href="#" style="margin-left: 15px !important;" id="sidebar_secondary_toggle">جستجو</a>
                             @if(count(request()->except(['page'])))
-                                <a class="md-btn md-btn-warning md-btn-small md-btn-wave-light waves-effect" href="" style="margin-left: 15px !important;">تمامی اطلاعات</a>
+                                <a class="md-btn md-btn-warning md-btn-small md-btn-wave-light waves-effect" href="{!! action('{{{section}}}\Controllers\Admin\{{{controller}}}@index') !!}" style="margin-left: 15px !important;">تمامی اطلاعات</a>
                             @endif
                         </div>
                     </div>
@@ -32,9 +32,10 @@
                             <thead>
                             <tr>
                                 <th class="uk-width-1-10  uk-text-center small_col">
-                                    {!! Form::checkbox('',1,null,['class' => 'colored-check_all','data-md-icheck']) !!}
+                                    {!! Form::checkbox('',1,null,['class' => 'check_all','data-md-icheck']) !!}
                                 </th>
                                 <th class="uk-width-2-10 uk-text-center">نام</th>
+                                <th class="uk-width-2-10 uk-text-center">تاریخ درج</th>
                                 <th class="uk-width-2-10 uk-text-center">.....</th>
                             </tr>
                             </thead>
@@ -45,6 +46,9 @@
                                         {!! Form::checkbox('deleteId[]',$item->id,null,['class' => 'check_row','data-md-icheck']) !!}
                                     </td>
                                     <td>{{ $item->name }}</td>
+                                    <td>
+                                        <span data-uk-tooltip title="{{ $item->created_at->diffForHumans() }}">{{ jdate('d-m-Y H:i',$item->created_at->timestamp) }}</span>
+                                    </td>
                                     <td class="uk-text-center">
                                         @if(permission('{{{section}}}.{{{controller}}}@edit'))
                                             <a href="{!! action('{{{section}}}\Controllers\Admin\{{{controller}}}@edit',$item->id) !!}"><i class="md-icon material-icons">&#xE254;</i></a>

@@ -4,7 +4,7 @@ return [
     '{{{name}}}' => [
         'title'  => '{{{title}}}',
         'access' => [
-            'AdminController' => [
+            '{{{ucFirstname}}}Controller' => [
                 'لیست'   => 'index',
                 'ایجاد'  => ['create', 'store'],
                 'ویرایش' => ['edit', 'update'],

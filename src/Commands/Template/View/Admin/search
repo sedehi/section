@@ -5,7 +5,7 @@
         <ul id="dashboard_sidebar_tabs" class="uk-switcher">
             <li>
                 <div class="timeline timeline_small uk-margin-bottom">
-                    {!! Form::open() !!}
+                    {!! Form::open(['method' => 'GET']) !!}
                     <div class="uk-form-row searchPanel">
 
                         <div class="uk-grid" data-uk-grid-margin>
