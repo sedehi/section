@@ -39,6 +39,8 @@ class {{{name}}} extends Controller
         $item->name       = $request->get('name');
         if ($request->hasFile('file')) {
 
+            makeSectionFilesDirectory($this->uploadPath);
+
             $file               = $request->file('file');
             $realPath           = $file->getRealPath();
             $destinationPath    = public_path($this->uploadPath);
