@@ -8,7 +8,7 @@
                     <div class="uk-grid" data-uk-grid-margin>
                         <div class="uk-width-1-1">
                             @include('views.errors.errors')
-                            {!! Form::model($item,['action'=> ['{{{section}}}\Controllers\{{{controller}}}@update',$item->id],'method' => 'PUT','files'=>true]) !!}
+                            {!! Form::model($item,['action'=> ['{{{section}}}\Controllers\Admin\{{{controller}}}@update',$item->id],'method' => 'PUT','files'=>true]) !!}
                             <div class="uk-form-row searchPanel">
                                 @include('{{{section}}}.views.admin.{{{name}}}.form')
                                 <div class="uk-grid" data-uk-grid-margin>

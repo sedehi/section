@@ -14,6 +14,13 @@ class {{{name}}} extends Controller
 {
     protected $uploadPath = 'uploads/{{{sectionLower}}}/';
 
+    public $imageSize = [
+        [
+            'width'     =>  1280,
+            'height'    =>  720
+        ]
+    ];
+
     public function index()
     {
         $items = {{{section}}}::filter()->latest()->paginate(20);
@@ -32,11 +39,17 @@ class {{{name}}} extends Controller
         $item->name       = $request->get('name');
         if ($request->hasFile('file')) {
 
-            $file            = $request->file('file');
-            $destinationPath = public_path($this->uploadPath);
+            $file               = $request->file('file');
+            $realPath           = $file->getRealPath();
+            $destinationPath    = public_path($this->uploadPath);
+            $fileName           = time().$file->hashName();
 
-            $fileName = generateFileName($destinationPath, $file->guessExtension(), '', 20);
-            Image::make($file->getRealPath())->save($destinationPath.$fileName);
+            Image::make($realPath)->widen(1920, function ($constraint) {
+                $constraint->upsize();
+            })->save($destinationPath.$fileName, 90);
+
+            $this->createImages($realPath, $fileName);
+
             $item->file = $fileName;
         }
         $item->save();
@@ -57,14 +70,19 @@ class {{{name}}} extends Controller
         $item->name       = $request->get('name');
         if ($request->hasFile('file')) {
 
-            $file            = $request->file('file');
-            $destinationPath = public_path($this->uploadPath);
+            removeImage($this->uploadPath,$item->file);
 
-            if (File::exists($destinationPath.$item->file)) {
-                File::delete($destinationPath.$item->file);
-            }
-            $fileName = generateFileName($destinationPath, $file->guessExtension(), '', 20);
-            Image::make($file->getRealPath())->save($destinationPath.$fileName);
+            $file               = $request->file('file');
+            $realPath           = $file->getRealPath();
+            $destinationPath    = public_path($this->uploadPath);
+            $fileName           = time().$file->hashName();
+
+            Image::make($realPath)->widen(1920, function ($constraint) {
+                $constraint->upsize();
+            })->save($destinationPath.$fileName, 90);
+
+            $this->createImages($realPath, $fileName);
+
             $item->file = $fileName;
         }
         $item->save();
@@ -75,16 +93,45 @@ class {{{name}}} extends Controller
 
     public function destroy({{{onlyName}}}Request $request)
     {
-        $items           = {{{section}}}::whereIn('id', $request->get('deleteId'))->get();
-        $destinationPath = public_path($this->uploadPath);
+        $items  = {{{section}}}::whereIn('id', $request->get('deleteId'))->get();
 
         foreach ($items as $item) {
-            if (File::exists($destinationPath.$item->file)) {
-                File::delete($destinationPath.$item->file);
-            }
+            removeImage($this->uploadPath,$item->file);
         }
+
         {{{section}}}::whereIn('id', $request->get('deleteId'))->delete();
 
         return redirect()->back()->with('success', 'اطلاعات با موفقیت حذف شد');
+    }
+
+    public function createImages($realPath, $fileName)
+    {
+        foreach ($this->imageSize as $size) {
+
+            $prefix = null;
+
+            $obj = Image::make($realPath);
+
+            if (!array_key_exists('width',$size) && array_key_exists('height',$size)) {
+                $obj->resize(null, $size['height'], function ($constraint) {
+                    $constraint->aspectRatio();
+                });
+                $prefix = 'autox'.$size['height'].'-';
+            } elseif (array_key_exists('width',$size) && !array_key_exists('height',$size)) {
+                $obj->resize($size['width'], null, function ($constraint) {
+                    $constraint->aspectRatio();
+                });
+                $prefix = $size['width'].'xauto-';
+            } elseif (array_key_exists('width',$size) && array_key_exists('height',$size)) {
+                $obj->resize($size['width'], $size['height']);
+                $prefix = $size['width'].'x'.$size['height'].'-';
+            }
+
+            if (!is_null(config('site.image.watermark'))) {
+                $obj->insert(public_path(config('site.image.watermark')), config('site.image.watermark_position'));
+            }
+
+            $obj->save(public_path($this->uploadPath.$prefix.$fileName), 90);
+        }
     }
 }
