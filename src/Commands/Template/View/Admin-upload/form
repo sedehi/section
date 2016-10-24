@@ -5,11 +5,11 @@
     </div>
 </div>
 <div class="uk-grid" data-uk-grid-margin>
-    <div class="uk-width-medium-1-2">
+    <div class="uk-width-medium-1-3">
         <div class="md-card">
             <div class="md-card-content">
                 <h3 class="heading_a uk-margin-small-bottom">تصویر</h3>
-                {!! Form::file('file',['class' => 'dropify','remove' => 'file_remove']) !!}
+                {!! Form::file('file',['class' => 'dropify','remove' => 'file_remove',,'data-default-file' => (isset($item)? asset('uploads/section/'.$item->file) : '')]) !!}
                 {!! Form::hidden('file_remove',0) !!}
             </div>
         </div>
@@ -45,12 +45,12 @@
 
     <div class="uk-width-medium-1-1">
         <span class="icheck-inline">
-            {!! Form::checkbox('check',1,null,['data-switchery','id' => 'check1']) !!}
+            {!! Form::checkbox('check',1,(isset($item)? $item->active : true),['data-switchery','id' => 'check1']) !!}
             {!! Form::label('check1','چک',['class' => 'inline-label']) !!}
         </span>
 
         <span class="icheck-inline">
-            {!! Form::checkbox('check',1,null,['data-switchery','id' => 'check']) !!}
+            {!! Form::checkbox('check',1,(isset($item)? $item->active : true),['data-switchery','id' => 'check']) !!}
             {!! Form::label('check','چک',['class' => 'inline-label']) !!}
         </span>
     </div>
@@ -59,12 +59,12 @@
 
     <div class="uk-width-medium-1-1">
         <span class="icheck-inline">
-            {!! Form::checkbox('check',1,null,['data-md-icheck','id' => 'check2']) !!}
+            {!! Form::checkbox('check',1,(isset($item)? $item->active : true),['data-md-icheck','id' => 'check2']) !!}
             {!! Form::label('check2','چک',['class' => 'inline-label']) !!}
         </span>
 
         <span class="icheck-inline">
-            {!! Form::checkbox('check',1,null,['data-md-icheck','id' => 'check3']) !!}
+            {!! Form::checkbox('check',1,(isset($item)? $item->active : true),['data-md-icheck','id' => 'check3']) !!}
             {!! Form::label('check3','چک',['class' => 'inline-label']) !!}
         </span>
     </div>

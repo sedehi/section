@@ -39,7 +39,9 @@ class {{{name}}} extends Controller
         $item->name       = $request->get('name');
         if ($request->hasFile('file')) {
 
-            makeSectionFilesDirectory($this->uploadPath);
+            if (!File::isDirectory(public_path($this->uploadPath))) {
+                File::makeDirectory(public_path($this->uploadPath), 0775, true);
+            }
 
             $file               = $request->file('file');
             $realPath           = $file->getRealPath();
@@ -86,6 +88,10 @@ class {{{name}}} extends Controller
             $this->createImages($realPath, $fileName);
 
             $item->file = $fileName;
+        }else {
+            if ($request->get('file_remove') == 1) {
+                $item->file = '';
+            }
         }
         $item->save();
 
@@ -106,7 +112,7 @@ class {{{name}}} extends Controller
         return redirect()->back()->with('success', 'اطلاعات با موفقیت حذف شد');
     }
 
-    public function createImages($realPath, $fileName)
+    public function createImages($realPath, $fileName,$watermark = false)
     {
         foreach ($this->imageSize as $size) {
 
@@ -129,11 +135,11 @@ class {{{name}}} extends Controller
                 $prefix = $size['width'].'x'.$size['height'].'-';
             }
 
-            if (!is_null(config('site.image.watermark'))) {
+            if (!is_null(config('site.image.watermark')) && $watermark) {
                 $obj->insert(public_path(config('site.image.watermark')), config('site.image.watermark_position'));
             }
 
-            $obj->save(public_path($this->uploadPath.$prefix.$fileName), 90);
+            $obj->save(public_path($this->uploadPath.$prefix.$fileName));
         }
     }
 }

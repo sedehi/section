@@ -33,12 +33,12 @@
 
     <div class="uk-width-medium-1-1">
         <span class="icheck-inline">
-            {!! Form::checkbox('check',1,null,['data-switchery','id' => 'check1']) !!}
+            {!! Form::checkbox('check',1,(isset($item)? $item->active : true),['data-switchery','id' => 'check1']) !!}
             {!! Form::label('check1','چک',['class' => 'inline-label']) !!}
         </span>
 
         <span class="icheck-inline">
-            {!! Form::checkbox('check',1,null,['data-switchery','id' => 'check']) !!}
+            {!! Form::checkbox('check',1,(isset($item)? $item->active : true),['data-switchery','id' => 'check']) !!}
             {!! Form::label('check','چک',['class' => 'inline-label']) !!}
         </span>
     </div>
@@ -47,12 +47,12 @@
 
     <div class="uk-width-medium-1-1">
         <span class="icheck-inline">
-            {!! Form::checkbox('check',1,null,['data-md-icheck','id' => 'check2']) !!}
+            {!! Form::checkbox('check',1,(isset($item)? $item->active : true),['data-md-icheck','id' => 'check2']) !!}
             {!! Form::label('check2','چک',['class' => 'inline-label']) !!}
         </span>
 
         <span class="icheck-inline">
-            {!! Form::checkbox('check',1,null,['data-md-icheck','id' => 'check3']) !!}
+            {!! Form::checkbox('check',1,(isset($item)? $item->active : true),['data-md-icheck','id' => 'check3']) !!}
             {!! Form::label('check3','چک',['class' => 'inline-label']) !!}
         </span>
     </div>
