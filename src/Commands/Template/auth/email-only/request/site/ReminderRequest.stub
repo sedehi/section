@@ -4,7 +4,7 @@ namespace {{{appName}}}Http\Controllers\Auth\Requests\Site;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AuthRequest extends FormRequest
+class ReminderRequest extends FormRequest
 {
 
     /**
@@ -28,25 +28,19 @@ class AuthRequest extends FormRequest
         $action = explode('@', $this->route()->getActionName());
         $action = end($action);
         switch ($action) {
-            case'login':
+            case'reminder':
                 return [
-                    'email'     => 'required|email',
-                    'password'  => 'required|min:6',
-                    'captcha'   => $this->session()->get('captcha_required').'captcha',
+                    'email'   => 'required|email',
+                    'captcha' => 'required|captcha',
+
                 ];
                 break;
-            case'signup':
-
-                $rules = [
-                    'email'     => 'required|email|max:255|unique:users',
-                    'password'  => 'required|min:6|confirmed'
+            case'resetPassword':
+                return [
+                    'email'    => 'required|email',
+                    'password' => 'required|min:6|confirmed',
+                    'token'    => 'required'
                 ];
-
-                if ($this->session()->get('signup_attempts') > 1) {
-                    return array_add($rules,'captcha','required|captcha');
-                }
-
-                return $rules;
                 break;
         }
 
