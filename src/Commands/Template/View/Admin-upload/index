@@ -1,16 +1,15 @@
 @extends('views.layouts.admin.master')
 @section('content')
     @include('{{{section}}}.views.admin.{{{name}}}.search')
-
+    {!! Form::open(['action'=>['{{{section}}}\Controllers\Admin\{{{controller}}}@destroy',1],'method' =>'DELETE']) !!}
     <div id="top_bar">
         <div class="md-top-bar">
             <div class="uk-width-large-1-1 uk-container-center">
                 <div class="uk-clearfix">
                     <div class="md-top-bar-actions-right">
                         <div class="md-btn-group">
-                            {!! Form::open(['action'=>['{{{section}}}\Controllers\Admin\{{{controller}}}@destroy',1],'method' =>'DELETE']) !!}
                             @if(permission('{{{section}}}.{{{controller}}}.destroy'))
-                                <button type="submit" class="md-btn md-btn-danger md-btn-small md-btn-wave-light waves-effect" style="margin-left: 15px !important;">حذف</button>
+                                <button type="submit" onclick="return confirm('آیا از حذف اطلاعات مطمئن هستید ؟');"  class="md-btn md-btn-danger md-btn-small md-btn-wave-light waves-effect" style="margin-left: 15px !important;">حذف</button>
                             @endif
                             <a class="md-btn md-btn-primary md-btn-small md-btn-wave-light waves-effect" href="#" style="margin-left: 15px !important;" id="sidebar_secondary_toggle">جستجو</a>
                             @if(count(request()->except(['page'])))
@@ -62,11 +61,12 @@
                             @endforelse
                             </tbody>
                         </table>
-                        {!! Form::close() !!}
                     </div>
                     {!! $items->appends(Request::except('page'))->render('views.vendor.pagination.uikit') !!}
                 </div>
             </div>
         </div>
     </div>
+    {!! Form::close() !!}
+
 @endsection

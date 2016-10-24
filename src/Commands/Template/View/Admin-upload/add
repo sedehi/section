@@ -8,7 +8,7 @@
                     <div class="uk-grid" data-uk-grid-margin>
                         <div class="uk-width-1-1">
                             @include('views.errors.errors')
-                            {!! Form::open(['action'=> '{{{section}}}\Controllers\{{{controller}}}@store','files' => true]) !!}
+                            {!! Form::open(['action'=> '{{{section}}}\Controllers\Admin\{{{controller}}}@store','files' => true]) !!}
                             <div class="uk-form-row searchPanel">
                                 @include('{{{section}}}.views.admin.{{{name}}}.form')
                                 <div class="uk-grid" data-uk-grid-margin>
