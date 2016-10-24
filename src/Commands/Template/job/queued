@@ -20,4 +20,10 @@ class {{{name}}} implements ShouldQueue
     {
 
     }
+
+
+    public function failed(Exception $exception)
+    {
+        // Send user notification of failure, etc...
+    }
 }

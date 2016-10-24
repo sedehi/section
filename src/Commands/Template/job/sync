@@ -17,4 +17,9 @@ class {{{name}}}
     {
 
     }
+
+    public function failed(Exception $exception)
+    {
+        // Send user notification of failure, etc...
+    }
 }
