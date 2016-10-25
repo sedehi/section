@@ -40,36 +40,6 @@ class SectionAuth extends Command
      * @return mixed
      */
 
-    private function init()
-    {
-
-        $this->makeDirectory($this->argument('section'), 'Controllers/');
-
-        $this->controllerName = ucfirst($this->argument('section')).'/Controllers/'.ucfirst($this->argument('name'));
-        $this->namespace      = $this->getAppNamespace().'Http/Controllers/'.ucfirst($this->argument("section")).'/Controllers';
-
-        if ($this->option('site')) {
-            $this->makeDirectory($this->argument('section'), 'Controllers/Site/');
-            $this->controllerName = ucfirst($this->argument('section')).'/Controllers/Site/'.ucfirst($this->argument('name'));
-            $this->namespace      = $this->getAppNamespace().'Http/Controllers/'.ucfirst($this->argument("section")).'/Controllers/Site';
-            $this->type           = '.site';
-        }
-
-        if ($this->option('admin')) {
-            $this->makeDirectory($this->argument('section'), 'Controllers/Admin/');
-            $this->controllerName = ucfirst($this->argument('section')).'/Controllers/Admin/'.ucfirst($this->argument('name'));
-            $this->namespace      = $this->getAppNamespace().'Http/Controllers/'.ucfirst($this->argument("section")).'/Controllers/Admin';
-            $this->type           = '.admin';
-        }
-
-        if ($this->option('api')) {
-            $this->makeDirectory($this->argument('section'), 'Controllers/Api/');
-            $this->controllerName = ucfirst($this->argument('section')).'/Controllers/Api/'.ucfirst($this->argument('name'));
-            $this->namespace      = $this->getAppNamespace().'Http/Controllers/'.ucfirst($this->argument("section")).'/Controllers/Api';
-            $this->type           = '.api';
-        }
-    }
-
     public function handle()
     {
         $this->info('');
@@ -89,7 +59,7 @@ class SectionAuth extends Command
         switch ($type) {
             case 1:
 
-                // Create Controller
+                // Create Controllers
                 if (File::exists(app_path('Http/Controllers/Auth/Controllers/Site/AuthController.php'))) {
                     $this->warn('AuthController already exists.');
                 } else {
@@ -100,33 +70,27 @@ class SectionAuth extends Command
                     $this->info('AuthController created successfully.');
                 }
 
+                if (File::exists(app_path('Http/Controllers/Auth/Controllers/Site/ReminderController.php'))) {
+                    $this->warn('ReminderController already exists.');
+                } else {
+                    $data = File::get(__DIR__.'/Template/auth/email-only/controller/ReminderController.stub');
+                    $data = str_replace('{{{appName}}}', $this->getAppNamespace(), $data);
+                    File::put(app_path('Http/Controllers/Auth/Controllers/Site/ReminderController.php'),$data);
+                    $this->info('ReminderController created successfully.');
+                }
+
                 // Create Mailable Class
                 if (File::exists(app_path('Http/Controllers/Auth/Mail/PasswordReminderMail.php'))) {
                     $this->warn('PasswordReminderMail already exists.');
                 } else {
                     $this->makeDirectory('Auth','Mail');
-                    $data = File::get(__DIR__.'/Template/auth/email-only/mail/PasswordReminder.stub');
+                    $data = File::get(__DIR__.'/Template/auth/email-only/mail/PasswordReminderMail.stub');
                     $data = str_replace('{{{appName}}}', $this->getAppNamespace(), $data);
                     File::put(app_path('Http/Controllers/Auth/Mail/PasswordReminderMail.php'),$data);
                     $this->info('PasswordReminderMail created successfully.');
                 }
 
-                // Create Mailable views
-                $mailViews = ['reminder','reminder-simple'];
-
-                $this->makeDirectory('Auth','views/emails');
-
-                foreach ($mailViews as $viewName) {
-                    if (File::exists(app_path('Http/Controllers/Auth/views/emails/'.$viewName.'.blade.php'))) {
-                        $this->warn($viewName.'.blade.php already exists.');
-                    } else {
-                        $data = File::get(__DIR__.'/Template/auth/email-only/view/emails/'.$viewName.'.stub');
-                        File::put(app_path('Http/Controllers/Auth/views/emails/'.$viewName.'.blade.php'),$data);
-                        $this->info($viewName.'.blade.php created successfully.');
-                    }
-                }
-
-                // Create AuthRequest
+                // Create Requests
                 if (File::exists(app_path('Http/Controllers/Auth/Requests/Site/AuthRequest.php'))) {
                     $this->warn('AuthRequest already exists.');
                 } else {
@@ -135,6 +99,15 @@ class SectionAuth extends Command
                     $data = str_replace('{{{appName}}}', $this->getAppNamespace(), $data);
                     File::put(app_path('Http/Controllers/Auth/Requests/Site/AuthRequest.php'),$data);
                     $this->info('AuthRequest created successfully.');
+                }
+
+                if (File::exists(app_path('Http/Controllers/Auth/Requests/Site/ReminderRequest.php'))) {
+                    $this->warn('ReminderRequest already exists.');
+                } else {
+                    $data = File::get(__DIR__.'/Template/auth/email-only/request/site/ReminderRequest.stub');
+                    $data = str_replace('{{{appName}}}', $this->getAppNamespace(), $data);
+                    File::put(app_path('Http/Controllers/Auth/Requests/Site/ReminderRequest.php'),$data);
+                    $this->info('ReminderRequest created successfully.');
                 }
 
                 // Create views

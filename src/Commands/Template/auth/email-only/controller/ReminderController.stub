@@ -1,0 +1,114 @@
+<?php
+
+namespace {{{appName}}}Http\Controllers\Auth\Controllers\Site;
+
+use {{{appName}}}Http\Controllers\Auth\Requests\Site\ReminderRequest;
+use {{{appName}}}Http\Controllers\Controller;
+use {{{appName}}}Http\Controllers\User\Models\User;
+use {{{appName}}}Http\Controllers\Auth\Models\PasswordReminder;
+use {{{appName}}}Http\Controllers\Auth\Mail\PasswordReminderMail;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
+
+class ReminderController extends Controller
+{
+    public function showReminderForm()
+    {
+        return view('Auth.views.site.reminder');
+    }
+
+    public function reminder(ReminderRequest $request)
+    {
+        $user = User::where('email', $request->get('email'))->first();
+        if (is_null($user)) {
+            return redirect()
+                ->action('Auth\Controllers\Site\ReminderController@showReminderForm')
+                ->with('error', 'ایمیل وارد شده صحیح نمی باشد');
+        }
+        if ($user->ban == 1) {
+            return redirect()
+                ->action('Auth\Controllers\Site\ReminderController@showReminderForm')
+                ->with('error', 'حساب کاربری شما مسدود شده است');
+        }
+
+        $reminder = PasswordReminder::Where('email', $request->get('email'))->first();
+
+        if (!is_null($reminder)) {
+            if ($reminder->created_at->diffInMinutes() < 10) {
+                return redirect()
+                    ->action('Auth\Controllers\Site\ReminderController@showReminderForm')
+                    ->with('error',
+                           'لطفا پوشه spam را چک کنید اگر ایمیلی دریافت نکردید لطفا '.(10 - $reminder->created_at->diffInMinutes()).' دقیقه دیگر درخواست رمز عبور دهید');
+            }
+        }
+
+        PasswordReminder::where('created_at', '<', Carbon::now()->addMinutes(config('auth.password.expire')))
+                        ->orWhere('email', $request->get('email'))
+                        ->delete();
+
+        $reminder             = new PasswordReminder();
+        $reminder->email      = $request->get('email');
+        $reminder->token      = str_random(32);
+        $reminder->created_at = Carbon::now();
+        $reminder->save();
+
+        Mail::to($request->get('email'))->send(new PasswordReminderMail($reminder));
+
+        return redirect()
+            ->action('Auth\Controllers\Site\ReminderController@showReminderForm')
+            ->with('success', 'ایمیل بازیابی رمز عبور ارسال شد لطفا ایمیل خود را چک کنید');
+    }
+
+    public function showResetPasswordForm($token)
+    {
+        return view('Auth.views.site.reset-password')->with('token', $token);
+    }
+
+    public function resetPassword(ReminderRequest $request)
+    {
+        $user = User::where('email', $request->get('email'))->first();
+
+        if (is_null($user)) {
+            return redirect()
+                ->action('Auth\Controllers\Site\ReminderController@showResetPasswordForm', [$request->get('token')])
+                ->with('error', 'ایمیل وارد شده صحیح نمی باشد');
+        }
+
+        if ($user->ban == 1) {
+            return redirect()
+                ->action('Auth\Controllers\Site\ReminderController@showResetPasswordForm', [$request->get('token')])
+                ->with('error', 'حساب کاربری شما مسدود شده است');
+        }
+
+        $reminder = PasswordReminder::where('email', $user->email)->where('token', $request->get('token'))->first();
+
+        if (is_null($reminder)) {
+            return redirect()
+                ->action('Auth\Controllers\Site\ReminderController@showResetPasswordForm', [$request->get('token')])
+                ->with('error', 'اطلاعات وارد شده صحیح نمی باشد');
+        }
+
+        if ($reminder->created_at->addMinutes(config('auth.passwords.users.expire'))->timestamp < time()) {
+            $reminder->delete();
+
+            return redirect()
+                ->action('Auth\Controllers\Site\ReminderController@showResetPasswordForm', [$request->get('token')])
+                ->with('error', 'کد یکتا منقضی شده');
+        }
+
+        $user->password = bcrypt($request->get('password'));
+        $user->save();
+        $reminder->delete();
+
+        return redirect()
+            ->action('Auth\Controllers\Site\AuthController@showLoginForm')
+            ->with('success', 'رمز عبور با موفقیت تغییر کرد');
+    }
+
+    public function logout()
+    {
+        auth()->logout();
+
+        return redirect()->action('HomeController@index');
+    }
+}
