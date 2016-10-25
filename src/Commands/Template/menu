@@ -10,11 +10,15 @@ return [
         'submenu' => [
             'Index' => [
                 'title'  => 'لیست',
-                'action' => '{{{Classname}}}\Controllers\Admin\{{{Classname}}}Controller@index'
+                'action' => '{{{Classname}}}\Controllers\Admin\{{{Classname}}}Controller@index',
+                'parameters' => []
+
             ],
             'Add'   => [
                 'title'  => 'ایجاد',
-                'action' => '{{{Classname}}}\Controllers\Admin\{{{Classname}}}Controller@create'
+                'action' => '{{{Classname}}}\Controllers\Admin\{{{Classname}}}Controller@create',
+                'parameters' => []
+
             ],
         ]
     ],
