@@ -49,7 +49,7 @@
                                         <span data-uk-tooltip title="{{ $item->created_at->diffForHumans() }}">{{ jdate('d-m-Y H:i',$item->created_at->timestamp) }}</span>
                                     </td>
                                     <td class="uk-text-center">
-                                        @if(permission('{{{section}}}.{{{controller}}}@edit'))
+                                        @if(permission('{{{section}}}.{{{controller}}}.edit'))
                                             <a href="{!! action('{{{section}}}\Controllers\Admin\{{{controller}}}@edit',$item->id) !!}"><i class="md-icon material-icons">&#xE254;</i></a>
                                         @endif
                                     </td>
