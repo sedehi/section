@@ -15,7 +15,7 @@ class {{{name}}} extends Controller
     {
         $items = {{{section}}}::filter()->latest()->paginate(20);
 
-        return view('{{{section}}}.views.{{{viewType}}}.{{{sectionLower}}}.index', compact('items'));
+        return view('{{{section}}}.views{{{viewType}}}.{{{sectionLower}}}.index', compact('items'));
     }
 
     public function create()
