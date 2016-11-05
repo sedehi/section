@@ -47,7 +47,7 @@
                                     </td>
                                     <td>{{ $item->name }}</td>
                                     <td>
-                                        <span data-uk-tooltip title="{{ $item->created_at->diffForHumans() }}">{{ jdate('d-m-Y H:i',$item->created_at->timestamp) }}</span>
+                                        <span data-uk-tooltip title="{{ $item->created_at->diffForHumans() }}">{{ jdate('H:i - Y/m/d',$item->created_at->timestamp) }}</span>
                                     </td>
                                     <td class="uk-text-center">
                                         @if(permission('{{{section}}}.{{{controller}}}.edit'))
