@@ -12,6 +12,8 @@
     <h4>ثبت نام</h4>
     {!! Form::text('email',null,['class' => 'form-control input-sm chat-input','placeholder' => 'ایمیل']) !!}
     <br>
+    {!! Form::text('mobile',null,['class' => 'form-control input-sm chat-input','placeholder' => 'موبایل']) !!}
+    <br>
     {!! Form::password('password',['class' => 'form-control input-sm chat-input','placeholder' => 'رمز عبور']) !!}
     <br>
     {!! Form::password('password_confirmation',['class' => 'form-control input-sm chat-input','placeholder' => 'تکرار رمز عبور']) !!}

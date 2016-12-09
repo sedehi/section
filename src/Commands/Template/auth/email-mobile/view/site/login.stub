@@ -10,7 +10,7 @@
 
 {!! Form::open(['action' => 'Auth\Controllers\Site\AuthController@login']) !!}
     <h4>ورود به سایت</h4>
-    {!! Form::text('email',null,['class' => 'form-control input-sm chat-input','placeholder' => 'ایمیل']) !!}
+    {!! Form::text('email_or_mobile',null,['class' => 'form-control input-sm chat-input','placeholder' => 'ایمیل یا موبایل']) !!}
     <br>
     {!! Form::password('password',['class' => 'form-control input-sm chat-input','placeholder' => 'رمز عبور']) !!}
     <br>
