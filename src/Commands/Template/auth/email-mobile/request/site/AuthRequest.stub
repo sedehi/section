@@ -38,8 +38,21 @@ class AuthRequest extends FormRequest
             case'signup':
 
                 $rules = [
-                    'email'     => 'required_without:mobile|email|max:255|unique:users',
-                    'mobile'    => 'required_without:email|mobile|unique:users',
+                    'email'     => [
+                        'required_without:mobile',
+                        'email',
+                        'max:255',
+                        Rule::unique('users')->where(function ($query) {
+                            $query->whereNull('deleted_at');
+                        })
+                    ],
+                    'mobile'    => [
+                        'required_without:email',
+                        'mobile',
+                        Rule::unique('users')->where(function ($query) {
+                            $query->whereNull('deleted_at');
+                        })
+                    ],
                     'password'  => 'required|min:6|confirmed'
                 ];
 
