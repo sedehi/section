@@ -90,7 +90,8 @@ class {{{name}}} extends Controller
             $item->file = $fileName;
         }else {
             if ($request->get('file_remove') == 1) {
-                $item->file = '';
+                $item->file = null;
+                removeImage($this->uploadPath,$item->file);
             }
         }
         $item->save();
