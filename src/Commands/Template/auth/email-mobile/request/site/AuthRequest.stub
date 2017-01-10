@@ -3,6 +3,7 @@
 namespace {{{appName}}}Http\Controllers\Auth\Requests\Site;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class AuthRequest extends FormRequest
 {
