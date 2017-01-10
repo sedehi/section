@@ -60,5 +60,24 @@ class AuthRequest extends FormRequest
 
         return [];
     }
+    
+    public function response(array $errors)
+    {
+        $action = explode('@', $this->route()->getActionName());
+        $action = end($action);
+        switch ($action) {
+            case 'login':
+                return $this->redirector->to(action('Auth\Controllers\Site\AuthController@showLoginForm'))
+                                        ->withErrors($errors, $this->errorBag);
+
+                break;
+
+            case 'signup':
+                return $this->redirector->to(action('Auth\Controllers\Site\AuthController@showSignupForm'))
+                                        ->withErrors($errors, $this->errorBag);
+
+                break;
+        }
+    }
 
 }
