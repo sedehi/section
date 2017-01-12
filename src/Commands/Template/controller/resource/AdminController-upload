@@ -113,34 +113,5 @@ class {{{name}}} extends Controller
         return redirect()->back()->with('success', 'اطلاعات با موفقیت حذف شد');
     }
 
-    public function createImages($realPath, $fileName,$watermark = false)
-    {
-        foreach ($this->imageSize as $size) {
-
-            $prefix = null;
-
-            $obj = Image::make($realPath);
-
-            if (!array_key_exists('width',$size) && array_key_exists('height',$size)) {
-                $obj->resize(null, $size['height'], function ($constraint) {
-                    $constraint->aspectRatio();
-                });
-                $prefix = 'autox'.$size['height'].'-';
-            } elseif (array_key_exists('width',$size) && !array_key_exists('height',$size)) {
-                $obj->resize($size['width'], null, function ($constraint) {
-                    $constraint->aspectRatio();
-                });
-                $prefix = $size['width'].'xauto-';
-            } elseif (array_key_exists('width',$size) && array_key_exists('height',$size)) {
-                $obj->resize($size['width'], $size['height']);
-                $prefix = $size['width'].'x'.$size['height'].'-';
-            }
-
-            if (!is_null(config('site.image.watermark')) && $watermark) {
-                $obj->insert(public_path(config('site.image.watermark')), config('site.image.watermark_position'));
-            }
-
-            $obj->save(public_path($this->uploadPath.$prefix.$fileName));
-        }
-    }
+    
 }
