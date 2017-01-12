@@ -68,13 +68,13 @@ class AuthRequest extends FormRequest
         switch ($action) {
             case 'login':
                 return $this->redirector->to(action('Auth\Controllers\Site\AuthController@showLoginForm'))
-                                        ->withErrors($errors, $this->errorBag);
+                                        ->withErrors($errors, $this->errorBag)->withInput();
 
                 break;
 
             case 'signup':
                 return $this->redirector->to(action('Auth\Controllers\Site\AuthController@showSignupForm'))
-                                        ->withErrors($errors, $this->errorBag);
+                                        ->withErrors($errors, $this->errorBag)->withInput();
 
                 break;
         }
