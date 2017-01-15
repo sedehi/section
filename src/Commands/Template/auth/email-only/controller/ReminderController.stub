@@ -105,10 +105,4 @@ class ReminderController extends Controller
             ->with('success', 'رمز عبور با موفقیت تغییر کرد');
     }
 
-    public function logout()
-    {
-        auth()->logout();
-
-        return redirect()->action('HomeController@index');
-    }
 }

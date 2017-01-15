@@ -3,6 +3,7 @@
 namespace {{{appName}}}Http\Controllers\Auth\Requests\Site;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class AuthRequest extends FormRequest
 {
@@ -74,6 +75,25 @@ class AuthRequest extends FormRequest
             'mobile.required_without'   =>  'وارد کردن ایمیل یا موبایل الزامی است',
             'mobile.mobile'             =>  'شماره موبایل وارد شده معتبر نمی باشد',
         ];
+    }
+    
+    public function response(array $errors)
+    {
+        $action = explode('@', $this->route()->getActionName());
+        $action = end($action);
+        switch ($action) {
+            case 'login':
+                return $this->redirector->to(action('Auth\Controllers\Site\AuthController@showLoginForm'))
+                                        ->withErrors($errors, $this->errorBag)->withInput();
+
+                break;
+
+            case 'signup':
+                return $this->redirector->to(action('Auth\Controllers\Site\AuthController@showSignupForm'))
+                                        ->withErrors($errors, $this->errorBag)->withInput();
+
+                break;
+        }
     }
 
 }
