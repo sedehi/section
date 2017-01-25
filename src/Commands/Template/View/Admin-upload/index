@@ -26,7 +26,6 @@
         <div id="page_content_inner">
             <div class="md-card uk-margin-medium-bottom">
                 <div class="md-card-content">
-                    <div class="uk-overflow-container">
                         <table class="uk-table uk-table-nowrap table_check">
                             <thead>
                             <tr>
@@ -61,7 +60,6 @@
                             @endforelse
                             </tbody>
                         </table>
-                    </div>
                     {!! $items->appends(Request::except('page'))->render('views.vendor.pagination.uikit') !!}
                 </div>
             </div>
