@@ -14,7 +14,7 @@ class {{{name}}} extends Model
     public    $timestamps = true;
 
     protected $filterable = [
-        'name'       => [
+        'title'       => [
             'operator' => 'Like',
         ],
         'created_at' => [
