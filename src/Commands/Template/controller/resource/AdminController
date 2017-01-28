@@ -26,7 +26,7 @@ class {{{name}}} extends Controller
     public function store({{{onlyName}}}Request $request)
     {
         $item             = new {{{section}}}();
-        $item->name       = $request->get('name');
+        $item->title       = $request->get('title');
         $item->save();
 
         return redirect()->action('{{{section}}}\Controllers\{{{type}}}{{{name}}}@index')->with('success', 'اطلاعات با موفقیت ذخیره شد');
@@ -42,7 +42,7 @@ class {{{name}}} extends Controller
     public function update({{{onlyName}}}Request $request, $id)
     {
         $item             = {{{section}}}::findOrFail($id);
-        $item->name       = $request->get('name');
+        $item->title       = $request->get('title');
         $item->save();
 
         return redirect()->action('{{{section}}}\Controllers\{{{type}}}{{{name}}}@index')->with('success', 'اطلاعات با موفقیت ذخیره شد');
