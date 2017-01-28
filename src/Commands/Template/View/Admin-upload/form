@@ -1,7 +1,7 @@
 <div class="uk-grid" data-uk-grid-margin>
     <div class="uk-width-medium-1-1">
-        {!! Form::label('name','نام') !!}
-        {!! Form::text('name',null,['class'=>'md-input']) !!}
+        {!! Form::label('title','عنوان') !!}
+        {!! Form::text('title',null,['class'=>'md-input']) !!}
     </div>
 </div>
 <div class="uk-grid" data-uk-grid-margin>
