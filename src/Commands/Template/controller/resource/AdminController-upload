@@ -36,7 +36,7 @@ class {{{name}}} extends Controller
     public function store({{{onlyName}}}Request $request)
     {
         $item             = new {{{section}}}();
-        $item->name       = $request->get('name');
+        $item->title       = $request->get('title');
         if ($request->hasFile('file')) {
 
             if (!File::isDirectory(public_path($this->uploadPath))) {
@@ -71,7 +71,7 @@ class {{{name}}} extends Controller
     public function update({{{onlyName}}}Request $request, $id)
     {
         $item = {{{section}}}::findOrFail($id);
-        $item->name       = $request->get('name');
+        $item->title       = $request->get('title');
         if ($request->hasFile('file')) {
 
             removeImage($this->uploadPath,$item->file);
