@@ -33,7 +33,7 @@
                                 <th class="uk-width-1-10  uk-text-center small_col">
                                     {!! Form::checkbox('',1,null,['class' => 'check_all','data-md-icheck']) !!}
                                 </th>
-                                <th class="uk-width-2-10 uk-text-center">نام</th>
+                                <th class="uk-width-2-10 uk-text-center">عنوان</th>
                                 <th class="uk-width-2-10 uk-text-center">تاریخ درج</th>
                                 <th class="uk-width-2-10 uk-text-center">.....</th>
                             </tr>
@@ -44,7 +44,7 @@
                                     <td class="uk-text-center uk-table-middle small_col">
                                         {!! Form::checkbox('deleteId[]',$item->id,null,['class' => 'check_row','data-md-icheck']) !!}
                                     </td>
-                                    <td>{{ $item->name }}</td>
+                                    <td>{{ $item->title }}</td>
                                     <td>
                                         <span data-uk-tooltip title="{{ $item->created_at->diffForHumans() }}">{{ jdate('H:i - Y/m/d',$item->created_at->timestamp) }}</span>
                                     </td>
