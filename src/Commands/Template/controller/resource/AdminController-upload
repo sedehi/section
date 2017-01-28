@@ -37,13 +37,13 @@ class {{{name}}} extends Controller
     {
         $item             = new {{{section}}}();
         $item->title       = $request->get('title');
-        if ($request->hasFile('file')) {
+        if ($request->hasFile('picture')) {
 
             if (!File::isDirectory(public_path($this->uploadPath))) {
                 File::makeDirectory(public_path($this->uploadPath), 0775, true);
             }
 
-            $file               = $request->file('file');
+            $file               = $request->file('picture');
             $realPath           = $file->getRealPath();
             $destinationPath    = public_path($this->uploadPath);
             $fileName           = time().$file->hashName();
@@ -54,7 +54,7 @@ class {{{name}}} extends Controller
 
             $this->createImages($realPath, $fileName);
 
-            $item->file = $fileName;
+            $item->picture = $fileName;
         }
         $item->save();
 
@@ -72,11 +72,11 @@ class {{{name}}} extends Controller
     {
         $item = {{{section}}}::findOrFail($id);
         $item->title       = $request->get('title');
-        if ($request->hasFile('file')) {
+        if ($request->hasFile('picture')) {
 
-            removeImage($this->uploadPath,$item->file);
+            removeImage($this->uploadPath,$item->picture);
 
-            $file               = $request->file('file');
+            $file               = $request->file('picture');
             $realPath           = $file->getRealPath();
             $destinationPath    = public_path($this->uploadPath);
             $fileName           = time().$file->hashName();
@@ -87,11 +87,11 @@ class {{{name}}} extends Controller
 
             $this->createImages($realPath, $fileName);
 
-            $item->file = $fileName;
+            $item->picture = $fileName;
         }else {
             if ($request->get('file_remove') == 1) {
-                removeImage($this->uploadPath,$item->file);
-                $item->file = null;
+                removeImage($this->uploadPath,$item->picture);
+                $item->picture = null;
             }
         }
         $item->save();
@@ -105,7 +105,7 @@ class {{{name}}} extends Controller
         $items  = {{{section}}}::whereIn('id', $request->get('deleteId'))->get();
 
         foreach ($items as $item) {
-            removeImage($this->uploadPath,$item->file);
+            removeImage($this->uploadPath,$item->picture);
         }
 
         {{{section}}}::whereIn('id', $request->get('deleteId'))->delete();
