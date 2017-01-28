@@ -48,13 +48,13 @@ class {{{className}}} extends FormRequest {
                    break;
                case 'store':
                    return [
-                       'name' => 'required',
+                       'title' => 'required',
                    ];
                    break;
 
                case 'update':
                    return [
-                       'name' => 'required',
+                       'title' => 'required',
                    ];
                    break;
            }
