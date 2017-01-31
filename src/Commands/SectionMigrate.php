@@ -46,11 +46,17 @@ class SectionMigrate extends Command
 
         $dirs = array_sort_recursive(File::directories(app_path('Http/Controllers')));
 
+        $bar = $this->output->createProgressBar(count($dirs));
+
         foreach ($dirs as $directory) {
+            $bar->advance();
+            $this->info("\n");
             $this->call('migrate', [
                 '--path' => 'app/Http/Controllers/'.File::name($directory).'/database/migrations/',
             ]);
         }
+        $bar->finish();
+        $this->info("\n");
 
         if ($this->option('seed')) {
             $this->call('db:seed');
