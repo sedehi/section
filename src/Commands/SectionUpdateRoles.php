@@ -45,6 +45,7 @@ class SectionUpdateRoles extends Command
         $data = ['filemanager' => 1];
         foreach (adminRole() as $section => $role) {
             foreach ($role['access'] as $controller => $methods) {
+
                 foreach ($methods as $method) {
                     if (is_array($method)) {
                         $finalMethod = strtolower(implode(',', $method));
@@ -53,10 +54,9 @@ class SectionUpdateRoles extends Command
                     }
                     $finalMethods[$finalMethod] = 1;
                 }
-                $data[strtolower($section)] = [
-                    strtolower($controller) => $finalMethods
-                ];
-                $finalMethods               = [];
+
+                $data[strtolower($section)][strtolower($controller)] = $finalMethods;
+                $finalMethods                                        = [];
             }
         }
         $role = Role::find(1);
