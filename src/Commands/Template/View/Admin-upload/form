@@ -9,7 +9,7 @@
         <div class="md-card">
             <div class="md-card-content">
                 <h3 class="heading_a uk-margin-small-bottom">تصویر</h3>
-                {!! Form::file('picture',['class' => 'dropify','remove' => 'file_remove','data-default-file' => (isset($item)? asset('uploads/section/'.$item->picture) : '')]) !!}
+                {!! Form::file('picture',['class' => 'dropify','remove' => 'file_remove','data-default-file' => (isset($item)? (!is_null($item->picture))? asset('uploads/section/'.$item->picture) :'' : '')]) !!}
                 {!! Form::hidden('file_remove',0) !!}
             </div>
         </div>
