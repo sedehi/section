@@ -53,6 +53,8 @@ class SectionMigrate extends Command
             $this->info("\n");
             $this->call('migrate', [
                 '--path' => 'app/Http/Controllers/'.File::name($directory).'/database/migrations/',
+                '--force' => true,
+
             ]);
         }
         $bar->finish();
