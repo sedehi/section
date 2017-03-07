@@ -12,7 +12,7 @@ use Image;
 
 class {{{name}}} extends Controller
 {
-    protected $uploadPath = 'uploads/{{{sectionLower}}}/';
+    public $uploadPath = 'uploads/{{{sectionLower}}}/';
 
     public $imageSize = [
         [
