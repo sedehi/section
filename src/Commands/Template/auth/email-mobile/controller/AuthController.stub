@@ -96,7 +96,6 @@ class AuthController extends Controller
         $user->password = bcrypt($request->get('password'));
 
         if ($user->save()) {
-            session()->forget('signup_attempts');
             return redirect()->action('Auth\Controllers\Site\AuthController@showLoginForm')
                                 ->with('success','ثبت نام با موفقیت انجام شد');
         }
