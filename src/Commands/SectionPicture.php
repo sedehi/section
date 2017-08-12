@@ -16,7 +16,7 @@ class SectionPicture extends Command
      *
      * @var string
      */
-    protected $signature = 'section:picture {section : The name of the section || All For All Sections}';
+    protected $signature = 'section:picture {section? : The name of the section || Nothing For All Sections}';
 
     /**
      * The console command description.
@@ -52,33 +52,36 @@ class SectionPicture extends Command
 
                         $section         = explode('/', $directory);
                         $section         = end($section);
-                        $folder          = explode('/', $controller->getPath());
-                        $folder          = end($folder);
-                        $controllerClass = '\Sedehi\Http\Controllers\\'.$section.'\Controllers\\'.$folder.'\\'.File::name($controller->getBasename());
-                        $object          = app($controllerClass);
-                        $ref             = new ReflectionObject($object);
 
-                        if ($ref->hasProperty('uploadPath') && $ref->hasProperty('imageSize')) {
-                            if ($ref->getProperty('uploadPath')->isPublic() && $ref->getProperty('imageSize')
-                                                                                   ->isPublic()
-                            ) {
-                                $uploadPath = $ref->getProperty('uploadPath')->getValue($object);
-                                if (File::isDirectory(public_path($uploadPath))) {
-                                    foreach (File::allFiles(public_path($uploadPath)) as $file) {
-                                        $filename = explode('-', $file->getFilename());
-                                        if (count($filename) > 1) {
+                        if (is_null($this->argument('section')) ||
+                            (!is_null($this->argument('section')) && ucfirst($this->argument('section')) == $section)
+                        ) {
+                            $folder          = explode($directory.'/Controllers/', $controller->getPath());
+                            $folder          = str_replace('/','\\',end($folder));
+                            $controllerClass = '\Sedehi\Http\Controllers\\'.$section.'\Controllers\\'.$folder.'\\'.File::name($controller->getBasename());
+                            $object          = app($controllerClass);
+                            $ref             = new ReflectionObject($object);
 
-                                            if ($uploadPath == 'uploads/product/') {
-                                                dd($filename);
-                                            }
+                            if ($ref->hasProperty('uploadPath') && $ref->hasProperty('imageSize')) {
+                                if ($ref->getProperty('uploadPath')->isPublic() && $ref->getProperty('imageSize')
+                                        ->isPublic()
+                                ) {
+                                    $uploadPath = $ref->getProperty('uploadPath')->getValue($object);
 
-                                            if (File::exists(public_path($uploadPath.$file->getFilename()))) {
-                                                File::delete(public_path($uploadPath.$file->getFilename()));
+                                    if (File::isDirectory(public_path($uploadPath))) {
+                                        foreach (File::allFiles(public_path($uploadPath)) as $file) {
+
+                                            $filename = explode('-', $file->getFilename());
+
+                                            if (count($filename) > 1) {
+                                                if (File::exists($file->getRealPath())) {
+                                                    File::delete($file->getRealPath());
+                                                }
                                             }
                                         }
-                                    }
-                                    foreach (File::allFiles(public_path($uploadPath)) as $file) {
-                                        $object->createImages($file, $file->getFileName());
+                                        foreach (File::allFiles(public_path($uploadPath)) as $file) {
+                                            $object->createImages($file, $file->getFileName(),false,$uploadPath.$file->getRelativePath().'/');
+                                        }
                                     }
                                 }
                             }
@@ -89,3 +92,4 @@ class SectionPicture extends Command
         }
     }
 }
+
