@@ -4,11 +4,13 @@ namespace Sedehi\Section\Commands;
 
 use Illuminate\Console\Command;
 use File;
+use Illuminate\Console\DetectsApplicationNamespace;
+
 
 class SectionAdd extends Command
 {
 
-    use \Illuminate\Console\AppNamespaceDetectorTrait, SectionsTrait;
+    use DetectsApplicationNamespace, SectionsTrait;
     /**
      * The name and signature of the console command.
      *
