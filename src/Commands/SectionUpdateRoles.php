@@ -5,11 +5,13 @@ namespace Sedehi\Section\Commands;
 use File;
 use Illuminate\Console\Command;
 use Sedehi\Http\Controllers\Role\Models\Role;
+use Illuminate\Console\DetectsApplicationNamespace;
+
 
 class SectionUpdateRoles extends Command
 {
 
-    use \Illuminate\Console\AppNamespaceDetectorTrait, SectionsTrait;
+    use DetectsApplicationNamespace, SectionsTrait;
 
     /**
      * The name and signature of the console command.
