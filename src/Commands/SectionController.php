@@ -17,7 +17,7 @@ class SectionController extends Command
      *
      * @var string
      */
-    protected $signature = 'section:controller {section : The name of the section}  {name : The name of the controller} {--resource} {--upload} {--site} {--api} {--admin} {--crud}';
+    protected $signature = 'section:controller {section : The name of the section}  {name : The name of the controller} {--resource} {--upload} {--site} {--api} {--admin} {--crud} {--v= : Set api version}';
 
     /**
      * The console command description.
@@ -71,9 +71,16 @@ class SectionController extends Command
 
         if ($this->option('api')) {
             $this->makeDirectory($this->argument('section'), 'Controllers/Api/');
-            $this->controllerName = ucfirst($this->argument('section')).'/Controllers/Api/'.ucfirst($this->argument('name'));
-            $this->namespace      = $this->getAppNamespace().'Http\Controllers\\'.ucfirst($this->argument("section")).'\Controllers\Api';
-            $this->type           = '.api';
+
+            if ($this->option('v')) {
+                $this->controllerName = ucfirst($this->argument('section')).'/Controllers/Api/'.$this->option('v').'/'.ucfirst($this->argument('name'));
+                $this->namespace      = $this->getAppNamespace().'Http\Controllers\\'.ucfirst($this->argument("section")).'\Controllers\Api\\'.$this->option('v');
+            } else {
+                $this->controllerName = ucfirst($this->argument('section')).'/Controllers/Api/'.ucfirst($this->argument('name'));
+                $this->namespace      = $this->getAppNamespace().'Http\Controllers\\'.ucfirst($this->argument("section")).'\Controllers\Api';
+            }
+
+            $this->type = '.api';
         }
     }
 
@@ -107,7 +114,6 @@ class SectionController extends Command
                 }
             }
         } else {
-
             Artisan::call('make:controller', ['name' => $this->controllerName]);
         }
 
@@ -136,7 +142,6 @@ class SectionController extends Command
             $data = str_replace('{{{namespace}}}', $this->namespace, $data);
             File::put(app_path('Http/Controllers/'.$this->controllerName.'.php'), $data);
         }
-
 
         $this->info('controller created successfully.');
     }
