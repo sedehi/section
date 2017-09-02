@@ -3,10 +3,12 @@
 namespace {{{appName}}}Http\Controllers\{{{section}}}\Jobs;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Foundation\Bus\Dispatchable;
+use Exception;
 
 class {{{name}}}
 {
-    use Queueable;
+    use Dispatchable, Queueable;
 
     public function __construct()
     {

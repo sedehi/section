@@ -73,8 +73,8 @@ class SectionController extends Command
             $this->makeDirectory($this->argument('section'), 'Controllers/Api/');
 
             if ($this->option('v')) {
-                $this->controllerName = ucfirst($this->argument('section')).'/Controllers/Api/'.$this->option('v').'/'.ucfirst($this->argument('name'));
-                $this->namespace      = $this->getAppNamespace().'Http\Controllers\\'.ucfirst($this->argument("section")).'\Controllers\Api\\'.$this->option('v');
+                $this->controllerName = ucfirst($this->argument('section')).'/Controllers/Api/'.ucfirst($this->option('v')).'/'.ucfirst($this->argument('name'));
+                $this->namespace      = $this->getAppNamespace().'Http\Controllers\\'.ucfirst($this->argument("section")).'\Controllers\Api\\'.ucfirst($this->option('v'));
             } else {
                 $this->controllerName = ucfirst($this->argument('section')).'/Controllers/Api/'.ucfirst($this->argument('name'));
                 $this->namespace      = $this->getAppNamespace().'Http\Controllers\\'.ucfirst($this->argument("section")).'\Controllers\Api';

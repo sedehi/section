@@ -7,7 +7,6 @@ use Sedehi\Filterable\Filterable;
 
 class {{{name}}} extends Model
 {
-
     use  Filterable;
 
     protected $table = '{{{table}}}';
@@ -24,6 +23,4 @@ class {{{name}}} extends Model
             ]
         ],
     ];
-
-
 }

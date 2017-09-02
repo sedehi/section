@@ -17,7 +17,7 @@ class SectionRequest extends Command
      *
      * @var string
      */
-    protected $signature = 'section:request {section : The name of the section}  {name : The name of the controller} {--crud} {--admin} {--api} {--site}';
+    protected $signature = 'section:request {section : The name of the section}  {name : The name of the request} {--crud} {--admin} {--api} {--site} {--v= : Set api version}';
 
     /**
      * The console command description.
@@ -57,9 +57,17 @@ class SectionRequest extends Command
         }
 
         if ($this->option('api')) {
+
             $this->makeDirectory($this->argument('section'), 'Requests/Api/');
-            $this->requestsName = ucfirst($this->argument('section')).'/Requests/Api';
-            $this->namespace    = $this->getAppNamespace().'Http\Controllers\\'.ucfirst($this->argument("section")).'\Requests\Api';
+
+            if ($this->option('v')) {
+                $this->makeDirectory($this->argument('section'), 'Requests/Api/'.ucfirst($this->option('v')));
+                $this->requestsName = ucfirst($this->argument('section')).'/Requests/Api/'.ucfirst($this->option('v'));
+                $this->namespace    = $this->getAppNamespace().'Http\Controllers\\'.ucfirst($this->argument("section")).'\Requests\Api\\'.ucfirst($this->option('v'));
+            } else {
+                $this->requestsName = ucfirst($this->argument('section')).'/Requests/Api';
+                $this->namespace    = $this->getAppNamespace().'Http\Controllers\\'.ucfirst($this->argument("section")).'\Requests\Api';
+            }
         }
     }
 

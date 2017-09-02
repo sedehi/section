@@ -66,6 +66,9 @@ class SectionAdd extends Command
         if ($this->confirm('Do you want create form request ? [y|n]', true)) {
             $this->makeRequest($adminController, $siteController);
         }
+        if ($this->confirm('Do you want create factory ? [y|n]', true)) {
+            $this->makeFactory();
+        }
         $title = $this->ask('What is section title?');
         if (empty($title)) {
             $title = $this->argument('name');
@@ -102,9 +105,7 @@ class SectionAdd extends Command
         $this->call('section:view', [
             'section'    => $this->argument('name'),
             'name'       => strtolower($this->argument('name')),
-            'controller' => ucfirst($this->argument('name')).'Controller',
-            '--admin'    => true,
-
+            'controller' => ucfirst($this->argument('name')).'Controller'
         ]);
     }
 
@@ -122,9 +123,7 @@ class SectionAdd extends Command
             'section'    => $this->argument('name'),
             'name'       => strtolower($this->argument('name')),
             'controller' => ucfirst($this->argument('name')).'Controller',
-            '--upload'   => true,
-            '--admin'    => true,
-
+            '--upload'   => true
         ]);
     }
 
@@ -145,9 +144,10 @@ class SectionAdd extends Command
     private function makeApiController()
     {
         $this->call('section:controller', [
-            'section' => ucfirst($this->argument('name')),
-            'name'    => ucfirst($this->argument('name')).'Controller',
-            '--api'   => true
+            'section'   => ucfirst($this->argument('name')),
+            'name'      => ucfirst($this->argument('name')).'Controller',
+            '--api'     => true,
+            '--v'       => 'v1'
         ]);
     }
 
@@ -233,6 +233,20 @@ class SectionAdd extends Command
 
                 $this->info('api route created successfully.');
             }
+        }
+    }
+
+    private function makeFactory()
+    {
+        $this->makeDirectory($this->argument('name'),'database/');
+
+        if (File::exists(app_path('Http/Controllers/'.ucfirst($this->argument('name')).'/database/factory.php'))) {
+            $this->error('factory already exists.');
+        } else {
+            $data = File::get(__DIR__.'/Template/factory');
+            $data = str_replace('{{{Classname}}}', ucfirst($this->argument('name')), $data);
+            File::put(app_path('Http/Controllers/'.ucfirst($this->argument('name')).'/database/factory.php'), $data);
+            $this->info('Factory created successfully.');
         }
     }
 

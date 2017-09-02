@@ -5,6 +5,7 @@ namespace Sedehi\Section\Commands;
 use Illuminate\Console\Command;
 use File;
 use DB;
+use Illuminate\Support\Facades\Schema;
 
 class SectionMigrate extends Command
 {
@@ -44,6 +45,8 @@ class SectionMigrate extends Command
     {
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
 
+        Schema::defaultStringLength(191);
+
         $dirs = array_sort_recursive(File::directories(app_path('Http/Controllers')));
 
         $bar = $this->output->createProgressBar(count($dirs));
@@ -53,8 +56,7 @@ class SectionMigrate extends Command
             $this->info("\n");
             $this->call('migrate', [
                 '--path' => 'app/Http/Controllers/'.File::name($directory).'/database/migrations/',
-                '--force' => true,
-
+                '--force' => true
             ]);
         }
         $bar->finish();

@@ -17,14 +17,14 @@ class SectionView extends Command
      *
      * @var string
      */
-    protected $signature = 'section:view {section : The name of the section} {name : The name of the folder} {controller : The name of controller} {--upload}  {--admin}';
+    protected $signature = 'section:view {section : The name of the section} {name : The name of the folder} {controller : The name of controller} {--upload}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Create a new view in section';
+    protected $description = 'Create admin views in section';
 
     /**
      * Create a new command instance.
@@ -43,12 +43,7 @@ class SectionView extends Command
      */
     public function handle()
     {
-
-        if ($this->option('admin')) {
-            $viewPath = 'views/admin/'.strtolower($this->argument('name')).'/';
-        } else {
-            $viewPath = 'views/'.strtolower($this->argument('name')).'/';
-        }
+        $viewPath = 'views/admin/'.strtolower($this->argument('name')).'/';
 
         $this->makeDirectory($this->argument('section'), $viewPath);
 

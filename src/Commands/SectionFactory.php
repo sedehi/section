@@ -45,6 +45,7 @@ class SectionFactory extends Command
             $this->error('factory already exists.');
         } else {
             $data = File::get(__DIR__.'/Template/factory');
+            $data = str_replace('{{{Classname}}}', ucfirst($this->argument('section')), $data);
             File::put(app_path('Http/Controllers/'.ucfirst($this->argument('section')).'/database/factory.php'), $data);
             $this->info('factory created successfully.');
         }

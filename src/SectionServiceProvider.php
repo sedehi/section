@@ -11,6 +11,7 @@ use Sedehi\Section\Commands\SectionFactory;
 use Sedehi\Section\Commands\SectionJob;
 use Sedehi\Section\Commands\SectionMail;
 use Sedehi\Section\Commands\SectionMigrate;
+use Sedehi\Section\Commands\SectionMigrateFresh;
 use Sedehi\Section\Commands\SectionMigrateRefresh;
 use Sedehi\Section\Commands\SectionMigrateReset;
 use Sedehi\Section\Commands\SectionMigrateRollback;
@@ -52,6 +53,9 @@ class SectionServiceProvider extends ServiceProvider
         });
         $this->app->bind('sedehi::command.section.migrate', function ($app) {
             return new SectionMigrate();
+        });
+        $this->app->bind('sedehi::command.section.migrate-fresh', function ($app) {
+            return new SectionMigrateFresh();
         });
         $this->app->bind('sedehi::command.section.migrate-refresh', function ($app) {
             return new SectionMigrateRefresh();
@@ -106,6 +110,7 @@ class SectionServiceProvider extends ServiceProvider
                             'sedehi::command.section.factory',
                             'sedehi::command.section.job',
                             'sedehi::command.section.migrate',
+                            'sedehi::command.section.migrate-fresh',
                             'sedehi::command.section.migrate-refresh',
                             'sedehi::command.section.migrate-reset',
                             'sedehi::command.section.migrate-rollback',

@@ -3,12 +3,9 @@
 namespace {{{appName}}}Http\Controllers\{{{section}}}\database\seeds;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Eloquent\Model;
-
 
 class {{{name}}} extends Seeder
 {
-
     /**
      * Run the database seeds.
      *
@@ -18,5 +15,4 @@ class {{{name}}} extends Seeder
     {
         //
     }
-
 }

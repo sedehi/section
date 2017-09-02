@@ -7,6 +7,15 @@ use {{{appName}}}Http\Controllers\{{{section}}}\Events\{{{name}}};
 class {{{name}}}Listener
 {
     /**
+     * The events handled by the listener.
+     *
+     * @var array
+     */
+    public static $listensFor = [
+        //
+    ];
+
+    /**
      * Create the event listener.
      *
      * @return void

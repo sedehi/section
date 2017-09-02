@@ -37,29 +37,28 @@ class {{{className}}} extends FormRequest {
 	 * @return array
 	 */
 	public function rules()
-        {
-           $action = explode('@', $this->route()->getActionName());
-           $action = end($action);
-           switch ($action) {
-               case 'destroy':
-                   return [
-                       'deleteId'   => 'required|array',
-                   ];
-                   break;
-               case 'store':
-                   return [
-                       'title' => 'required',
-                   ];
-                   break;
+    {
+       $action = explode('@', $this->route()->getActionName());
+       $action = end($action);
+       switch ($action) {
+           case 'destroy':
+               return [
+                   'deleteId'   => 'required|array',
+               ];
+               break;
+           case 'store':
+               return [
+                   'title' => 'required',
+               ];
+               break;
 
-               case 'update':
-                   return [
-                       'title' => 'required',
-                   ];
-                   break;
-           }
+           case 'update':
+               return [
+                   'title' => 'required',
+               ];
+               break;
+       }
 
-           return [];
-        }
-
+       return [];
+    }
 }

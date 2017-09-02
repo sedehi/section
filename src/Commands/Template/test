@@ -2,14 +2,11 @@
 
 namespace {{{appName}}}Http\Controllers\{{{section}}}\tests;
 
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use TestCase;
+use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class {{{name}}} extends TestCase
 {
-
     /**
      * A basic functional test example.
      *
