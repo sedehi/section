@@ -2,7 +2,6 @@
 
 namespace {{{appName}}}Http\Controllers\{{{section}}}\Listeners;
 
-use {{{appName}}}Http\Controllers\{{{section}}}\Events\{{{name}}};
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
@@ -10,12 +9,16 @@ class {{{name}}}Listener implements ShouldQueue
 {
     use InteractsWithQueue;
 
+    public static $listensFor = [
+        //
+    ];
+
     public function __construct()
     {
         //
     }
 
-    public function handle({{{name}}} $event)
+    public function handle($event)
     {
         //
     }
