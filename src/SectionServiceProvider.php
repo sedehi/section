@@ -21,6 +21,8 @@ use Sedehi\Section\Commands\SectionNotification;
 use Sedehi\Section\Commands\SectionPicture;
 use Sedehi\Section\Commands\SectionPolicy;
 use Sedehi\Section\Commands\SectionRequest;
+use Sedehi\Section\Commands\SectionResource;
+use Sedehi\Section\Commands\SectionRule;
 use Sedehi\Section\Commands\SectionSeed;
 use Sedehi\Section\Commands\SectionTest;
 use Sedehi\Section\Commands\SectionUpdateRoles;
@@ -51,6 +53,9 @@ class SectionServiceProvider extends ServiceProvider
         $this->app->bind('sedehi::command.section.job', function ($app) {
             return new SectionJob();
         });
+        $this->app->bind('sedehi::command.section.rule', function ($app) {
+            return new SectionRule();
+        });
         $this->app->bind('sedehi::command.section.migrate', function ($app) {
             return new SectionMigrate();
         });
@@ -77,6 +82,9 @@ class SectionServiceProvider extends ServiceProvider
         });
         $this->app->bind('sedehi::command.section.request', function ($app) {
             return new SectionRequest();
+        });
+        $this->app->bind('sedehi::command.section.resource', function ($app) {
+            return new SectionResource();
         });
         $this->app->bind('sedehi::command.section.seed', function ($app) {
             return new SectionSeed();
@@ -109,6 +117,7 @@ class SectionServiceProvider extends ServiceProvider
                             'sedehi::command.section.event',
                             'sedehi::command.section.factory',
                             'sedehi::command.section.job',
+                            'sedehi::command.section.rule',
                             'sedehi::command.section.migrate',
                             'sedehi::command.section.migrate-fresh',
                             'sedehi::command.section.migrate-refresh',
@@ -118,6 +127,7 @@ class SectionServiceProvider extends ServiceProvider
                             'sedehi::command.section.model',
                             'sedehi::command.section.policy',
                             'sedehi::command.section.request',
+                            'sedehi::command.section.resource',
                             'sedehi::command.section.seed',
                             'sedehi::command.section.test',
                             'sedehi::command.section.auth',

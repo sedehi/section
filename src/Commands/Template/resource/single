@@ -1,0 +1,52 @@
+<?php
+
+namespace {{{appName}}}Http\Controllers\{{{section}}}\Resources;
+
+use Illuminate\Http\Resources\Json\Resource;
+
+class {{{name}}} extends Resource
+{
+    /**
+     * Transform the resource into an array.
+     *
+     * @param  \Illuminate\Http\Request
+     * @return array
+     */
+    public function toArray($request)
+    {
+        return parent::toArray($request);
+
+        /*return [
+            'id' => $this->id,
+            'secret' => $this->when($this->isAdmin(), 'secret-value'),
+            'secret' => $this->when($this->isAdmin(), function () {
+                return 'secret-value';
+            }),
+            $this->mergeWhen($this->isAdmin(), [
+                'first-secret' => 'value',
+                'second-secret' => 'value',
+            ]),
+            'posts' => Post::collection($this->whenLoaded('posts')),
+            'expires_at' => $this->whenPivotLoaded('role_users', function () {
+                return $this->pivot->expires_at;
+            }),
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+        ];*/
+    }
+
+    /**
+     * Get additional data that should be returned with the resource array.
+     *
+     * @param \Illuminate\Http\Request  $request
+     * @return array
+     */
+    public function with($request)
+    {
+        /*return [
+            'meta' => [
+                'key' => 'value',
+            ],
+        ];*/
+    }
+}
