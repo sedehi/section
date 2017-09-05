@@ -90,7 +90,19 @@ class SectionAuth extends Command
 
                 break;
             case 3:
-                $this->error('Not Readey Yet !');
+
+                $this->createController('LoginController','email-username');
+                $this->createController('RegisterController','email-username');
+                $this->createController('ReminderController','email-only');
+                $this->createMail();
+                $this->createRequest('AuthRequest','email-username');
+                $this->createRequest('ReminderRequest','email-only');
+                $this->createView('login','email-username');
+                $this->createView('reminder','email-only');
+                $this->createView('reset-password','email-only');
+                $this->createView('signup','email-username');
+                $this->createRoute();
+
                 break;
         }
     }

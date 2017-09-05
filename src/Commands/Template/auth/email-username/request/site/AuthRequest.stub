@@ -1,0 +1,98 @@
+<?php
+
+namespace {{{appName}}}Http\Controllers\Auth\Requests\Site;
+
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+
+class AuthRequest extends FormRequest
+{
+
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
+    {
+        return true;
+    }
+
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
+    {
+        $action = explode('@', $this->route()->getActionName());
+        $action = end($action);
+        switch ($action) {
+            case'login':
+                return [
+                    'email_or_username' => 'required',
+                    'password'          => 'required|min:6',
+                    'captcha'           => $this->session()->get('captcha_required').'captcha',
+                ];
+                break;
+            case'signup':
+
+                $rules = [
+                    'email'     => [
+                        'nullable',
+                        'required_without:username',
+                        'email',
+                        'max:255',
+                        Rule::unique('users','email')->whereNull('deleted_at')
+                    ],
+                    'username'    => [
+                        'nullable',
+                        'required_without:email',
+                        'min:3',
+                        'max:255',
+                        Rule::unique('users','username')->whereNull('deleted_at')
+                    ],
+                    'password'  => 'required|min:6|confirmed'
+                ];
+
+                if ($this->session()->get('signup_attempts') > 1) {
+                    $rules = array_add($rules,'captcha','required|captcha');
+                }
+
+                return $rules;
+                break;
+        }
+
+        return [];
+    }
+
+    public function messages()
+    {
+        return [
+            'email.required_without'    =>  '',
+            'username.required_without'   =>  'وارد کردن ایمیل یا نام کاربری الزامی است',
+            'email_or_username.required'  =>  'وارد کردن ایمیل یا نام کاربری الزامی است',
+        ];
+    }
+    
+    public function response(array $errors)
+    {
+        $action = explode('@', $this->route()->getActionName());
+        $action = end($action);
+        switch ($action) {
+            case 'login':
+                return $this->redirector->to(action('Auth\Controllers\Site\LoginController@showLoginForm'))
+                                        ->withErrors($errors, $this->errorBag)->withInput();
+
+                break;
+
+            case 'signup':
+                return $this->redirector->to(action('Auth\Controllers\Site\RegisterController@showSignupForm'))
+                                        ->withErrors($errors, $this->errorBag)->withInput();
+
+                break;
+        }
+    }
+
+}

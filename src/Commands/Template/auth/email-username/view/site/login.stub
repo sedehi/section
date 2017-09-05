@@ -1,0 +1,23 @@
+﻿@if($errors->any())
+    @foreach($errors->all() as $error)
+        {{ $error }}<br>
+    @endforeach
+@endif
+
+@if(session()->has('error'))
+    {{ session()->get('error') }}
+@endif
+
+{!! Form::open(['action' => 'Auth\Controllers\Site\LoginController@login']) !!}
+    <h4>ورود به سایت</h4>
+    {!! Form::text('email_or_username',null,['class' => 'form-control input-sm chat-input','placeholder' => 'نام کاربری یا ایمیل']) !!}
+    <br>
+    {!! Form::password('password',['class' => 'form-control input-sm chat-input','placeholder' => 'رمز عبور']) !!}
+    <br>
+    @if(session()->has('captcha_required'))
+        {!!Form::text('captcha',null, ['class'=>'form-control col-md-4','placeholder'=>'کد امنیتی'])!!}
+        {!! captcha_img() !!}
+    @endif
+    <a href="{{ action('Auth\Controllers\Site\ReminderController@showReminderForm') }}">رمز عبور را فراموش کردم</a>
+    {!! Form::submit('ورود',['class' => 'btn btn-primary btn-md pull-left']) !!}
+{!! Form::close() !!}
