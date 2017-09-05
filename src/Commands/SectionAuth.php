@@ -61,7 +61,8 @@ class SectionAuth extends Command
         switch ($type) {
             case 1:
 
-                $this->createController('AuthController','email-only');
+                $this->createController('LoginController','email-only');
+                $this->createController('RegisterController','email-only');
                 $this->createController('ReminderController','email-only');
                 $this->createMail();
                 $this->createRequest('AuthRequest','email-only');
@@ -75,7 +76,8 @@ class SectionAuth extends Command
                 break;
             case 2:
 
-                $this->createController('AuthController','email-mobile');
+                $this->createController('LoginController','email-mobile');
+                $this->createController('RegisterController','email-mobile');
                 $this->createController('ReminderController','email-only');
                 $this->createMail();
                 $this->createRequest('AuthRequest','email-mobile');

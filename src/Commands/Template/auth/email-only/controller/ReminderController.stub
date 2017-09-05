@@ -25,7 +25,7 @@ class ReminderController extends Controller
                 ->action('Auth\Controllers\Site\ReminderController@showReminderForm')
                 ->with('error', 'ایمیل وارد شده صحیح نمی باشد');
         }
-        if ($user->ban == 1) {
+        if (!is_null($user->banned_at)) {
             return redirect()
                 ->action('Auth\Controllers\Site\ReminderController@showReminderForm')
                 ->with('error', 'حساب کاربری شما مسدود شده است');
@@ -74,7 +74,7 @@ class ReminderController extends Controller
                 ->with('error', 'ایمیل وارد شده صحیح نمی باشد');
         }
 
-        if ($user->ban == 1) {
+        if (!is_null($user->banned_at)) {
             return redirect()
                 ->action('Auth\Controllers\Site\ReminderController@showResetPasswordForm', [$request->get('token')])
                 ->with('error', 'حساب کاربری شما مسدود شده است');
@@ -101,7 +101,7 @@ class ReminderController extends Controller
         $reminder->delete();
 
         return redirect()
-            ->action('Auth\Controllers\Site\AuthController@showLoginForm')
+            ->action('Auth\Controllers\Site\LoginController@showLoginForm')
             ->with('success', 'رمز عبور با موفقیت تغییر کرد');
     }
 
