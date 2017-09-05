@@ -40,25 +40,23 @@ class AuthRequest extends FormRequest
 
                 $rules = [
                     'email'     => [
+                        'nullable',
                         'required_without:mobile',
                         'email',
                         'max:255',
-                        Rule::unique('users')->where(function ($query) {
-                            $query->whereNull('deleted_at');
-                        })
+                        Rule::unique('users','email')->whereNull('deleted_at')
                     ],
                     'mobile'    => [
+                        'nullable',
                         'required_without:email',
-                        'mobile',
-                        Rule::unique('users')->where(function ($query) {
-                            $query->whereNull('deleted_at');
-                        })
+                        'digits:11',
+                        Rule::unique('users','mobile')->whereNull('deleted_at')
                     ],
                     'password'  => 'required|min:6|confirmed'
                 ];
 
                 if ($this->session()->get('signup_attempts') > 1) {
-                    return array_add($rules,'captcha','required|captcha');
+                    $rules = array_add($rules,'captcha','required|captcha');
                 }
 
                 return $rules;
@@ -73,6 +71,7 @@ class AuthRequest extends FormRequest
         return [
             'email.required_without'    =>  '',
             'mobile.required_without'   =>  'وارد کردن ایمیل یا موبایل الزامی است',
+            'email_or_mobile.required'  =>  'وارد کردن ایمیل یا موبایل الزامی است',
             'mobile.mobile'             =>  'شماره موبایل وارد شده معتبر نمی باشد',
         ];
     }
@@ -83,13 +82,13 @@ class AuthRequest extends FormRequest
         $action = end($action);
         switch ($action) {
             case 'login':
-                return $this->redirector->to(action('Auth\Controllers\Site\AuthController@showLoginForm'))
+                return $this->redirector->to(action('Auth\Controllers\Site\LoginController@showLoginForm'))
                                         ->withErrors($errors, $this->errorBag)->withInput();
 
                 break;
 
             case 'signup':
-                return $this->redirector->to(action('Auth\Controllers\Site\AuthController@showSignupForm'))
+                return $this->redirector->to(action('Auth\Controllers\Site\RegisterController@showSignupForm'))
                                         ->withErrors($errors, $this->errorBag)->withInput();
 
                 break;

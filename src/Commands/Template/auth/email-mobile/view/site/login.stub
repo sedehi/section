@@ -8,7 +8,7 @@
     {{ session()->get('error') }}
 @endif
 
-{!! Form::open(['action' => 'Auth\Controllers\Site\AuthController@login']) !!}
+{!! Form::open(['action' => 'Auth\Controllers\Site\LoginController@login']) !!}
     <h4>ورود به سایت</h4>
     {!! Form::text('email_or_mobile',null,['class' => 'form-control input-sm chat-input','placeholder' => 'ایمیل یا موبایل']) !!}
     <br>

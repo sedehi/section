@@ -8,7 +8,7 @@
     {{ session()->get('error') }}
 @endif
 
-{!! Form::open(['action' => 'Auth\Controllers\Site\AuthController@signup']) !!}
+{!! Form::open(['action' => 'Auth\Controllers\Site\RegisterController@signup']) !!}
     <h4>ثبت نام</h4>
     {!! Form::text('email',null,['class' => 'form-control input-sm chat-input','placeholder' => 'ایمیل']) !!}
     <br>

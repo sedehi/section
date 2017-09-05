@@ -6,9 +6,8 @@ use {{{appName}}}Http\Controllers\Auth\Requests\Site\AuthRequest;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Validator;
 use {{{appName}}}Http\Controllers\Controller;
-use {{{appName}}}Http\Controllers\User\Models\User;
 
-class AuthController extends Controller
+class LoginController extends Controller
 {
     use AuthenticatesUsers;
 
@@ -44,10 +43,10 @@ class AuthController extends Controller
         }
 
         if ($login) {
-            if (auth()->user()->ban) {
+            if (!is_null(auth()->user()->banned_at)) {
                 auth()->logout();
 
-                return redirect()->action('Auth\Controllers\Site\AuthController@showLoginForm')
+                return redirect()->action('Auth\Controllers\Site\LoginController@showLoginForm')
                                 ->with('error', 'حساب کاربری شما مسدود شده است');
             }
 
@@ -70,7 +69,7 @@ class AuthController extends Controller
             session()->put('captcha_required', 'required|');
         }
 
-        return redirect()->action('Auth\Controllers\Site\AuthController@showLoginForm')
+        return redirect()->action('Auth\Controllers\Site\LoginController@showLoginForm')
                         ->with('error', 'اطلاعات وارد شده اشتباه می باشد');
     }
 
@@ -79,27 +78,5 @@ class AuthController extends Controller
         auth()->logout();
 
         return redirect()->action('HomeController@index');
-    }
-
-    public function showSignupForm()
-    {
-        return view('Auth.views.site.signup');
-    }
-
-    public function signup(AuthRequest $request)
-    {
-        session()->increment('signup_attempts');
-
-        $user = new User();
-        $user->email    = $request->has('email') ? $request->get('email') : null;
-        $user->mobile   = $request->has('mobile') ? $request->get('mobile') : null;
-        $user->password = bcrypt($request->get('password'));
-
-        if ($user->save()) {
-            return redirect()->action('Auth\Controllers\Site\AuthController@showLoginForm')
-                                ->with('success','ثبت نام با موفقیت انجام شد');
-        }
-
-        abort(500);
     }
 }
