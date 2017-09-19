@@ -37,6 +37,8 @@ class LoginController extends Controller
                                 ->with('error', 'حساب کاربری شما مسدود شده است');
             }
 
+            $request->session()->regenerate();
+            
             $this->clearLoginAttempts($request);
 
             session()->forget('captcha_required');
