@@ -31,6 +31,9 @@ use Sedehi\Section\Commands\SectionView;
 class SectionServiceProvider extends ServiceProvider
 {
 
+    protected $defer = true;
+
+
     /**
      * Perform post-registration booting of services.
      *
