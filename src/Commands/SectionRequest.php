@@ -86,7 +86,11 @@ class SectionRequest extends Command
             if ($this->option('crud')) {
                 $data = File::get(__DIR__.'/Template/requests/admin');
             } else {
-                $data = File::get(__DIR__.'/Template/requests/site');
+                if ($this->option('api')) {
+                    $data = File::get(__DIR__.'/Template/requests/api');
+                } else {
+                    $data = File::get(__DIR__.'/Template/requests/site');
+                }
             }
             $data = str_replace('{{{name}}}', ucfirst($this->argument('name')), $data);
             $data = str_replace('{{{namespace}}}', $this->namespace, $data);

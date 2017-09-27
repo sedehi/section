@@ -75,24 +75,4 @@ class AuthRequest extends FormRequest
             'email_or_username.required'  =>  'وارد کردن ایمیل یا نام کاربری الزامی است',
         ];
     }
-    
-    public function response(array $errors)
-    {
-        $action = explode('@', $this->route()->getActionName());
-        $action = end($action);
-        switch ($action) {
-            case 'login':
-                return $this->redirector->to(action('Auth\Controllers\Site\LoginController@showLoginForm'))
-                                        ->withErrors($errors, $this->errorBag)->withInput();
-
-                break;
-
-            case 'signup':
-                return $this->redirector->to(action('Auth\Controllers\Site\RegisterController@showSignupForm'))
-                                        ->withErrors($errors, $this->errorBag)->withInput();
-
-                break;
-        }
-    }
-
 }

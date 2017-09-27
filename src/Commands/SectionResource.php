@@ -6,7 +6,6 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 use Illuminate\Console\DetectsApplicationNamespace;
 
-
 class SectionResource extends Command
 {
     use DetectsApplicationNamespace, SectionsTrait;
@@ -15,7 +14,7 @@ class SectionResource extends Command
      *
      * @var string
      */
-    protected $signature = 'section:resource {section : The name of the section}  {name : The name of the resource} {--collection : Create a resource collection.}';
+    protected $signature = 'section:resource {section : The name of the section}  {name : The name of the resource} {--collection : Create a resource collection.} {--v= : Set api version}';
 
     /**
      * The console command description.
@@ -34,6 +33,20 @@ class SectionResource extends Command
         parent::__construct();
     }
 
+    private function init()
+    {
+        $this->makeDirectory($this->argument('section'), 'Resources');
+
+        if ($this->option('v')) {
+            $this->makeDirectory($this->argument('section'), 'Resources/'.ucfirst($this->option('v')));
+            $this->resourcesName = ucfirst($this->argument('section')).'/Resources/'.ucfirst($this->option('v'));
+            $this->namespace    = $this->getAppNamespace().'Http\Controllers\\'.ucfirst($this->argument("section")).'\Resources\\'.ucfirst($this->option('v'));
+        } else {
+            $this->resourcesName = ucfirst($this->argument('section')).'/Resources';
+            $this->namespace    = $this->getAppNamespace().'Http\Controllers\\'.ucfirst($this->argument("section")).'\Resources';
+        }
+    }
+    
     /**
      * Execute the console command.
      *
@@ -41,9 +54,9 @@ class SectionResource extends Command
      */
     public function handle()
     {
-        $this->makeDirectory($this->argument('section'), 'Resources/');
+        $this->init();
 
-        if (File::exists(app_path('Http/Controllers/'.ucfirst($this->argument('section')).'/Resources/'.$this->argument('name').'.php'))) {
+        if (File::exists(app_path('Http/Controllers/'.$this->resourcesName.'/'.$this->argument('name').'.php'))) {
             $this->error('Resource already exists.');
         } else {
             if ($this->option('collection')) {
@@ -53,9 +66,8 @@ class SectionResource extends Command
             }
 
             $data = str_replace('{{{name}}}', ucfirst($this->argument('name')), $data);
-            $data = str_replace('{{{section}}}', ucfirst($this->argument('section')), $data);
-            $data = str_replace('{{{appName}}}', $this->getAppNamespace(), $data);
-            File::put(app_path('Http/Controllers/'.ucfirst($this->argument('section')).'/Resources/'.$this->argument('name').'.php'),
+            $data = str_replace('{{{namespace}}}', $this->namespace, $data);
+            File::put(app_path('Http/Controllers/'.$this->resourcesName.'/'.$this->argument('name').'.php'),
                       $data);
             $this->info('Resource created successfully.');
         }
