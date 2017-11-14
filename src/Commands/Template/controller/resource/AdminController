@@ -6,7 +6,6 @@ use {{{appName}}}Http\Requests;
 use {{{appName}}}Http\Controllers\Controller;
 use {{{appName}}}Http\Controllers\{{{section}}}\Models\{{{section}}};
 use {{{appName}}}Http\Controllers\{{{section}}}\Requests\{{{type}}}{{{onlyName}}}Request;
-use Illuminate\Http\Request;
 
 class {{{name}}} extends Controller
 {
