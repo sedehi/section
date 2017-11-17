@@ -7,6 +7,7 @@ use Sedehi\Section\Commands\SectionAdd;
 use Sedehi\Section\Commands\SectionAuth;
 use Sedehi\Section\Commands\SectionController;
 use Sedehi\Section\Commands\SectionEvent;
+use Sedehi\Section\Commands\SectionExtend;
 use Sedehi\Section\Commands\SectionFactory;
 use Sedehi\Section\Commands\SectionJob;
 use Sedehi\Section\Commands\SectionMail;
@@ -30,75 +31,98 @@ class SectionServiceProvider extends ServiceProvider
 
     /**
      * Perform post-registration booting of services.
-     *
      * @return void
      */
-    public function boot()
-    {
-        $this->app->bind('sedehi::command.section.make', function ($app) {
+    public function boot(){
+
+        $this->app->bind('sedehi::command.section.make', function($app){
+
             return new SectionAdd();
         });
-        $this->app->bind('sedehi::command.section.controller', function ($app) {
+        $this->app->bind('sedehi::command.section.controller', function($app){
+
             return new SectionController();
         });
-        $this->app->bind('sedehi::command.section.event', function ($app) {
+        $this->app->bind('sedehi::command.section.event', function($app){
+
             return new SectionEvent();
         });
-        $this->app->bind('sedehi::command.section.factory', function ($app) {
+        $this->app->bind('sedehi::command.section.factory', function($app){
+
             return new SectionFactory();
         });
-        $this->app->bind('sedehi::command.section.job', function ($app) {
+        $this->app->bind('sedehi::command.section.job', function($app){
+
             return new SectionJob();
         });
-        $this->app->bind('sedehi::command.section.migrate', function ($app) {
+        $this->app->bind('sedehi::command.section.migrate', function($app){
+
             return new SectionMigrate();
         });
-        $this->app->bind('sedehi::command.section.migrate-refresh', function ($app) {
+        $this->app->bind('sedehi::command.section.migrate-refresh', function($app){
+
             return new SectionMigrateRefresh();
         });
-        $this->app->bind('sedehi::command.section.migrate-reset', function ($app) {
+        $this->app->bind('sedehi::command.section.migrate-reset', function($app){
+
             return new SectionMigrateReset();
         });
-        $this->app->bind('sedehi::command.section.migrate-rollback', function ($app) {
+        $this->app->bind('sedehi::command.section.migrate-rollback', function($app){
+
             return new SectionMigrateRollback();
         });
-        $this->app->bind('sedehi::command.section.migration', function ($app) {
+        $this->app->bind('sedehi::command.section.migration', function($app){
+
             return new SectionMigration();
         });
-        $this->app->bind('sedehi::command.section.model', function ($app) {
+        $this->app->bind('sedehi::command.section.model', function($app){
+
             return new SectionModel();
         });
-        $this->app->bind('sedehi::command.section.policy', function ($app) {
+        $this->app->bind('sedehi::command.section.policy', function($app){
+
             return new SectionPolicy();
         });
-        $this->app->bind('sedehi::command.section.request', function ($app) {
+        $this->app->bind('sedehi::command.section.request', function($app){
+
             return new SectionRequest();
         });
-        $this->app->bind('sedehi::command.section.seed', function ($app) {
+        $this->app->bind('sedehi::command.section.seed', function($app){
+
             return new SectionSeed();
         });
-        $this->app->bind('sedehi::command.section.test', function ($app) {
+        $this->app->bind('sedehi::command.section.test', function($app){
+
             return new SectionTest();
         });
-        $this->app->bind('sedehi::command.section.auth', function ($app) {
+        $this->app->bind('sedehi::command.section.auth', function($app){
+
             return new SectionAuth();
         });
-        $this->app->bind('sedehi::command.section.notification', function ($app) {
+        $this->app->bind('sedehi::command.section.notification', function($app){
+
             return new SectionNotification();
         });
-        $this->app->bind('sedehi::command.section.mail', function ($app) {
+        $this->app->bind('sedehi::command.section.mail', function($app){
+
             return new SectionMail();
         });
-        $this->app->bind('sedehi::command.section.view', function ($app) {
+        $this->app->bind('sedehi::command.section.view', function($app){
+
             return new SectionView();
         });
-        $this->app->bind('sedehi::section:update-roles', function ($app) {
+        $this->app->bind('sedehi::section:update-roles', function($app){
+
             return new SectionUpdateRoles();
         });
-        $this->app->bind('sedehi::section:picture', function ($app) {
+        $this->app->bind('sedehi::section:picture', function($app){
+
             return new SectionPicture();
         });
+        $this->app->bind('sedehi::section:extend', function($app){
 
+            return new SectionExtend();
+        });
         $this->commands([
                             'sedehi::command.section.make',
                             'sedehi::command.section.controller',
@@ -122,16 +146,15 @@ class SectionServiceProvider extends ServiceProvider
                             'sedehi::command.section.view',
                             'sedehi::section:update-roles',
                             'sedehi::section:picture',
+                            'sedehi::section:extend',
                         ]);
     }
 
     /**
      * Register any package services.
-     *
      * @return void
      */
-    public function register()
-    {
+    public function register(){
         //
     }
 }
