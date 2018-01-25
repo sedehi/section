@@ -42,7 +42,7 @@ class ReminderController extends Controller
             }
         }
 
-        PasswordReminder::where('created_at', '<', Carbon::now()->addMinutes(config('auth.password.expire')))
+        PasswordReminder::where('created_at', '<', Carbon::now()->subMinutes(config('auth.passwords.users.expire')))
                         ->orWhere('email', $request->get('email'))
                         ->delete();
 
