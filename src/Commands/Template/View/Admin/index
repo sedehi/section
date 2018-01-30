@@ -64,7 +64,7 @@
                             @endforelse
                             </tbody>
                         </table>
-                    {!! $items->appends(Request::except('page'))->render('views.vendor.pagination.uikit') !!}
+                    {!! $items->appends(Request::except('page'))->render('views.vendor.pagination.uikit-simple') !!}
                 </div>
             </div>
         </div>

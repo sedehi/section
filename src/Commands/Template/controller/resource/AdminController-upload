@@ -22,7 +22,7 @@ class {{{name}}} extends Controller
 
     public function index()
     {
-        $items = {{{section}}}::filter()->latest()->paginate(20);
+        $items = {{{section}}}::filter()->latest('id')->simplePaginate(10);
 
         return view('{{{section}}}.views{{{viewType}}}.{{{sectionLower}}}.index', compact('items'));
     }
