@@ -38,8 +38,7 @@ class {{{className}}} extends FormRequest {
 	 */
 	public function rules()
     {
-       $action = explode('@', $this->route()->getActionName());
-       $action = end($action);
+       $action =  $this->route()->getActionMethod();
        switch ($action) {
            case 'destroy':
                return [
