@@ -17,7 +17,7 @@ class SectionController extends Command
      *
      * @var string
      */
-    protected $signature = 'section:controller {section : The name of the section}  {name : The name of the controller} {--resource} {--upload} {--site} {--api} {--admin} {--crud} {--v= : Set api version}';
+    protected $signature = 'section:controller {section : The name of the section}  {name : The name of the controller} {--resource} {--upload} {--site} {--api} {--admin} {--crud} {--v= : Set api version} {--model= : Set model name}';
 
     /**
      * The console command description.
@@ -136,6 +136,13 @@ class SectionController extends Command
             $data = str_replace('{{{type}}}', $type, $data);
             $data = str_replace('{{{viewType}}}', $this->type, $data);
             $data = str_replace('{{{section}}}', ucfirst($this->argument('section')), $data);
+
+            if ($this->option('model')) {
+                $data = str_replace('{{{model}}}', studly_case($this->option('model')), $data);
+            } else {
+                $data = str_replace('{{{model}}}', ucfirst($this->argument('section')), $data);
+            }
+
             $data = str_replace('{{{sectionLower}}}', strtolower($this->argument('section')), $data);
             $data = str_replace('{{{nameLower}}}', strtolower($this->argument('name')), $data);
             $data = str_replace('{{{appName}}}', $this->getAppNamespace(), $data);

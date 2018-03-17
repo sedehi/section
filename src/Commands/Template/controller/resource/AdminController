@@ -4,7 +4,7 @@ namespace {{{namespace}}};
 
 use {{{appName}}}Http\Requests;
 use {{{appName}}}Http\Controllers\Controller;
-use {{{appName}}}Http\Controllers\{{{section}}}\Models\{{{section}}};
+use {{{appName}}}Http\Controllers\{{{section}}}\Models\{{{model}}};
 use {{{appName}}}Http\Controllers\{{{section}}}\Requests\{{{type}}}{{{onlyName}}}Request;
 
 class {{{name}}} extends Controller
@@ -12,7 +12,7 @@ class {{{name}}} extends Controller
 
     public function index()
     {
-        $items = {{{section}}}::filter()->latest('id')->simplePaginate(10);
+        $items = {{{model}}}::filter()->latest('id')->simplePaginate(10);
 
         return view('{{{section}}}.views{{{viewType}}}.{{{sectionLower}}}.index', compact('items'));
     }
@@ -24,7 +24,7 @@ class {{{name}}} extends Controller
 
     public function store({{{onlyName}}}Request $request)
     {
-        $item             = new {{{section}}}();
+        $item             = new {{{model}}}();
         $item->title       = $request->get('title');
         $item->save();
 
@@ -34,13 +34,13 @@ class {{{name}}} extends Controller
 
     public function edit($id)
     {
-        $item = {{{section}}}::findOrFail($id);
+        $item = {{{model}}}::findOrFail($id);
         return view('{{{section}}}.views{{{viewType}}}.{{{sectionLower}}}.edit', compact('item'));
     }
 
     public function update({{{onlyName}}}Request $request, $id)
     {
-        $item             = {{{section}}}::findOrFail($id);
+        $item             = {{{model}}}::findOrFail($id);
         $item->title       = $request->get('title');
         $item->save();
 
@@ -50,7 +50,7 @@ class {{{name}}} extends Controller
 
     public function destroy({{{onlyName}}}Request $request)
     {
-        {{{section}}}::whereIn('id', $request->get('deleteId'))->delete();
+        {{{model}}}::whereIn('id', $request->get('deleteId'))->delete();
 
         return redirect()->back()->with('success', 'اطلاعات با موفقیت حذف شد');
     }

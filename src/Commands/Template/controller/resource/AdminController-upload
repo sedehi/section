@@ -4,7 +4,7 @@ namespace {{{namespace}}};
 
 use {{{appName}}}Http\Requests;
 use {{{appName}}}Http\Controllers\Controller;
-use {{{appName}}}Http\Controllers\{{{section}}}\Models\{{{section}}};
+use {{{appName}}}Http\Controllers\{{{section}}}\Models\{{{model}}};
 use {{{appName}}}Http\Controllers\{{{section}}}\Requests\{{{type}}}{{{onlyName}}}Request;
 use File;
 use Image;
@@ -22,7 +22,7 @@ class {{{name}}} extends Controller
 
     public function index()
     {
-        $items = {{{section}}}::filter()->latest('id')->simplePaginate(10);
+        $items = {{{model}}}::filter()->latest('id')->simplePaginate(10);
 
         return view('{{{section}}}.views{{{viewType}}}.{{{sectionLower}}}.index', compact('items'));
     }
@@ -34,7 +34,7 @@ class {{{name}}} extends Controller
 
     public function store({{{onlyName}}}Request $request)
     {
-        $item             = new {{{section}}}();
+        $item             = new {{{model}}}();
         $item->title       = $request->get('title');
         if ($request->hasFile('picture')) {
 
@@ -49,7 +49,7 @@ class {{{name}}} extends Controller
 
             Image::make($realPath)->widen(1920, function ($constraint) {
                 $constraint->upsize();
-            })->save($destinationPath.$fileName, 90);
+            })->save($destinationPath.$fileName);
 
             $this->createImages($realPath, $fileName);
 
@@ -63,13 +63,13 @@ class {{{name}}} extends Controller
 
     public function edit($id)
     {
-        $item = {{{section}}}::findOrFail($id);
+        $item = {{{model}}}::findOrFail($id);
         return view('{{{section}}}.views{{{viewType}}}.{{{sectionLower}}}.edit', compact('item'));
     }
 
     public function update({{{onlyName}}}Request $request, $id)
     {
-        $item = {{{section}}}::findOrFail($id);
+        $item = {{{model}}}::findOrFail($id);
         $item->title       = $request->get('title');
         if ($request->hasFile('picture')) {
 
@@ -82,7 +82,7 @@ class {{{name}}} extends Controller
 
             Image::make($realPath)->widen(1920, function ($constraint) {
                 $constraint->upsize();
-            })->save($destinationPath.$fileName, 90);
+            })->save($destinationPath.$fileName);
 
             $this->createImages($realPath, $fileName);
 
@@ -101,16 +101,14 @@ class {{{name}}} extends Controller
 
     public function destroy({{{onlyName}}}Request $request)
     {
-        $items  = {{{section}}}::whereIn('id', $request->get('deleteId'))->get();
+        $items  = {{{model}}}::whereIn('id', $request->get('deleteId'))->get();
 
         foreach ($items as $item) {
             removeImage($this->uploadPath,$item->picture);
         }
 
-        {{{section}}}::whereIn('id', $request->get('deleteId'))->delete();
+        {{{model}}}::whereIn('id', $request->get('deleteId'))->delete();
 
         return redirect()->back()->with('success', 'اطلاعات با موفقیت حذف شد');
     }
-
-    
 }
