@@ -23,12 +23,12 @@ class ReminderController extends Controller
         if (is_null($user)) {
             return redirect()
                 ->action('Auth\Controllers\Site\ReminderController@showReminderForm')
-                ->with('error', 'ایمیل وارد شده صحیح نمی باشد');
+                ->with('error', trans('auth.reminder.email_not_correct'));
         }
         if (!is_null($user->banned_at)) {
             return redirect()
                 ->action('Auth\Controllers\Site\ReminderController@showReminderForm')
-                ->with('error', 'حساب کاربری شما مسدود شده است');
+                ->with('error', trans('auth.banned'));
         }
 
         $reminder = PasswordReminder::Where('email', $request->get('email'))->first();
@@ -37,8 +37,9 @@ class ReminderController extends Controller
             if ($reminder->created_at->diffInMinutes() < 10) {
                 return redirect()
                     ->action('Auth\Controllers\Site\ReminderController@showReminderForm')
-                    ->with('error',
-                           'لطفا پوشه spam را چک کنید اگر ایمیلی دریافت نکردید لطفا '.(10 - $reminder->created_at->diffInMinutes()).' دقیقه دیگر درخواست رمز عبور دهید');
+                    ->with('error',trans('auth.reminder.spam_check',[
+                        'minutes'   =>     (10 - $reminder->created_at->diffInMinutes())
+                    ]));
             }
         }
 
@@ -56,7 +57,7 @@ class ReminderController extends Controller
 
         return redirect()
             ->action('Auth\Controllers\Site\ReminderController@showReminderForm')
-            ->with('success', 'ایمیل بازیابی رمز عبور ارسال شد لطفا ایمیل خود را چک کنید');
+            ->with('success', trans('auth.reminder.email_sent'));
     }
 
     public function showResetPasswordForm($token)
@@ -71,13 +72,13 @@ class ReminderController extends Controller
         if (is_null($user)) {
             return redirect()
                 ->action('Auth\Controllers\Site\ReminderController@showResetPasswordForm', [$request->get('token')])
-                ->with('error', 'ایمیل وارد شده صحیح نمی باشد');
+                ->with('error', trans('auth.reminder.email_not_correct'));
         }
 
         if (!is_null($user->banned_at)) {
             return redirect()
                 ->action('Auth\Controllers\Site\ReminderController@showResetPasswordForm', [$request->get('token')])
-                ->with('error', 'حساب کاربری شما مسدود شده است');
+                ->with('error', trans('auth.banned'));
         }
 
         $reminder = PasswordReminder::where('email', $user->email)->where('token', $request->get('token'))->first();
@@ -85,7 +86,7 @@ class ReminderController extends Controller
         if (is_null($reminder)) {
             return redirect()
                 ->action('Auth\Controllers\Site\ReminderController@showResetPasswordForm', [$request->get('token')])
-                ->with('error', 'اطلاعات وارد شده صحیح نمی باشد');
+                ->with('error', trans('auth.failed'));
         }
 
         if ($reminder->created_at->addMinutes(config('auth.passwords.users.expire'))->timestamp < time()) {
@@ -93,7 +94,7 @@ class ReminderController extends Controller
 
             return redirect()
                 ->action('Auth\Controllers\Site\ReminderController@showResetPasswordForm', [$request->get('token')])
-                ->with('error', 'کد یکتا منقضی شده');
+                ->with('error', trans('auth.reminder.token_expired'));
         }
 
         $user->password = bcrypt($request->get('password'));
@@ -102,7 +103,6 @@ class ReminderController extends Controller
 
         return redirect()
             ->action('Auth\Controllers\Site\LoginController@showLoginForm')
-            ->with('success', 'رمز عبور با موفقیت تغییر کرد');
+            ->with('success', trans('auth.reminder.success'));
     }
-
 }

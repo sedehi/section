@@ -3,6 +3,7 @@
 namespace {{{appName}}}Http\Controllers\Auth\Controllers\Site;
 
 use {{{appName}}}Http\Controllers\Auth\Requests\Site\AuthRequest;
+use {{{appName}}}Exceptions\UserBanned;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Validator;
 use {{{appName}}}Http\Controllers\Controller;
@@ -44,10 +45,7 @@ class LoginController extends Controller
 
         if ($login) {
             if (!is_null(auth()->user()->banned_at)) {
-                auth()->logout();
-
-                return redirect()->action('Auth\Controllers\Site\LoginController@showLoginForm')
-                                ->with('error', 'حساب کاربری شما مسدود شده است');
+                throw new UserBanned('site');
             }
 
             $request->session()->regenerate();
@@ -72,7 +70,7 @@ class LoginController extends Controller
         }
 
         return redirect()->action('Auth\Controllers\Site\LoginController@showLoginForm')
-                        ->with('error', 'اطلاعات وارد شده اشتباه می باشد');
+                        ->with('error', trans('auth.failed'));
     }
 
     public function logout()
