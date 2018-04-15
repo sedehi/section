@@ -39,10 +39,6 @@ class SectionMigrateFresh extends Command
      */
     public function handle()
     {
-        if (!$this->confirm('Do you want to drop all tables and rerun section:migrate ? [y|n]', false)) {
-            return;
-        }
-
         $this->laravel['db']->connection(config('database.default'))->getSchemaBuilder()->dropAllTables();
 
         $this->info('Dropped all tables successfully.');
