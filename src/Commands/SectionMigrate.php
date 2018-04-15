@@ -4,12 +4,10 @@ namespace Sedehi\Section\Commands;
 
 use Illuminate\Console\Command;
 use File;
-use DB;
 use Illuminate\Support\Facades\Schema;
 
 class SectionMigrate extends Command
 {
-
     /**
      * The name and signature of the console command.
      *
@@ -43,7 +41,7 @@ class SectionMigrate extends Command
      */
     public function handle()
     {
-        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        Schema::disableForeignKeyConstraints();
 
         Schema::defaultStringLength(191);
 
@@ -66,6 +64,6 @@ class SectionMigrate extends Command
             $this->call('db:seed');
         }
 
-        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        Schema::enableForeignKeyConstraints();
     }
 }

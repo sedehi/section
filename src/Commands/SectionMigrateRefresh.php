@@ -3,7 +3,7 @@
 namespace Sedehi\Section\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\DB;
+use Schema;
 
 class SectionMigrateRefresh extends Command
 {
@@ -38,7 +38,7 @@ class SectionMigrateRefresh extends Command
      */
     public function handle()
     {
-        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        Schema::disableForeignKeyConstraints();
 
         $this->call('section:migrate-reset');
         $this->info('Running section:migrate ...');
@@ -48,6 +48,6 @@ class SectionMigrateRefresh extends Command
             $this->call('db:seed');
         }
 
-        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        Schema::enableForeignKeyConstraints();
     }
 }

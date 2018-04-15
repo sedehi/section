@@ -5,6 +5,7 @@ namespace Sedehi\Section\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 
 class SectionMigrateRollback extends Command
@@ -83,7 +84,7 @@ class SectionMigrateRollback extends Command
 
     private function rollback($migrations)
     {
-        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        Schema::disableForeignKeyConstraints();
 
         $directoryData = array_sort_recursive(File::directories(app_path('Http/Controllers')));
 
@@ -106,6 +107,6 @@ class SectionMigrateRollback extends Command
             }
         }
 
-        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        Schema::enableForeignKeyConstraints();
     }
 }

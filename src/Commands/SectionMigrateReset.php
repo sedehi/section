@@ -5,6 +5,7 @@ namespace Sedehi\Section\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 
 class SectionMigrateReset extends Command
@@ -40,7 +41,7 @@ class SectionMigrateReset extends Command
      */
     public function handle()
     {
-        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        Schema::disableForeignKeyConstraints();
 
         $directoryData = array_sort_recursive(File::directories(app_path('Http/Controllers')));
 
@@ -66,7 +67,7 @@ class SectionMigrateReset extends Command
             }
         }
 
-        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        Schema::enableForeignKeyConstraints();
 
         $this->info('All migrations rolled back successfully.');
     }
