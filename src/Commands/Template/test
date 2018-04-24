@@ -1,9 +1,9 @@
 <?php
 
-namespace {{{appName}}}Http\Controllers\{{{section}}}\tests;
+namespace {{{appName}}}Http\Controllers\{{{section}}}\test\Feature;
 
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Sedehi\Section\Traits\SectionDatabaseMigration;
 
 class {{{name}}} extends TestCase
 {
