@@ -1,6 +1,6 @@
 <?php
 
-namespace {{{appName}}}Http\Controllers\{{{section}}}\test\Feature;
+namespace {{{appName}}}Http\Controllers\{{{section}}}\tests\Feature;
 
 use Tests\TestCase;
 use Sedehi\Section\Traits\SectionDatabaseMigration;
