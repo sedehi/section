@@ -109,6 +109,6 @@ class {{{name}}} extends Controller
 
         {{{model}}}::whereIn('id', $request->get('deleteId'))->delete();
 
-        return redirect()->back()->with('success', 'اطلاعات با موفقیت حذف شد');
+        return redirect()->action('{{{section}}}\Controllers\{{{type}}}{{{name}}}@index')->with('success', 'اطلاعات با موفقیت حذف شد');
     }
 }
