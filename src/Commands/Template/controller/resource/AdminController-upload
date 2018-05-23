@@ -107,7 +107,7 @@ class {{{name}}} extends Controller
             removeImage($this->uploadPath,$item->picture);
         }
 
-        {{{model}}}::whereIn('id', $request->get('deleteId'))->delete();
+        {{{model}}}::whereIn('id', $request->get('deleteId'))->get()->each->delete();
 
         return redirect()->action('{{{section}}}\Controllers\{{{type}}}{{{name}}}@index')->with('success', 'اطلاعات با موفقیت حذف شد');
     }
