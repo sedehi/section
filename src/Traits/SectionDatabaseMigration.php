@@ -18,7 +18,9 @@ trait SectionDatabaseMigration
         $this->app[Kernel::class]->setArtisan(null);
         $this->beforeApplicationDestroyed(function(){
 
-            $this->artisan('section:migrate-rollback');
+            \Schema::dropAllTables();
+
+            //$this->artisan('section:migrate-rollback');
             RefreshDatabaseState::$migrated = false;
         });
     }
