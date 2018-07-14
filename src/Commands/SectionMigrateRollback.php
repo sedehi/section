@@ -47,7 +47,7 @@ class SectionMigrateRollback extends Command
 
             if (!is_null($batch)) {
 
-                $migrations = DB::table(config('database.migrations'))->where('batch',$batch)->pluck('migration')->toArray();
+                $migrations = DB::table(config('database.migrations'))->where('batch',$batch)->latest('id')->pluck('migration')->toArray();
 
                 $this->rollback($migrations);
 
@@ -65,7 +65,7 @@ class SectionMigrateRollback extends Command
 
             $migrations = DB::table(config('database.migrations'))
                             ->orderBy('batch', 'dsc')
-                            ->orderBy('migration', 'dsc')
+                            ->latest('id')
                             ->pluck('migration')
                             ->take($this->option('step'))->toArray();
 
@@ -88,20 +88,21 @@ class SectionMigrateRollback extends Command
 
         $directoryData = array_sort_recursive(File::directories(app_path('Http/Controllers')));
 
-        foreach ($directoryData as $directory) {
-            if (File::isDirectory($directory.'/database/migrations')) {
-                foreach (File::files($directory.'/database/migrations') as $file) {
-                    if (in_array(File::name($file),$migrations)) {
+        foreach ($migrations as $migration) {
+            foreach ($directoryData as $directory) {
+                if (File::isDirectory($directory.'/database/migrations')) {
+                    foreach (File::files($directory.'/database/migrations') as $file) {
+                        if (File::name($file) == $migration) {
+                            require_once $file;
 
-                        require_once $file;
+                            $className = Str::studly(implode('_', array_slice(explode('_', File::name($file)), 4)));
+                            $class = new $className;
+                            $class->down();
 
-                        $className = Str::studly(implode('_', array_slice(explode('_', File::name($file)), 4)));
-                        $class = new $className;
-                        $class->down();
+                            DB::table(config('database.migrations'))->where('migration',File::name($file))->delete();
 
-                        DB::table(config('database.migrations'))->where('migration',File::name($file))->delete();
-
-                        $this->info('RolledBack: '.File::name($file));
+                            $this->info('RolledBack: '.File::name($file));
+                        }
                     }
                 }
             }
