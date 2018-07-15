@@ -9,7 +9,7 @@
                         <div class="uk-width-1-1">
                             @include('views.errors.errors')
                             {!! Form::model($item,['action'=> ['{{{section}}}\Controllers\Admin\{{{controller}}}@update',$item->id],'method' =>'PATCH']) !!}
-                            <div class="uk-form-row searchPanel">
+                            <div class="uk-form-row">
                                 @include('{{{section}}}.views.admin.{{{name}}}.form')
                                 <div class="uk-grid" data-uk-grid-margin>
                                     <div class="uk-width-medium-1-1">
