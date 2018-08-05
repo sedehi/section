@@ -1,9 +1,9 @@
 <?php
 /*
 use Faker\Generator as Faker;
-use Sedehi\Http\Controllers\{{{Classname}}}\Models\{{{Classname}}};
+use DummyRootNamespaceDummyNamespace\DummyClass;
 
-$factory->define({{{Classname}}}::class, function (Faker $faker) {
+$factory->define(DummyClass::class, function (Faker $faker) {
     return [
         'name'  => $faker->name,
         'email' => $faker->email,
