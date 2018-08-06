@@ -2,22 +2,24 @@
 
 namespace Sedehi\Section\Commands;
 
-use File;
-use Illuminate\Console\Command;
-use Illuminate\Console\DetectsApplicationNamespace;
+use Illuminate\Console\GeneratorCommand;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Input\InputArgument;
 
-
-class SectionRequest extends Command
+class SectionRequest extends GeneratorCommand
 {
 
-    use DetectsApplicationNamespace, SectionsTrait;
+    use SectionsTrait;
+
+    private $namespace;
+    private $directoryPath;
 
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'section:request {section : The name of the section}  {name : The name of the request} {--crud} {--admin} {--api} {--site} {--v= : Set api version}';
+    protected $name = 'section:request';
 
     /**
      * The console command description.
@@ -31,42 +33,40 @@ class SectionRequest extends Command
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($files)
     {
-        parent::__construct();
+        parent::__construct($files);
     }
 
     private function init()
     {
-
-        $this->makeDirectory($this->argument('section'), 'Requests');
-
-        $this->requestsName = ucfirst($this->argument('section')).'/Requests';
-        $this->namespace    = $this->getAppNamespace().'Http\Controllers\\'.ucfirst($this->argument("section")).'\Requests';
+        $this->createDirectory('Requests');
+        $this->directoryPath    = $this->getBaseDirectory();
+        $this->namespace        = $this->getDefaultNamespace($this->rootNamespace());
 
         if ($this->option('site')) {
-            $this->makeDirectory($this->argument('section'), 'Requests/Site/');
-            $this->requestsName = ucfirst($this->argument('section')).'/Requests/Site';
-            $this->namespace    = $this->getAppNamespace().'Http\Controllers\\'.ucfirst($this->argument("section")).'\Requests\Site';
+            $this->createDirectory('Requests/Site/');
+            $this->namespace    .= '\Site';
+            $this->directoryPath    .= 'Site';
         }
 
         if ($this->option('admin')) {
-            $this->makeDirectory($this->argument('section'), 'Requests/Admin/');
-            $this->requestsName = ucfirst($this->argument('section')).'/Requests/Admin';
-            $this->namespace    = $this->getAppNamespace().'Http\Controllers\\'.ucfirst($this->argument("section")).'\Requests\Admin';
+            $this->createDirectory('Requests/Admin/');
+            $this->namespace   .= '\Admin';
+            $this->directoryPath   .= 'Admin';
         }
 
         if ($this->option('api')) {
 
-            $this->makeDirectory($this->argument('section'), 'Requests/Api/');
+            $this->createDirectory('Requests/Api/');
 
             if ($this->option('v')) {
-                $this->makeDirectory($this->argument('section'), 'Requests/Api/'.ucfirst($this->option('v')));
-                $this->requestsName = ucfirst($this->argument('section')).'/Requests/Api/'.ucfirst($this->option('v'));
-                $this->namespace    = $this->getAppNamespace().'Http\Controllers\\'.ucfirst($this->argument("section")).'\Requests\Api\\'.ucfirst($this->option('v'));
+                $this->createDirectory('Requests/Api/'.ucfirst($this->option('v')));
+                $this->namespace   .= '\Api\\'.ucfirst($this->option('v'));
+                $this->directoryPath   .= 'Api/'.ucfirst($this->option('v'));
             } else {
-                $this->requestsName = ucfirst($this->argument('section')).'/Requests/Api';
-                $this->namespace    = $this->getAppNamespace().'Http\Controllers\\'.ucfirst($this->argument("section")).'\Requests\Api';
+                $this->namespace   .= '\Api';
+                $this->directoryPath   .= 'Api';
             }
         }
     }
@@ -80,27 +80,120 @@ class SectionRequest extends Command
     {
         $this->init();
 
-        if (File::exists(app_path('Http/Controllers/'.$this->requestsName.'/'.ucfirst($this->argument('name')).'.php'))) {
+        $filePath = $this->getFilePath();
+
+        if ($this->files->exists($filePath)) {
             $this->error('Form Request already exists.');
-        } else {
-            if ($this->option('crud')) {
-                $data = File::get(__DIR__.'/Template/requests/admin');
-            } else {
-                if ($this->option('api')) {
-                    $data = File::get(__DIR__.'/Template/requests/api');
-                } else {
-                    $data = File::get(__DIR__.'/Template/requests/site');
-                }
-            }
-            $data = str_replace('{{{name}}}', ucfirst($this->argument('name')), $data);
-            $data = str_replace('{{{namespace}}}', $this->namespace, $data);
-            $data = str_replace('{{{section}}}', ucfirst($this->argument('section')), $data);
-            $data = str_replace('{{{lowerSection}}}', strtolower($this->argument('section')), $data);
-            $data = str_replace('{{{appName}}}', $this->getAppNamespace(), $data);
-            $data = str_replace('{{{className}}}', ucfirst($this->argument('name')), $data);
-            File::put(app_path('Http/Controllers/'.$this->requestsName.'/'.ucfirst($this->argument('name')).'.php'),
-                      $data);
-            $this->info('Form Request created successfully.');
+            return false;
         }
+
+        $this->files->put(
+            $filePath,
+            $this->buildClass($this->namespace)
+        );
+
+        $this->info('Form Request created successfully.');
+    }
+
+    /**
+     * Build the class with the given name.
+     *
+     * @param  string  $name
+     * @return string
+     */
+    protected function buildClass($namespace)
+    {
+        $stub = $this->files->get($this->getStub());
+
+        return str_replace([
+            '{{{namespace}}}',
+            '{{{section}}}',
+            '{{{lowerSection}}}',
+            '{{{RootNamespace}}}',
+            '{{{className}}}'
+        ],[
+            $namespace,
+            $this->getSectionName(),
+            strtolower($this->getSectionName()),
+            $this->rootNamespace(),
+            studly_case($this->argument('name'))
+
+        ],$stub);
+    }
+
+    /**
+     * Get the stub file for the generator.
+     *
+     * @return string
+     */
+    protected function getStub()
+    {
+        if ($this->option('crud')) {
+            return __DIR__.'/Template/requests/admin.stub';
+        }
+        if ($this->option('api')) {
+            return __DIR__.'/Template/requests/api.stub';
+        }
+        return __DIR__.'/Template/requests/site.stub';
+    }
+
+    /**
+     * Get the console command arguments.
+     *
+     * @return array
+     */
+    protected function getArguments()
+    {
+        return [
+            ['section', InputArgument::REQUIRED, 'The name of the section'],
+            ['name', InputArgument::REQUIRED, 'The name of the request'],
+        ];
+    }
+
+    /**
+     * Get the console command options.
+     *
+     * @return array
+     */
+    protected function getOptions()
+    {
+        return [
+            ['crud', null, InputOption::VALUE_NONE, 'Generate crud request'],
+            ['admin', null, InputOption::VALUE_NONE, 'Generate request for admin'],
+            ['site', null, InputOption::VALUE_NONE, 'Generate request for site'],
+            ['api', null, InputOption::VALUE_NONE, 'Generate request for api'],
+            ['v', null, InputOption::VALUE_REQUIRED, 'Set api version'],
+        ];
+    }
+
+    /**
+     * Get the default namespace for the class.
+     *
+     * @param  string  $rootNamespace
+     * @return string
+     */
+    protected function getDefaultNamespace($rootNamespace)
+    {
+        return $rootNamespace.'Http\Controllers\\'.$this->getSectionName().'\Requests';
+    }
+
+    /**
+     * Get directory path.
+     *
+     * @return string
+     */
+    protected function getBaseDirectory()
+    {
+        return app_path('Http/Controllers/'.$this->getSectionName().'/Requests/');
+    }
+
+    /**
+     * Get file path to generate.
+     *
+     * @return string
+     */
+    protected function getFilePath()
+    {
+        return $this->directoryPath.'/'.studly_case($this->argument('name')).'.php';
     }
 }
