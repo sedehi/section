@@ -1,6 +1,6 @@
 <?php
 
-namespace {{{appName}}}Http\Controllers\{{{section}}}\Events;
+namespace {{{RootNamespace}}}Http\Controllers\{{{section}}}\Events;
 
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
@@ -27,7 +27,7 @@ class {{{name}}}
     /**
      * Get the channels the event should broadcast on.
      *
-     * @return Channel|array
+     * @return \Illuminate\Broadcasting\Channel|array
      */
     public function broadcastOn()
     {

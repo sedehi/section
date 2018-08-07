@@ -2,38 +2,38 @@
 
 namespace Sedehi\Section\Commands;
 
-use Illuminate\Console\Command;
-use Illuminate\Support\Facades\File;
-use Illuminate\Console\DetectsApplicationNamespace;
+use Illuminate\Console\GeneratorCommand;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Input\InputArgument;
 
-
-class SectionEvent extends Command
+class SectionEvent extends GeneratorCommand
 {
+    use SectionsTrait;
 
-    use DetectsApplicationNamespace, SectionsTrait;
+    private $stubType;
 
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'section:event {section : The name of the section}  {name : The name of the controller} {--queued}';
+    protected $name = 'section:event';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Create a new event class in section';
+    protected $description = 'Create a new event and it\'s listener in section';
 
     /**
      * Create a new command instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($files)
     {
-        parent::__construct();
+        parent::__construct($files);
     }
 
     /**
@@ -43,48 +43,161 @@ class SectionEvent extends Command
      */
     public function handle()
     {
-        $this->makeDirectory($this->argument('section'), 'Events');
+        $this->buildEventClass();
 
-        if (File::exists(app_path('Http/Controllers/'.ucfirst($this->argument('section')).'/Events/'.ucfirst($this->argument('name')).'.php'))) {
-            $this->error('event already exists.');
-        } else {
-            $data = File::get(__DIR__.'/Template/event/event');
+        $this->buildListenerClass();
+    }
 
-            $data = str_replace('{{{name}}}', ucfirst($this->argument('name')), $data);
-            $data = str_replace('{{{section}}}', ucfirst($this->argument('section')), $data);
-            $data = str_replace('{{{appName}}}', $this->getAppNamespace(), $data);
-            File::put(app_path('Http/Controllers/'.ucfirst($this->argument('section')).'/Events/'.ucfirst($this->argument('name')).'.php'),
-                      $data);
-            $this->info('event created successfully.');
+    /**
+     * Get the console command arguments.
+     *
+     * @return array
+     */
+    protected function getArguments()
+    {
+        return [
+            ['section', InputArgument::REQUIRED, 'The name of the section'],
+            ['event-name', InputArgument::REQUIRED, 'The name of the event'],
+            ['listener-name', InputArgument::OPTIONAL, 'The name of the listener'],
+        ];
+    }
+
+    /**
+     * Get the console command options.
+     *
+     * @return array
+     */
+    protected function getOptions()
+    {
+        return [
+            ['queued', null, InputOption::VALUE_NONE, 'Generate queued listener'],
+        ];
+    }
+
+    /**
+     * Get the stub file for the generator.
+     *
+     * @return string
+     */
+    protected function getStub()
+    {
+        if ($this->stubType == 'event') {
+            return $this->files->get(__DIR__.'/Template/event/event.stub');
         }
 
-        $this->makeDirectory($this->argument('section'), 'Listeners');
+        if ($this->stubType == 'listener') {
 
-        if (File::exists(app_path('Http/Controllers/'.ucfirst($this->argument('section')).'/Listeners/'.ucfirst($this->argument('name')).'Listener.php'))) {
-            $this->error('listener already exists.');
-        } else {
             if ($this->option('queued')) {
-                $data = File::get(__DIR__.'/Template/event/listener-queued');
-            } else {
-                $data = File::get(__DIR__.'/Template/event/listener');
+                return $this->files->get(__DIR__.'/Template/event/listener-queued.stub');
             }
 
-            $data = str_replace('{{{name}}}', ucfirst($this->argument('name')), $data);
-            $data = str_replace('{{{section}}}', ucfirst($this->argument('section')), $data);
-            $data = str_replace('{{{appName}}}', $this->getAppNamespace(), $data);
-            File::put(app_path('Http/Controllers/'.ucfirst($this->argument('section')).'/Listeners/'.ucfirst($this->argument('name')).'Listener.php'),
-                      $data);
-            $this->info('listener created successfully.');
+            return $this->files->get(__DIR__.'/Template/event/listener.stub');
+        }
+    }
+
+    /**
+     * Get event path.
+     *
+     * @return string
+     */
+    protected function getEventPath()
+    {
+        return app_path('Http/Controllers/'.$this->getSectionName().'/Events/'.$this->getEventName().'.php');
+    }
+
+    /**
+     * Get event name.
+     *
+     * @return string
+     */
+    protected function getEventName()
+    {
+        return studly_case($this->argument('event-name'));
+    }
+
+    /**
+     * Get listener path.
+     *
+     * @return string
+     */
+    protected function getListenerPath()
+    {
+        return app_path('Http/Controllers/'.$this->getSectionName().'/Listeners/'.$this->getListenerName().'.php');
+    }
+
+    /**
+     * Get listener name.
+     *
+     * @return string
+     */
+    protected function getListenerName()
+    {
+        if (is_null($this->argument('listener-name'))) {
+            return $this->getEventName().'Listener';
         }
 
-        if (!File::exists(app_path('Http/Controllers/'.ucfirst($this->argument('section')).'/events.php'))) {
+        return studly_case($this->argument('listener-name'));
+    }
 
-            $data = File::get(__DIR__.'/Template/eventLoader');
+    /**
+     * Build event class.
+     */
+    protected function buildEventClass()
+    {
+        $this->createDirectory('Events');
 
-            $data = str_replace('{{{name}}}', ucfirst($this->argument('name')), $data);
-            $data = str_replace('{{{section}}}', ucfirst($this->argument('section')), $data);
-            $data = str_replace('{{{appName}}}', $this->getAppNamespace(), $data);
-            File::put(app_path('Http/Controllers/'.ucfirst($this->argument('section')).'/events.php'), $data);
+        $eventPath = $this->getEventPath();
+
+        if ($this->files->exists($eventPath)) {
+            $this->error('event already exists.');
+            return false;
         }
+
+        $this->stubType = 'event';
+
+        $stub = $this->getStub();
+
+        $stub = str_replace(['{{{RootNamespace}}}','{{{section}}}','{{{name}}}'],
+            [$this->rootNamespace(),$this->getSectionName(),$this->getEventName()],
+            $stub
+        );
+
+        $this->files->put(
+            $eventPath,
+            $stub
+        );
+
+        $this->info('event created successfully.');
+    }
+
+    /**
+     * Build listener class.
+     */
+    protected function buildListenerClass()
+    {
+        $this->createDirectory('Listeners');
+
+        $listenerPath = $this->getListenerPath();
+
+        if ($this->files->exists($listenerPath)) {
+            $this->error('listener already exists.');
+            return false;
+        }
+
+        $this->stubType = 'listener';
+
+        $stub = $this->getStub();
+
+        $stub = str_replace(['{{{RootNamespace}}}','{{{section}}}','{{{EventName}}}','{{{name}}}'],
+            [$this->rootNamespace(),$this->getSectionName(),$this->getEventName(),$this->getListenerName()],
+            $stub
+        );
+
+        $this->files->put(
+            $listenerPath,
+            $stub
+        );
+
+        $this->info('listener created successfully.');
     }
 }

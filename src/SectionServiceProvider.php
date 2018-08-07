@@ -48,7 +48,7 @@ class SectionServiceProvider extends ServiceProvider
             return new SectionController();
         });
         $this->app->bind('sedehi::command.section.event', function ($app) {
-            return new SectionEvent();
+            return new SectionEvent($app['files']);
         });
         $this->app->bind('sedehi::command.section.factory', function ($app) {
             return new SectionFactory($app['files']);
