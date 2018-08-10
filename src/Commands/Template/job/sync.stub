@@ -1,17 +1,14 @@
 <?php
 
-namespace {{{appName}}}Http\Controllers\{{{section}}}\Jobs;
+namespace {{{namespace}}};
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Exception;
 
-class {{{name}}} implements ShouldQueue
+class {{{name}}}
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable, Queueable;
 
     public function __construct()
     {
