@@ -78,7 +78,7 @@ class SectionServiceProvider extends ServiceProvider
             return new SectionMigration();
         });
         $this->app->bind('sedehi::command.section.model', function ($app) {
-            return new SectionModel();
+            return new SectionModel($app['files']);
         });
         $this->app->bind('sedehi::command.section.policy', function ($app) {
             return new SectionPolicy();
