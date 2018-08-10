@@ -102,7 +102,7 @@ class SectionServiceProvider extends ServiceProvider
             return new SectionNotification();
         });
         $this->app->bind('sedehi::command.section.mail', function ($app) {
-            return new SectionMail();
+            return new SectionMail($app['files']);
         });
         $this->app->bind('sedehi::command.section.view', function ($app) {
             return new SectionView();
