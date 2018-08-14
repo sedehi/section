@@ -3,20 +3,21 @@
 namespace Sedehi\Section\Commands;
 
 use Artisan;
+use File;
 use Illuminate\Console\Command;
-use Illuminate\Console\GeneratorCommand;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\InputArgument;
+use Illuminate\Console\DetectsApplicationNamespace;
 
-class SectionController extends GeneratorCommand
+
+class SectionController extends Command
 {
-    use SectionsTrait;
+
+    use DetectsApplicationNamespace, SectionsTrait;
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $name = 'section:controller';
+    protected $signature = 'section:controller {section : The name of the section}  {name : The name of the controller} {--resource} {--upload} {--site} {--api} {--admin} {--crud} {--v= : Set api version} {--model= : Set model name}';
 
     /**
      * The console command description.
@@ -35,9 +36,9 @@ class SectionController extends GeneratorCommand
     protected $namespace;
     protected $type;
 
-    public function __construct($files)
+    public function __construct()
     {
-        parent::__construct($files);
+        parent::__construct();
     }
 
     /**
@@ -48,39 +49,38 @@ class SectionController extends GeneratorCommand
 
     private function init()
     {
-        // only init method completed
-        dd('not completed yet');
 
-        $this->createDirectory('Controllers/');
+        $this->makeDirectory($this->argument('section'), 'Controllers/');
 
-        $this->controllerName = $this->getControllerBasePath().$this->getControllerName();
-        $this->namespace        = $this->getDefaultNamespace($this->rootNamespace());
+        $this->controllerName = ucfirst($this->argument('section')).'/Controllers/'.ucfirst($this->argument('name'));
+        $this->namespace      = $this->getAppNamespace().'Http\Controllers\\'.ucfirst($this->argument("section")).'\Controllers';
 
         if ($this->option('site')) {
-            $this->createDirectory('Controllers/Site/');
-            $this->controllerName = $this->getControllerBasePath().'Site/'.$this->getControllerName();
-            $this->namespace      .= '\Site';
-            $this->type           = 'site';
+            $this->makeDirectory($this->argument('section'), 'Controllers/Site/');
+            $this->controllerName = ucfirst($this->argument('section')).'/Controllers/Site/'.ucfirst($this->argument('name'));
+            $this->namespace      = $this->getAppNamespace().'Http\Controllers\\'.ucfirst($this->argument("section")).'\Controllers\Site';
+            $this->type           = '.site';
         }
 
         if ($this->option('admin')) {
-            $this->createDirectory('Controllers/Admin/');
-            $this->controllerName = $this->getControllerBasePath().'Admin/'.$this->getControllerName();
-            $this->namespace      .= '\Admin';
-            $this->type           = 'admin';
+            $this->makeDirectory($this->argument('section'), 'Controllers/Admin/');
+            $this->controllerName = ucfirst($this->argument('section')).'/Controllers/Admin/'.ucfirst($this->argument('name'));
+            $this->namespace      = $this->getAppNamespace().'Http\Controllers\\'.ucfirst($this->argument("section")).'\Controllers\Admin';
+            $this->type           = '.admin';
         }
 
         if ($this->option('api')) {
-            $this->createDirectory('Controllers/Api/');
+            $this->makeDirectory($this->argument('section'), 'Controllers/Api/');
+
             if ($this->option('v')) {
-                $this->controllerName = $this->getControllerBasePath().'Api/'.ucfirst($this->option('v')).'/'.$this->getControllerName();
-                $this->namespace      .= '\Api\\'.ucfirst($this->option('v'));
+                $this->controllerName = ucfirst($this->argument('section')).'/Controllers/Api/'.ucfirst($this->option('v')).'/'.ucfirst($this->argument('name'));
+                $this->namespace      = $this->getAppNamespace().'Http\Controllers\\'.ucfirst($this->argument("section")).'\Controllers\Api\\'.ucfirst($this->option('v'));
             } else {
-                $this->controllerName = $this->getControllerBasePath().'Api/'.$this->getControllerName();
-                $this->namespace      .= '\Api';
+                $this->controllerName = ucfirst($this->argument('section')).'/Controllers/Api/'.ucfirst($this->argument('name'));
+                $this->namespace      = $this->getAppNamespace().'Http\Controllers\\'.ucfirst($this->argument("section")).'\Controllers\Api';
             }
 
-            $this->type = 'api';
+            $this->type = '.api';
         }
     }
 
@@ -88,9 +88,10 @@ class SectionController extends GeneratorCommand
     {
         $this->init();
 
-        if ($this->files->exists($this->controllerName.'.php')) {
+        if (File::exists(app_path('Http/Controllers/'.$this->controllerName.'.php'))) {
             return $this->error('controller already exists.');
         }
+
 
         if ($this->option('upload')) {
             if (!File::isDirectory(public_path('uploads/'.strtolower($this->argument('section')).'/'))) {
@@ -101,10 +102,10 @@ class SectionController extends GeneratorCommand
         $data = null;
         if ($this->option('resource')) {
             if ($this->option('upload')) {
-                $data = File::get(__DIR__.'/Template/controller/resource/AdminController-upload.stub');
+                $data = File::get(__DIR__.'/Template/controller/resource/AdminController-upload');
             } else {
                 if ($this->option('crud')) {
-                    $data = File::get(__DIR__.'/Template/controller/resource/AdminController.stub');
+                    $data = File::get(__DIR__.'/Template/controller/resource/AdminController');
                 } else {
                     Artisan::call('make:controller', [
                         'name'       => $this->controllerName,
@@ -152,76 +153,4 @@ class SectionController extends GeneratorCommand
         $this->info('controller created successfully.');
     }
 
-    /**
-     * Get the stub file for the generator.
-     *
-     * @return string
-     */
-    protected function getStub()
-    {
-
-    }
-
-    /**
-     * Get the console command arguments.
-     *
-     * @return array
-     */
-    protected function getArguments()
-    {
-        return [
-            ['section', InputArgument::REQUIRED, 'The name of the section'],
-            ['name', InputArgument::REQUIRED, 'The name of the controller'],
-        ];
-    }
-
-    /**
-     * Get the console command options.
-     *
-     * @return array
-     */
-    protected function getOptions()
-    {
-        return [
-            ['model', 'm', InputOption::VALUE_REQUIRED, 'Set model name.'],
-            ['resource', 'r', InputOption::VALUE_NONE, 'Generate a resource controller class.'],
-            ['upload', null, InputOption::VALUE_NONE, 'Generate a resource controller class from upload template.'],
-            ['site', null, InputOption::VALUE_NONE, 'Generate a site controller class'],
-            ['admin', null, InputOption::VALUE_NONE, 'Generate an admin controller class'],
-            ['api', null, InputOption::VALUE_NONE, 'Generate an api controller class'],
-            ['crud', null, InputOption::VALUE_NONE, 'Generate a crud controller class'],
-            ['v', null, InputOption::VALUE_REQUIRED, 'Set api version'],
-        ];
-    }
-
-    /**
-     * Get controller input name.
-     *
-     * @return string
-     */
-    protected function getControllerName()
-    {
-        return studly_case($this->argument('name'));
-    }
-
-    /**
-     * Get controller path.
-     *
-     * @return string
-     */
-    protected function getControllerBasePath()
-    {
-        return $this->getSectionName().'/Controllers/';
-    }
-
-    /**
-     * Get the default namespace for the class.
-     *
-     * @param  string  $rootNamespace
-     * @return string
-     */
-    protected function getDefaultNamespace($rootNamespace)
-    {
-        return $rootNamespace.'Http\Controllers\\'.$this->getSectionName().'\Controllers';
-    }
 }
