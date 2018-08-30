@@ -1,103 +1,79 @@
-<div class="uk-grid" data-uk-grid-margin>
-    <div class="uk-width-medium-1-1">
-        {!! Form::label('title','عنوان') !!}
-        {!! Form::text('title',null,['class'=>'md-input']) !!}
+<div class="row">
+    <div class="form-group col-md-4">
+        <label for="exampleInputEmail1">Email address</label>
+        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
     </div>
-</div>
-<div class="uk-grid" data-uk-grid-margin>
-    <div class="uk-width-medium-1-3">
-        <div class="md-card">
-            <div class="md-card-content">
-                <h3 class="heading_a uk-margin-small-bottom">تصویر</h3>
-                {!! Form::file('picture',['class' => 'dropify','remove' => 'file_remove','data-default-file' => (isset($item)? (!is_null($item->picture))? asset('uploads/{{{name}}}/'.$item->picture) :'' : '')]) !!}
-                {!! Form::hidden('file_remove',0) !!}
-            </div>
-        </div>
-    </div>
-</div>
-
-{{--<div class="uk-grid" data-uk-grid-margin>
-    <div class="uk-width-medium-1-1">
-        {!! Form::select('select',['' => '.....',1=>'تست',2=>'تست دو'],null,['class'=>'md-input']) !!}
-    </div>
+    {{--<div class="form-group col-md-4">--}}
+    {{--<label for="inputState">State</label>--}}
+    {{--<select id="inputState" class="form-control">--}}
+    {{--<option selected>Choose...</option>--}}
+    {{--<option>...</option>--}}
+    {{--</select>--}}
+    {{--</div>--}}
+    {{--<div class="form-group col-md-4">--}}
+    {{--<label for="exampleInputPassword1">Password</label>--}}
+    {{--<input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">--}}
+    {{--</div>--}}
 </div>
 
-<div class="uk-grid" data-uk-grid-margin>
+{{--<div class="checkbox checkbox-circle checkbox-info peers ai-c mB-15">--}}
+{{--<input type="checkbox" id="inputCall1" name="inputCheckboxesCall" class="peer">--}}
+{{--<label for="inputCall1" class=" peers peer-greed js-sb ai-c">--}}
+{{--<span class="peer peer-greed">Call John for Dinner</span>--}}
+{{--</label>--}}
+{{--</div>--}}
+{{--<div class="form-group">--}}
+{{--<label for="inputState">State</label>--}}
+{{--<select class="select2 form-control">--}}
+{{--<option selected="selected">navid</option>--}}
+{{--<option>...</option>--}}
+{{--</select>--}}
+{{--</div>--}}
+{{--<div class="form-row">--}}
+{{--<div class="form-group col-md-6">--}}
+{{--<label class="fw-500">Birthdate</label>--}}
+{{--<div class="timepicker-input input-icon form-group">--}}
+{{--<div class="input-group">--}}
 
-    <div class="uk-width-medium-1-1">
-        <span class="icheck-inline">
-            {!! Form::radio('radio',1,null,['data-md-icheck','id'=>'radio1']) !!}
-            {!! Form::label('radio1','یک',['class' => 'inline-label']) !!}
-        </span>
-
-        <span class="icheck-inline">
-            {!! Form::radio('radio',2,null,['data-md-icheck','id'=>'radio2']) !!}
-            {!! Form::label('radio2','دو',['class' => 'inline-label']) !!}
-        </span>
-
-        <span class="icheck-inline">
-            {!! Form::radio('radio',3,null,['data-md-icheck','id'=>'radio3']) !!}
-            {!! Form::label('radio3','سه',['class' => 'inline-label']) !!}
-        </span>
-    </div>
-</div>
-<div class="uk-grid" data-uk-grid-margin>
-
-    <div class="uk-width-medium-1-1">
-        <span class="icheck-inline">
-            {!! Form::checkbox('check',1,(isset($item)? $item->active : true),['data-switchery','id' => 'check1']) !!}
-            {!! Form::label('check1','چک',['class' => 'inline-label']) !!}
-        </span>
-
-        <span class="icheck-inline">
-            {!! Form::checkbox('check',1,(isset($item)? $item->active : true),['data-switchery','id' => 'check']) !!}
-            {!! Form::label('check','چک',['class' => 'inline-label']) !!}
-        </span>
-    </div>
-</div>
-<div class="uk-grid" data-uk-grid-margin>
-
-    <div class="uk-width-medium-1-1">
-        <span class="icheck-inline">
-            {!! Form::checkbox('check',1,(isset($item)? $item->active : true),['data-md-icheck','id' => 'check2']) !!}
-            {!! Form::label('check2','چک',['class' => 'inline-label']) !!}
-        </span>
-
-        <span class="icheck-inline">
-            {!! Form::checkbox('check',1,(isset($item)? $item->active : true),['data-md-icheck','id' => 'check3']) !!}
-            {!! Form::label('check3','چک',['class' => 'inline-label']) !!}
-        </span>
-    </div>
-</div>
-<div class="uk-grid" data-uk-grid-margin>
-    <div class="uk-width-medium-1-1">
-        {!! Form::textarea('text',null,['class' => 'ckeditor']) !!}
-    </div>
-</div>
-<div class="uk-grid" data-uk-grid-margin>
-    <div class="uk-width-medium-1-2">
-        <div class="uk-input-group">
-            <span class="uk-input-group-addon"><i class="uk-input-group-icon uk-icon-calendar"></i></span>
-            {!! Form::label('start_date','تاریخ شروع') !!}
-            {!! Form::text('start_date',null,['class' => 'md-input date','id' => 'start_date']) !!}
-        </div>
-    </div>
-    <div class="uk-width-medium-1-2">
-        <div class="uk-input-group">
-            <span class="uk-input-group-addon"><i class="uk-input-group-icon uk-icon-calendar"></i></span>
-            {!! Form::label('end_date','تاریخ شروع') !!}
-            {!! Form::text('end_date',null,['class' => 'md-input date','id' => 'end_date']) !!}
-        </div>
-    </div>
-</div>
-<div class="uk-grid" data-uk-grid-margin>
-    <div class="uk-width-medium-1-1">
-        <div class="uk-input-group">
-            <span class="uk-input-group-addon"><i class="uk-input-group-icon uk-icon-calendar"></i></span>
-            {!! Form::label('datetime','تاریخ و ساعت') !!}
-            {!! Form::text('datetime',null,['class' => 'md-input dateTime','id' => 'datetime','timestamp' => '.datetime_timestamp']) !!}
-            {!! Form::hidden('datetime_timestamp','',['class' => 'datetime_timestamp']) !!}
-        </div>
-    </div>
-</div>--}}
-
+{{--<input type="text" class="form-control bdc-grey-200 date" placeholder="Datepicker" data-provide="datepicker">--}}
+{{--</div>--}}
+{{--</div>--}}
+{{--</div>--}}
+{{--</div>--}}
+{{--<fieldset class="form-group">--}}
+{{--<div class="row">--}}
+{{--<legend class="col-form-legend col-sm-2">Radios</legend>--}}
+{{--<div class="col-sm-10">--}}
+{{--<div class="form-check">--}}
+{{--<label class="form-check-label">--}}
+{{--<input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1" checked>--}}
+{{--Option one is this and that&mdash;be sure to include why it's--}}
+{{--great--}}
+{{--</label>--}}
+{{--</div>--}}
+{{--<div class="form-check">--}}
+{{--<label class="form-check-label">--}}
+{{--<input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">--}}
+{{--Option two can be something else and selecting it will deselect--}}
+{{--option one--}}
+{{--</label>--}}
+{{--</div>--}}
+{{--<div class="form-check disabled">--}}
+{{--<label class="form-check-label">--}}
+{{--<input class="form-check-input" type="radio" name="gridRadios" id="gridRadios3" value="option3" disabled>--}}
+{{--Option three is disabled--}}
+{{--</label>--}}
+{{--</div>--}}
+{{--</div>--}}
+{{--</div>--}}
+{{--</fieldset>--}}
+{{--<div class="form-group row">--}}
+{{--<div class="col-sm-2">Checkbox</div>--}}
+{{--<div class="col-sm-10">--}}
+{{--<div class="form-check">--}}
+{{--<label class="form-check-label">--}}
+{{--<input class="form-check-input" type="checkbox"> Check me out--}}
+{{--</label>--}}
+{{--</div>--}}
+{{--</div>--}}
+{{--</div>--}}

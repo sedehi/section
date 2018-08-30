@@ -1,74 +1,83 @@
 @extends('views.layouts.admin.master')
 @section('content')
+    <div class="row">
     @include('{{{section}}}.views.admin.{{{name}}}.search')
-    {!! Form::open(['action'=>['{{{section}}}\Controllers\Admin\{{{controller}}}@destroy',1],'method' =>'DELETE']) !!}
-
-    <div id="top_bar">
-        <div class="md-top-bar">
-            <div class="uk-width-large-1-1 uk-container-center">
-                <div class="uk-clearfix">
-                    <div class="md-top-bar-actions-right">
-                        <div class="md-btn-group">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row">
+                        <h4 class="c-grey-900 col-md-6">admin list</h4>
+                        <div class="col-md-6">
+                            <button type="button" class="btn btn-primary table-header-btn" data-toggle="collapse" data-target="#searchCollapse" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                <i class="fa fa-search"></i>
+                            </button>
+                            {!! Form::open(['action'=>['{{{section}}}\Controllers\Admin\{{{controller}}}@destroy',1],'method' =>'DELETE']) !!}
                             @if(permission('{{{section}}}.{{{controller}}}.destroy'))
-                                <button type="submit" onclick="return confirm('آیا از حذف اطلاعات مطمئن هستید ؟');"  class="md-btn md-btn-danger md-btn-small md-btn-wave-light waves-effect" style="margin-left: 15px !important;">حذف</button>
+                                <button type="submit" onclick="return confirm('@lang('admin.delete_confirm');"  class="btn btn-danger table-header-btn">@lang('delete')</button>
                             @endif
-                            <a class="md-btn md-btn-primary md-btn-small md-btn-wave-light waves-effect" href="#" style="margin-left: 15px !important;" id="sidebar_secondary_toggle">جستجو</a>
                             @if(permission('{{{section}}}.{{{controller}}}.create'))
-				                <a class="md-btn md-btn-success md-btn-small md-btn-wave-light waves-effect" href="{!! action('{{{section}}}\Controllers\Admin\{{{controller}}}@create') !!}" style="margin-left: 15px !important;">ایجاد</a>    
+                                <a class="btn btn-success table-header-btn" href="{!! action('{{{section}}}\Controllers\Admin\{{{controller}}}@create') !!}">
+                                    <i class="fa fa-plus"></i>
+                                </a>
                             @endif
-                            @if(count(request()->except(['page'])))
-                                <a class="md-btn md-btn-warning md-btn-small md-btn-wave-light waves-effect" href="{!! action('{{{section}}}\Controllers\Admin\{{{controller}}}@index') !!}" style="margin-left: 15px !important;">تمامی اطلاعات</a>
-                            @endif
+                            {{--<div class="dropdown table-header-btn">--}}
+                            {{--<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">--}}
+                            {{--Dropdown button--}}
+                            {{--</button>--}}
+                            {{--<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">--}}
+                            {{--<a class="dropdown-item" href="#">Action</a>--}}
+                            {{--<a class="dropdown-item" href="#">Another action</a>--}}
+                            {{--<a class="dropdown-item" href="#">Something else here</a>--}}
+                            {{--</div>--}}
+                            {{--</div>--}}
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="page_content">
-        <div id="page_content_inner">
-            <div class="md-card uk-margin-medium-bottom">
-                <div class="md-card-content">
-                        <table class="uk-table uk-table-nowrap table_check">
-                            <thead>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th scope="col" class="w-50px">
+                                <div class="form-check">
+                                    <input class="form-check-input position-static check-all" type="checkbox">
+                                </div>
+                            </th>
+                            <th scope="col">عنوان</th>
+                            <th scope="col">تاریخ درج</th>
+                            <th scope="col" class="w-120px"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @forelse($items as $item)
                             <tr>
-                                <th class="uk-width-1-10  uk-text-center small_col">
-                                    {!! Form::checkbox('',1,null,['class' => 'check_all','data-md-icheck']) !!}
-                                </th>
-                                <th class="uk-width-2-10 uk-text-center">عنوان</th>
-                                <th class="uk-width-2-10 uk-text-center">تاریخ درج</th>
-                                <th class="uk-width-2-10 uk-text-center">.....</th>
+                                <td scope="row">
+                                    <div class="form-check">
+                                        {!! Form::checkbox('deleteId[]',$item->id,null,['class' => 'form-check-input position-static']) !!}
+                                    </div>
+                                </td>
+                                 <td>{{ $item->title }}</td>
+                                <td>
+                                    {{ customDate('H:i - Y/m/d',$item->created_at->timestamp) }}
+                                </td>
+                                <td>
+                                    @if(permission('{{{section}}}.{{{controller}}}.edit'))
+                                        <a href="{!! action('{{{section}}}\Controllers\Admin\{{{controller}}}@edit',$item->id) !!}"><i class="fa fa-pencil-square-o"></i></a>
+                                    @endif
+                                </td>
                             </tr>
-                            </thead>
-                            <tbody>
-                            @forelse($items as $item)
-                                <tr class="uk-text-center">
-                                    <td class="uk-text-center uk-table-middle small_col">
-                                        {!! Form::checkbox('deleteId[]',$item->id,null,['class' => 'check_row','data-md-icheck']) !!}
-                                    </td>
-                                    <td>{{ $item->title }}</td>
-                                    <td>
-                                        <span data-uk-tooltip title="{{ $item->created_at->diffForHumans() }}">{{ jdate('H:i - Y/m/d',$item->created_at->timestamp) }}</span>
-                                    </td>
-                                    <td class="uk-text-center">
-                                        @if(permission('{{{section}}}.{{{controller}}}.edit'))
-                                            <a href="{!! action('{{{section}}}\Controllers\Admin\{{{controller}}}@edit',$item->id) !!}"><i class="md-icon material-icons">&#xE254;</i></a>
-                                        @endif
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="20" class="uk-text-center">اطلاعاتی برای نمایش وجود ندارد</td>
-                                </tr>
-                            @endforelse
-                            </tbody>
-                        </table>
-                    {!! $items->appends(Request::except('page'))->render('views.vendor.pagination.uikit-simple') !!}
+                        @empty
+                            <tr>
+                                <td colspan="20" class="uk-text-center">@lang('admin.no_data_to_show')</td>
+                            </tr>
+                        @endforelse
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-footer">
+                    @include('views.layouts.admin.pagination', ['items' => $items])
                 </div>
             </div>
         </div>
     </div>
     {!! Form::close() !!}
-
 @endsection
