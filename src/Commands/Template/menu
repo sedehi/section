@@ -2,7 +2,7 @@
 
 return [
     '{{{name}}}' => [
-        'title'   => '{{{title}}}',
+        'title'   => trans('admin.sections.{{{name}}}'),
         'icon'    => 'fa fa-home',
         'badge'   => function () {
             //return 1;

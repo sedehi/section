@@ -2,7 +2,7 @@
 
 return [
     '{{{name}}}' => [
-        'title'  => '{{{title}}}',
+        'title'   => trans('admin.sections.{{{name}}}'),
         'access' => [
             '{{{ucFirstname}}}Controller' => [
                 trans('admin.list')   => 'index',

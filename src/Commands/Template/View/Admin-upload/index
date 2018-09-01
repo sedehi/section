@@ -6,7 +6,7 @@
             <div class="card">
                 <div class="card-header">
                     <div class="row">
-                        <h4 class="c-grey-900 col-md-6">admin list</h4>
+                        <h4 class="c-grey-900 col-md-6">@lang('admin.sections.role')</h4>
                         <div class="col-md-6">
                             <button type="button" class="btn btn-primary table-header-btn" data-toggle="collapse" data-target="#searchCollapse" role="button" aria-expanded="false" aria-controls="collapseExample">
                                 <i class="fa fa-search"></i>
@@ -42,8 +42,8 @@
                                     <input class="form-check-input position-static check-all" type="checkbox">
                                 </div>
                             </th>
-                            <th scope="col">عنوان</th>
-                            <th scope="col">تاریخ درج</th>
+                            <th scope="col">@lang('validation.attributes.title')</th>
+                            <th scope="col">@lang('validation.attributes.created_at')</th>
                             <th scope="col" class="w-120px"></th>
                         </tr>
                         </thead>

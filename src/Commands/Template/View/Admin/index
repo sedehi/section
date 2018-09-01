@@ -42,8 +42,8 @@
                                     <input class="form-check-input position-static check-all" type="checkbox">
                                 </div>
                             </th>
-                            <th scope="col">عنوان</th>
-                            <th scope="col">تاریخ درج</th>
+                            <th scope="col">@lang('validation.attributes.title')</th>
+                            <th scope="col">@lang('validation.attributes.created_at')</th>
                             <th scope="col" class="w-120px"></th>
                         </tr>
                         </thead>
