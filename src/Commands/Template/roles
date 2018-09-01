@@ -5,10 +5,10 @@ return [
         'title'  => '{{{title}}}',
         'access' => [
             '{{{ucFirstname}}}Controller' => [
-                'لیست'   => 'index',
-                'ایجاد'  => ['create', 'store'],
-                'ویرایش' => ['edit', 'update'],
-                'حذف'    => 'destroy',
+                trans('admin.list')   => 'index',
+                trans('admin.create') => ['create', 'store'],
+                trans('admin.edit')   => ['edit', 'update'],
+                trans('admin.delete') => 'destroy',
             ],
         ],
         'onlyByUser' => true,
