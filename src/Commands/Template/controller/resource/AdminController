@@ -28,7 +28,7 @@ class {{{name}}} extends Controller
         $item->title       = $request->get('title');
         $item->save();
 
-        return redirect()->action('{{{section}}}\Controllers\{{{type}}}{{{name}}}@index')->with('success', 'اطلاعات با موفقیت ذخیره شد');
+        return redirect()->action('{{{section}}}\Controllers\{{{type}}}{{{name}}}@index')->with('success', trans('admin.saved'));
 
     }
 
@@ -44,7 +44,7 @@ class {{{name}}} extends Controller
         $item->title       = $request->get('title');
         $item->save();
 
-        return redirect()->action('{{{section}}}\Controllers\{{{type}}}{{{name}}}@index')->with('success', 'اطلاعات با موفقیت ذخیره شد');
+        return redirect()->action('{{{section}}}\Controllers\{{{type}}}{{{name}}}@index')->with('success', trans('admin.saved'));
 
     }
 
@@ -52,6 +52,6 @@ class {{{name}}} extends Controller
     {
         {{{model}}}::whereIn('id', $request->get('deleteId'))->get()->each->delete();
 
-        return redirect()->action('{{{section}}}\Controllers\{{{type}}}{{{name}}}@index')->with('success', 'اطلاعات با موفقیت حذف شد');
+        return redirect()->action('{{{section}}}\Controllers\{{{type}}}{{{name}}}@index')->with('success', trans('admin.saved'));
     }
 }

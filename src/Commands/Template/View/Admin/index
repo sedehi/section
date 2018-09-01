@@ -57,7 +57,7 @@
                                 </td>
                                  <td>{{ $item->title }}</td>
                                 <td>
-                                    {{ customDate('H:i - Y/m/d',$item->created_at->timestamp) }}
+                                    {{ customDate('Y/m/d - H:i',$item->created_at->timestamp) }}
                                 </td>
                                 <td>
                                     @if(permission('{{{section}}}.{{{controller}}}.edit'))
