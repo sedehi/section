@@ -67,7 +67,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="20" class="uk-text-center">@lang('admin.no_data_to_show')</td>
+                                <td colspan="20" class="text-center">@lang('admin.no_data_to_show')</td>
                             </tr>
                         @endforelse
                         </tbody>
