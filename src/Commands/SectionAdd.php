@@ -231,17 +231,11 @@ class SectionAdd extends Command
         }
     }
 
-    private function makeFactory(){
-
-        $this->makeDirectory($this->argument('name'), 'database/');
-        if(File::exists(app_path('Http/Controllers/'.ucfirst($this->argument('name')).'/database/factory.php'))) {
-            $this->error('factory already exists.');
-        }else {
-            $data = File::get(__DIR__.'/Template/factory');
-            $data = str_replace('{{{Classname}}}', ucfirst($this->argument('name')), $data);
-            File::put(app_path('Http/Controllers/'.ucfirst($this->argument('name')).'/database/factory.php'), $data);
-            $this->info('Factory created successfully.');
-        }
+    private function makeFactory()
+    {
+        $this->call('section:factory', [
+            'section' => ucfirst($this->argument('name')),
+        ]);
     }
 
 }
