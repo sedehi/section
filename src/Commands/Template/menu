@@ -9,13 +9,13 @@ return [
         },
         'submenu' => [
             'Index' => [
-                'title'  => 'لیست',
+                'title'  => trans('admin.list'),
                 'action' => '{{{Classname}}}\Controllers\Admin\{{{Classname}}}Controller@index',
                 'parameters' => []
 
             ],
             'Add'   => [
-                'title'  => 'ایجاد',
+                'title'  => trans('admin.create'),
                 'action' => '{{{Classname}}}\Controllers\Admin\{{{Classname}}}Controller@create',
                 'parameters' => []
 
