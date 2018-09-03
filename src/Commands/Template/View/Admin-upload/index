@@ -6,7 +6,7 @@
             <div class="card">
                 <div class="card-header">
                     <div class="row">
-                        <h4 class="c-grey-900 col-md-6">@lang('admin.sections.role')</h4>
+                        <h4 class="c-grey-900 col-md-6">@lang('admin.sections.{{{name}}}')</h4>
                         <div class="col-md-6">
                             <button type="button" class="btn btn-primary table-header-btn" data-toggle="collapse" data-target="#searchCollapse" role="button" aria-expanded="false" aria-controls="collapseExample">
                                 <i class="fa fa-search"></i>
