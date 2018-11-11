@@ -26,14 +26,13 @@ class SectionEvent extends GeneratorCommand
      */
     protected $description = 'Create a new event and it\'s listener in section';
 
-    /**
+     /**
      * Create a new command instance.
-     *
      * @return void
      */
-    public function __construct($files)
-    {
-        parent::__construct($files);
+    public function __construct(){
+
+        parent::__construct(app()->files);
     }
 
     /**
