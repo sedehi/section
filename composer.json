@@ -27,6 +27,6 @@
         "Sedehi\\Section\\SectionServiceProvider"
       ]
     }
-  }
+  },
   "minimum-stability": "stable"
 }
