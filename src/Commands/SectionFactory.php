@@ -27,12 +27,11 @@ class SectionFactory extends GeneratorCommand
 
     /**
      * Create a new command instance.
-     *
      * @return void
      */
-    public function __construct($files)
-    {
-        parent::__construct($files);
+    public function __construct(){
+
+        parent::__construct(app()->files);
     }
 
     /**
