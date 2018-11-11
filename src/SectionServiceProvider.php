@@ -31,125 +31,37 @@ use Sedehi\Section\Commands\SectionView;
 class SectionServiceProvider extends ServiceProvider
 {
 
-    protected $defer = true;
-
-
     /**
      * Perform post-registration booting of services.
-     *
      * @return void
      */
-    public function boot()
-    {
-        $this->app->bind('sedehi::command.section.make', function ($app) {
-            return new SectionAdd();
-        });
-        $this->app->bind('sedehi::command.section.controller', function ($app) {
-            return new SectionController();
-        });
-        $this->app->bind('sedehi::command.section.event', function ($app) {
-            return new SectionEvent($app['files']);
-        });
-        $this->app->bind('sedehi::command.section.factory', function ($app) {
-            return new SectionFactory($app['files']);
-        });
-        $this->app->bind('sedehi::command.section.job', function ($app) {
-            return new SectionJob($app['files']);
-        });
-        $this->app->bind('sedehi::command.section.rule', function ($app) {
-            return new SectionRule();
-        });
-        $this->app->bind('sedehi::command.section.migrate', function ($app) {
-            return new SectionMigrate();
-        });
-        $this->app->bind('sedehi::command.section.migrate-fresh', function ($app) {
-            return new SectionMigrateFresh();
-        });
-        $this->app->bind('sedehi::command.section.migrate-refresh', function ($app) {
-            return new SectionMigrateRefresh();
-        });
-        $this->app->bind('sedehi::command.section.migrate-reset', function ($app) {
-            return new SectionMigrateReset();
-        });
-        $this->app->bind('sedehi::command.section.migrate-rollback', function ($app) {
-            return new SectionMigrateRollback();
-        });
-        $this->app->bind('sedehi::command.section.migration', function ($app) {
-            return new SectionMigration();
-        });
-        $this->app->bind('sedehi::command.section.model', function ($app) {
-            return new SectionModel($app['files']);
-        });
-        $this->app->bind('sedehi::command.section.policy', function ($app) {
-            return new SectionPolicy();
-        });
-        $this->app->bind('sedehi::command.section.request', function ($app) {
-            return new SectionRequest($app['files']);
-        });
-        $this->app->bind('sedehi::command.section.resource', function ($app) {
-            return new SectionResource();
-        });
-        $this->app->bind('sedehi::command.section.seed', function ($app) {
-            return new SectionSeed();
-        });
-        $this->app->bind('sedehi::command.section.test', function ($app) {
-            return new SectionTest();
-        });
-        $this->app->bind('sedehi::command.section.auth', function ($app) {
-            return new SectionAuth();
-        });
-        $this->app->bind('sedehi::command.section.notification', function ($app) {
-            return new SectionNotification();
-        });
-        $this->app->bind('sedehi::command.section.mail', function ($app) {
-            return new SectionMail($app['files']);
-        });
-        $this->app->bind('sedehi::command.section.view', function ($app) {
-            return new SectionView();
-        });
-        $this->app->bind('sedehi::section:update-roles', function ($app) {
-            return new SectionUpdateRoles();
-        });
-        $this->app->bind('sedehi::section:picture', function ($app) {
-            return new SectionPicture();
-        });
+    public function boot(){
 
         $this->commands([
-                            'sedehi::command.section.make',
-                            'sedehi::command.section.controller',
-                            'sedehi::command.section.event',
-                            'sedehi::command.section.factory',
-                            'sedehi::command.section.job',
-                            'sedehi::command.section.rule',
-                            'sedehi::command.section.migrate',
-                            'sedehi::command.section.migrate-fresh',
-                            'sedehi::command.section.migrate-refresh',
-                            'sedehi::command.section.migrate-reset',
-                            'sedehi::command.section.migrate-rollback',
-                            'sedehi::command.section.migration',
-                            'sedehi::command.section.model',
-                            'sedehi::command.section.policy',
-                            'sedehi::command.section.request',
-                            'sedehi::command.section.resource',
-                            'sedehi::command.section.seed',
-                            'sedehi::command.section.test',
-                            'sedehi::command.section.auth',
-                            'sedehi::command.section.notification',
-                            'sedehi::command.section.mail',
-                            'sedehi::command.section.view',
-                            'sedehi::command.section.view',
-                            'sedehi::section:update-roles',
-                            'sedehi::section:picture',
+                            SectionAdd::class,
+                            SectionController::class,
+                            SectionEvent::class,
+                            SectionFactory::class,
+                            SectionJob::class,
+                            SectionMigration::class,
+                            SectionModel::class,
+                            SectionPolicy::class,
+                            SectionRequest::class,
+                            SectionResource::class,
+                            SectionSeed::class,
+                            SectionTest::class,
+                            SectionAuth::class,
+                            SectionNotification::class,
+                            SectionMail::class,
+                            SectionView::class,
                         ]);
     }
 
     /**
      * Register any package services.
-     *
      * @return void
      */
-    public function register()
-    {
+    public function register(){
         //
     }
 }
