@@ -21,5 +21,12 @@
       "Sedehi\\Section\\": "src/"
     }
   },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Sedehi\\Section\\SectionServiceProvider"
+      ],
+    }
+  }
   "minimum-stability": "stable"
 }
