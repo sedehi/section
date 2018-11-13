@@ -20,16 +20,7 @@
                                     <i class="fa fa-plus"></i>
                                 </a>
                             @endif
-                            {{--<div class="dropdown table-header-btn">--}}
-                            {{--<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">--}}
-                            {{--Dropdown button--}}
-                            {{--</button>--}}
-                            {{--<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">--}}
-                            {{--<a class="dropdown-item" href="#">Action</a>--}}
-                            {{--<a class="dropdown-item" href="#">Another action</a>--}}
-                            {{--<a class="dropdown-item" href="#">Something else here</a>--}}
-                            {{--</div>--}}
-                            {{--</div>--}}
+                        
                         </div>
                     </div>
                 </div>
@@ -57,7 +48,7 @@
                                 </td>
                                  <td>{{ $item->title }}</td>
                                 <td>
-                                    {{ customDate('Y/m/d - H:i',$item->created_at->timestamp) }}
+                                    {{ jdate('Y/m/d - H:i',$item->created_at->timestamp) }}
                                 </td>
                                 <td>
                                     @if(permission('{{{section}}}.{{{controller}}}.edit'))
