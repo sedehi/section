@@ -1,4 +1,4 @@
-@extends('views.layouts.admin.master')
+@extends('admin.master')
 @section('content')
     <div class="row">
     @include('{{{section}}}.views.admin.{{{name}}}.search')
@@ -6,7 +6,7 @@
             <div class="card">
                 <div class="card-header">
                     <div class="row">
-                        <h4 class="c-grey-900 col-md-6">@lang('admin.sections.{{{name}}}')</h4>
+                        <h4 class="c-grey-900 col-md-6">{{{title}}}</h4>
                         <div class="col-md-6">
                             <button type="button" class="btn btn-primary table-header-btn" data-toggle="collapse" data-target="#searchCollapse" role="button" aria-expanded="false" aria-controls="collapseExample">
                                 <i class="fa fa-search"></i>
@@ -20,16 +20,7 @@
                                     <i class="fa fa-plus"></i>
                                 </a>
                             @endif
-                            {{--<div class="dropdown table-header-btn">--}}
-                            {{--<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">--}}
-                            {{--Dropdown button--}}
-                            {{--</button>--}}
-                            {{--<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">--}}
-                            {{--<a class="dropdown-item" href="#">Action</a>--}}
-                            {{--<a class="dropdown-item" href="#">Another action</a>--}}
-                            {{--<a class="dropdown-item" href="#">Something else here</a>--}}
-                            {{--</div>--}}
-                            {{--</div>--}}
+                        
                         </div>
                     </div>
                 </div>
@@ -42,8 +33,8 @@
                                     <input class="form-check-input position-static check-all" type="checkbox">
                                 </div>
                             </th>
-                            <th scope="col">@lang('validation.attributes.title')</th>
-                            <th scope="col">@lang('validation.attributes.created_at')</th>
+                            <th scope="col">عنوان</th>
+                            <th scope="col">تاریخ درج</th>
                             <th scope="col" class="w-120px"></th>
                         </tr>
                         </thead>
@@ -57,7 +48,7 @@
                                 </td>
                                  <td>{{ $item->title }}</td>
                                 <td>
-                                    {{ customDate('Y/m/d - H:i',$item->created_at->timestamp) }}
+                                    {{ jdate('Y/m/d - H:i',$item->created_at->timestamp) }}
                                 </td>
                                 <td>
                                     @if(permission('{{{section}}}.{{{controller}}}.edit'))
@@ -74,7 +65,7 @@
                     </table>
                 </div>
                 <div class="card-footer">
-                    @include('views.layouts.admin.pagination', ['items' => $items])
+                    @include('admin.pagination', ['items' => $items])
                 </div>
             </div>
         </div>
