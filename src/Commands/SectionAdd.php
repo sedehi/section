@@ -96,7 +96,6 @@ class SectionAdd extends Command
         if(empty($title)) {
             $title = $this->argument('name');
         }
-
         $this->call('section:controller', [
             'section'    => $this->argument('name'),
             'name'       => ucfirst($this->argument('name')).'Controller',
@@ -114,6 +113,10 @@ class SectionAdd extends Command
 
     private function makeAdminControllerWithUpload(){
 
+        $title = $this->ask('What is section title?');
+        if(empty($title)) {
+            $title = $this->argument('name');
+        }
         $this->call('section:controller', [
             'section'    => $this->argument('name'),
             'name'       => ucfirst($this->argument('name')).'Controller',
@@ -124,6 +127,7 @@ class SectionAdd extends Command
         $this->call('section:view', [
             'section'    => $this->argument('name'),
             'name'       => strtolower($this->argument('name')),
+            'title'      => $title,
             'controller' => ucfirst($this->argument('name')).'Controller',
             '--upload'   => true
         ]);
