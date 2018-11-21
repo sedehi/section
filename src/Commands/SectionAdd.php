@@ -64,7 +64,7 @@ class SectionAdd extends Command
             $this->makeFactory();
         }
         if($this->confirm('Do you want create migration ? [y|n]', true)) {
-           $name =  $this->ask('What is table name?');
+            $name = $this->ask('What is table name?');
             if(empty($name)) {
                 $name = $this->argument('name');
             }
@@ -92,6 +92,11 @@ class SectionAdd extends Command
 
     private function makeAdminController(){
 
+        $title = $this->ask('What is section title?');
+        if(empty($title)) {
+            $title = $this->argument('name');
+        }
+
         $this->call('section:controller', [
             'section'    => $this->argument('name'),
             'name'       => ucfirst($this->argument('name')).'Controller',
@@ -102,6 +107,7 @@ class SectionAdd extends Command
         $this->call('section:view', [
             'section'    => $this->argument('name'),
             'name'       => strtolower($this->argument('name')),
+            'title'      => $title,
             'controller' => ucfirst($this->argument('name')).'Controller'
         ]);
     }
@@ -142,7 +148,6 @@ class SectionAdd extends Command
             'section' => ucfirst($this->argument('name')),
             'name'    => 'create_'.$name.'_table',
         ]);
-
     }
 
     private function makeApiController(){
@@ -231,8 +236,8 @@ class SectionAdd extends Command
         }
     }
 
-    private function makeFactory()
-    {
+    private function makeFactory(){
+
         $this->call('section:factory', [
             'section' => ucfirst($this->argument('name')),
         ]);
