@@ -3,40 +3,9 @@
         {!! Form::label('title','عنوان') !!}
         {!! Form::text('title',null,['class'=>'form-control']) !!}
     </div>
-   
-    {{--<div class="form-check">--}}
-    {{--<label class="form-check-label">--}}
-    {{--<input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">--}}
-    {{--Option two can be something else and selecting it will deselect--}}
-    {{--option one--}}
-    {{--</label>--}}
-    {{--</div>--}}
-    {{--<div class="form-group col-md-4">--}}
-    {{--<label for="inputState">State</label>--}}
-    {{--<select id="inputState" class="form-control">--}}
-    {{--<option selected>Choose...</option>--}}
-    {{--<option>...</option>--}}
-    {{--</select>--}}
-    {{--</div>--}}
-    {{--<div class="form-group col-md-4">--}}
-    {{--<label for="exampleInputPassword1">Password</label>--}}
-    {{--<input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">--}}
-    {{--</div>--}}
+  
 </div>
 
-{{--<div class="checkbox checkbox-circle checkbox-info peers ai-c mB-15">--}}
-{{--<input type="checkbox" id="inputCall1" name="inputCheckboxesCall" class="peer">--}}
-{{--<label for="inputCall1" class=" peers peer-greed js-sb ai-c">--}}
-{{--<span class="peer peer-greed">Call John for Dinner</span>--}}
-{{--</label>--}}
-{{--</div>--}}
-{{--<div class="form-group">--}}
-{{--<label for="inputState">State</label>--}}
-{{--<select class="select2 form-control">--}}
-{{--<option selected="selected">navid</option>--}}
-{{--<option>...</option>--}}
-{{--</select>--}}
-{{--</div>--}}
 {{--<div class="form-row">--}}
 {{--<div class="form-group col-md-6">--}}
 {{--<label class="fw-500">Birthdate</label>--}}
@@ -47,35 +16,4 @@
 {{--</div>--}}
 {{--</div>--}}
 {{--</div>--}}
-{{--</div>--}}
-{{--<fieldset class="form-group">--}}
-{{--<div class="row">--}}
-{{--<legend class="col-form-legend col-sm-2">Radios</legend>--}}
-{{--<div class="col-sm-10">--}}
-{{--<div class="form-check">--}}
-{{--<label class="form-check-label">--}}
-{{--<input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1" checked>--}}
-{{--Option one is this and that&mdash;be sure to include why it's--}}
-{{--great--}}
-{{--</label>--}}
-{{--</div>--}}
-{{--<div class="form-check">--}}
-{{--<label class="form-check-label">--}}
-{{--<input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">--}}
-{{--Option two can be something else and selecting it will deselect--}}
-{{--option one--}}
-{{--</label>--}}
-{{--</div>--}}
-{{--<div class="form-check disabled">--}}
-{{--<label class="form-check-label">--}}
-{{--<input class="form-check-input" type="radio" name="gridRadios" id="gridRadios3" value="option3" disabled>--}}
-{{--Option three is disabled--}}
-{{--</label>--}}
-{{--</div>--}}
-{{--</div>--}}
-{{--</div>--}}
-{{--</fieldset>--}}
-{{--<div class="form-group col-md-6 form-check">--}}
-    {{--<input type="checkbox" class="form-check-input" id="exampleCheck1">--}}
-    {{--<label class="form-check-label" for="exampleCheck1">Check me out</label>--}}
 {{--</div>--}}
