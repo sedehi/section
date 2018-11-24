@@ -13,7 +13,9 @@
                             </button>
                             {!! Form::open(['action'=>['{{{section}}}\Controllers\Admin\{{{controller}}}@destroy',1],'method' =>'DELETE']) !!}
                             @if(permission('{{{section}}}.{{{controller}}}.destroy'))
-                                <button type="submit" onclick="return confirm('از حذف اطلاعات اطمینان دارید؟');" class="btn btn-danger table-header-btn">حذف</button>
+                                <button type="submit" onclick="return confirm('از حذف اطلاعات اطمینان دارید؟');" class="btn btn-danger table-header-btn">
+                                        حذف
+                                </button>
                             @endif
                             @if(permission('{{{section}}}.{{{controller}}}.create'))
                                 <a class="btn btn-success table-header-btn" href="{!! action('{{{section}}}\Controllers\Admin\{{{controller}}}@create') !!}">
