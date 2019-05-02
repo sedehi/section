@@ -11,7 +11,9 @@
                             <button type="button" class="btn btn-primary table-header-btn" data-toggle="collapse" data-target="#searchCollapse" role="button" aria-expanded="false" aria-controls="collapseExample">
                                 <i class="fa fa-search"></i>
                             </button>
-                            {!! Form::open(['action'=>['{{{section}}}\Controllers\Admin\{{{controller}}}@destroy',1],'method' =>'DELETE']) !!}
+                            <form method="POST action="{{action('{{{section}}}\Controllers\Admin\{{{controller}}}@destroy',1)">
+                            @csrf
+                            @method('DELETE')
                             @if(permission('{{{section}}}.{{{controller}}}.destroy'))
                                 <button type="submit" onclick="return confirm('از حذف اطلاعات اطمینان دارید؟');" class="btn btn-danger table-header-btn">
                                         حذف
@@ -22,7 +24,7 @@
                                     <i class="fa fa-plus"></i>
                                 </a>
                             @endif
-                        
+
                         </div>
                     </div>
                 </div>
@@ -45,16 +47,19 @@
                             <tr>
                                 <td scope="row">
                                     <div class="form-check">
-                                        {!! Form::checkbox('deleteId[]',$item->id,null,['class' => 'form-check-input position-static']) !!}
+                                        <input type="checkbox" name="deleteId[]" value="{{$item->id}}" class="form-check-input position-static">
                                     </div>
                                 </td>
                                  <td>{{ $item->title }}</td>
                                 <td>
-                                    {{ jdate('Y/m/d - H:i',$item->created_at->timestamp) }}
+                                    {{ Jalalian::fromCarbon($item->created_at)->format('H:i - Y/m/d') }}
                                 </td>
                                 <td>
                                     @if(permission('{{{section}}}.{{{controller}}}.edit'))
                                         <a href="{!! action('{{{section}}}\Controllers\Admin\{{{controller}}}@edit',$item->id) !!}"><i class="fa fa-pencil-square-o"></i></a>
+                                    @endif
+                                    @if(permission('{{{section}}}.{{{controller}}}.show'))
+                                        <a href="{!! action('{{{section}}}\Controllers\Admin\{{{controller}}}@show',$item->id) !!}"><i class="fa fa-eye"></i></a>
                                     @endif
                                 </td>
                             </tr>

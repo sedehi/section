@@ -5,10 +5,12 @@
             <div class="bgc-white p-20 bd">
                 {{--<h6 class="c-grey-900">Basic Form</h6>--}}
                 <div class="mT-30">
-                    {!! Form::model($item,['action'=> ['{{{section}}}\Controllers\Admin\{{{controller}}}@update',$item->id],'method' => 'PUT','files'=>true]) !!}
+                    <form method="POST" action="{{action('{{{section}}}\Controllers\Admin\{{{controller}}}@update',$item->id)}}" enctype="multipart/form-data">
+                        @csrf
+                        @method('PUT')
                         @include('{{{section}}}.views.admin.{{{name}}}.form')
                         <button type="submit" class="btn btn-primary">@lang('admin.submit')</button>
-                    {!! Form::close() !!}
+                    </form>
                 </div>
             </div>
         </div>

@@ -9,16 +9,8 @@
                 <div class="form-row">
                     <div class="form-group col-md-4">
                         <label for="title">@lang('validation.attributes.title')</label>
-                        {!! Form::text('title',null,['class' => 'form-control','id' => 'title']) !!}
+                        <input type="text" name="title" id="title" class="form-control" value="{{request('title')}}">
                     </div>
-                    {{--<div class="form-group col-md-4">--}}
-                        {{--<label for="select">State</label>--}}
-                        {{--{!! Form::select('select',['navid','sedehi'],null,['class' => 'form-control select2','id' => 'select']) !!}--}}
-                    {{--</div>--}}
-                    {{--<div class="form-group col-md-4">--}}
-                        {{--<label for="date">Birthdate</label>--}}
-                        {{--{!! Form::text('date',null,['class' => 'form-control date','id' => 'date']) !!}--}}
-                    {{--</div>--}}
                 </div>
                 <button type="submit" class="btn btn-primary">@lang('admin.search')</button>
             </form>

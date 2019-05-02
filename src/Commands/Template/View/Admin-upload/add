@@ -5,10 +5,11 @@
             <div class="bgc-white p-20 bd">
                 {{--<h6 class="c-grey-900">Basic Form</h6>--}}
                 <div class="mT-30">
-                    {!! Form::open(['action'=> '{{{section}}}\Controllers\Admin\{{{controller}}}@store','files' => true]) !!}
+                    <form method="POST" action="{{action('{{{section}}}\Controllers\Admin\{{{controller}}}@store')}}" enctype="multipart/form-data">
+                        @csrf
                         @include('{{{section}}}.views.admin.{{{name}}}.form')
                         <button type="submit" class="btn btn-primary">@lang('admin.submit')</button>
-                    {!! Form::close() !!}
+                    </form>
                 </div>
             </div>
         </div>
