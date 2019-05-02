@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: navid
- * Date: 5/3/16
- * Time: 1:20 PM
- */
+
 
 namespace Sedehi\Section\Commands;
 use File;
