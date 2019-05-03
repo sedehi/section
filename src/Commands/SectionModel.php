@@ -11,7 +11,6 @@ use Symfony\Component\Console\Input\InputArgument;
 
 class SectionModel extends GeneratorCommand
 {
-    use SectionsTrait;
 
     /**
      * The name and signature of the console command.

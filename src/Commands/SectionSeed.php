@@ -9,7 +9,7 @@ use Illuminate\Console\DetectsApplicationNamespace;
 class SectionSeed extends Command
 {
 
-    use DetectsApplicationNamespace, SectionsTrait;
+    use DetectsApplicationNamespace;
 
     /**
      * The name and signature of the console command.

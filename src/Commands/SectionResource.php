@@ -10,11 +10,6 @@ use Symfony\Component\Console\Input\InputOption;
 class SectionResource extends ResourceMakeCommand
 {
 
-    /**
-     * Create a new command instance.
-     *
-     * @param Filesystem $files
-     */
     public function __construct(Filesystem $files){
 
         parent::__construct($files);

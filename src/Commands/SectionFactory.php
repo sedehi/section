@@ -9,7 +9,6 @@ use Symfony\Component\Console\Input\InputArgument;
 class SectionFactory extends GeneratorCommand
 {
 
-    use SectionsTrait;
 
     /**
      * The name and signature of the console command.

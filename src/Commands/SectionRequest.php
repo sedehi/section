@@ -9,7 +9,6 @@ use Symfony\Component\Console\Input\InputArgument;
 class SectionRequest extends GeneratorCommand
 {
 
-    use SectionsTrait;
 
     private $namespace;
     private $directoryPath;

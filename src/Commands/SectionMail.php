@@ -5,24 +5,16 @@ namespace Sedehi\Section\Commands;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Foundation\Console\MailMakeCommand;
 use Illuminate\Support\Str;
-use Symfony\Component\Console\Input\InputOption;
+use Sedehi\Section\SectionOption;
 
 class SectionMail extends MailMakeCommand
 {
 
+    use SectionOption;
+
     public function __construct(Filesystem $files){
 
         parent::__construct($files);
-    }
-
-    protected function getOptions(){
-
-        $options = parent::getOptions();
-        $options = array_merge($options, [
-            ['section', 's', InputOption::VALUE_OPTIONAL, 'The name of the section'],
-        ]);
-
-        return $options;
     }
 
     protected function getDefaultNamespace($rootNamespace){

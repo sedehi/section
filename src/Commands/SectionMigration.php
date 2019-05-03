@@ -8,7 +8,6 @@ use Illuminate\Database\Console\Migrations\BaseCommand;
 class SectionMigration extends BaseCommand
 {
 
-    use SectionsTrait;
     /**
      * The name and signature of the console command.
      *

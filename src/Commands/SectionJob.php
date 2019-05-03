@@ -8,7 +8,6 @@ use Symfony\Component\Console\Input\InputArgument;
 
 class SectionJob extends GeneratorCommand
 {
-    use SectionsTrait;
 
     /**
      * The name and signature of the console command.

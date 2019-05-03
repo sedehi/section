@@ -8,7 +8,6 @@ use Symfony\Component\Console\Input\InputArgument;
 
 class SectionEvent extends GeneratorCommand
 {
-    use SectionsTrait;
 
     private $stubType;
 

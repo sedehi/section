@@ -2,9 +2,6 @@
 
 namespace Sedehi\Section;
 
-use Illuminate\Filesystem\Filesystem;
-use Illuminate\Foundation\Console\MailMakeCommand;
-use Illuminate\Foundation\Console\ResourceMakeCommand;
 use Illuminate\Foundation\Providers\ArtisanServiceProvider;
 use Sedehi\Section\Commands\SectionAdd;
 use Sedehi\Section\Commands\SectionAuth;
@@ -13,11 +10,6 @@ use Sedehi\Section\Commands\SectionEvent;
 use Sedehi\Section\Commands\SectionFactory;
 use Sedehi\Section\Commands\SectionJob;
 use Sedehi\Section\Commands\SectionMail;
-use Sedehi\Section\Commands\SectionMigrate;
-use Sedehi\Section\Commands\SectionMigrateFresh;
-use Sedehi\Section\Commands\SectionMigrateRefresh;
-use Sedehi\Section\Commands\SectionMigrateReset;
-use Sedehi\Section\Commands\SectionMigrateRollback;
 use Sedehi\Section\Commands\SectionMigration;
 use Sedehi\Section\Commands\SectionModel;
 use Sedehi\Section\Commands\SectionNotification;
@@ -50,7 +42,6 @@ class SectionServiceProvider extends ArtisanServiceProvider
                             SectionSeed::class,
                             SectionTest::class,
                             SectionAuth::class,
-                            SectionNotification::class,
                             SectionView::class,
                         ]);
     }
@@ -63,11 +54,19 @@ class SectionServiceProvider extends ArtisanServiceProvider
         });
     }
 
-    protected function registerMailMakeCommand()
-    {
-        $this->app->singleton('command.mail.make', function ($app) {
+    protected function registerMailMakeCommand(){
+
+        $this->app->singleton('command.mail.make', function($app){
+
             return new SectionMail($app['files']);
         });
     }
 
+    protected function registerNotificationMakeCommand(){
+
+        $this->app->singleton('command.notification.make', function($app){
+
+            return new SectionNotification($app['files']);
+        });
+    }
 }

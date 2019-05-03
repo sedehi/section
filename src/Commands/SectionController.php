@@ -11,7 +11,7 @@ use Illuminate\Console\DetectsApplicationNamespace;
 class SectionController extends Command
 {
 
-    use DetectsApplicationNamespace, SectionsTrait;
+    use DetectsApplicationNamespace;
     /**
      * The name and signature of the console command.
      *
