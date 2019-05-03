@@ -2,196 +2,67 @@
 
 namespace Sedehi\Section\Commands;
 
-use Illuminate\Console\GeneratorCommand;
+use Illuminate\Foundation\Console\RequestMakeCommand;
+use Illuminate\Support\Str;
+use Sedehi\Section\SectionOption;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\InputArgument;
 
-class SectionRequest extends GeneratorCommand
+class SectionRequest extends RequestMakeCommand
 {
 
+    use SectionOption;
 
-    private $namespace;
-    private $directoryPath;
+    protected function getStub(){
 
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $name = 'section:request';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Create a new request class in section';
-
-     /**
-     * Create a new command instance.
-     * @return void
-     */
-    public function __construct(){
-
-        parent::__construct(app()->files);
-    }
-
-    private function init()
-    {
-        $this->createDirectory('Requests');
-        $this->directoryPath    = $this->getBaseDirectory();
-        $this->namespace        = $this->getDefaultNamespace($this->rootNamespace());
-
-        if ($this->option('site')) {
-            $this->createDirectory('Requests/Site/');
-            $this->namespace    .= '\Site';
-            $this->directoryPath    .= 'Site';
+        if($this->option('admin')) {
+            return __DIR__.'/stubs/admin-request.stub';
         }
 
-        if ($this->option('admin')) {
-            $this->createDirectory('Requests/Admin/');
-            $this->namespace   .= '\Admin';
-            $this->directoryPath   .= 'Admin';
-        }
-
-        if ($this->option('api')) {
-
-            $this->createDirectory('Requests/Api/');
-
-            if ($this->option('v')) {
-                $this->createDirectory('Requests/Api/'.ucfirst($this->option('v')));
-                $this->namespace   .= '\Api\\'.ucfirst($this->option('v'));
-                $this->directoryPath   .= 'Api/'.ucfirst($this->option('v'));
-            } else {
-                $this->namespace   .= '\Api';
-                $this->directoryPath   .= 'Api';
-            }
-        }
+        return parent::getStub();
     }
 
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
-    public function handle()
-    {
-        $this->init();
+    protected function getOptions(){
 
-        $filePath = $this->getFilePath();
-
-        if ($this->files->exists($filePath)) {
-            $this->error('Form Request already exists.');
-            return false;
-        }
-
-        $this->files->put(
-            $filePath,
-            $this->buildClass($this->namespace)
-        );
-
-        $this->info('Form Request created successfully.');
-    }
-
-    /**
-     * Build the class with the given name.
-     *
-     * @param  string  $name
-     * @return string
-     */
-    protected function buildClass($namespace)
-    {
-        $stub = $this->files->get($this->getStub());
-
-        return str_replace([
-            '{{{namespace}}}',
-            '{{{section}}}',
-            '{{{lowerSection}}}',
-            '{{{RootNamespace}}}',
-            '{{{className}}}'
-        ],[
-            $namespace,
-            $this->getSectionName(),
-            strtolower($this->getSectionName()),
-            $this->rootNamespace(),
-            studly_case($this->argument('name'))
-
-        ],$stub);
-    }
-
-    /**
-     * Get the stub file for the generator.
-     *
-     * @return string
-     */
-    protected function getStub()
-    {
-        if ($this->option('crud')) {
-            return __DIR__.'/Template/requests/admin.stub';
-        }
-        if ($this->option('api')) {
-            return __DIR__.'/Template/requests/api.stub';
-        }
-        return __DIR__.'/Template/requests/site.stub';
-    }
-
-    /**
-     * Get the console command arguments.
-     *
-     * @return array
-     */
-    protected function getArguments()
-    {
-        return [
-            ['section', InputArgument::REQUIRED, 'The name of the section'],
-            ['name', InputArgument::REQUIRED, 'The name of the request'],
-        ];
-    }
-
-    /**
-     * Get the console command options.
-     *
-     * @return array
-     */
-    protected function getOptions()
-    {
-        return [
-            ['crud', null, InputOption::VALUE_NONE, 'Generate crud request'],
+        $options = parent::getOptions();
+        $options = array_merge($options, [
+            ['section', 's', InputOption::VALUE_OPTIONAL, 'The name of the section'],
+            ['request-version', 'av', InputOption::VALUE_OPTIONAL, 'Set request version'],
             ['admin', null, InputOption::VALUE_NONE, 'Generate request for admin'],
             ['site', null, InputOption::VALUE_NONE, 'Generate request for site'],
             ['api', null, InputOption::VALUE_NONE, 'Generate request for api'],
-            ['v', null, InputOption::VALUE_REQUIRED, 'Set api version'],
-        ];
+        ]);
+
+        return $options;
     }
 
     /**
      * Get the default namespace for the class.
      *
-     * @param  string  $rootNamespace
-     * @return string
-     */
-    protected function getDefaultNamespace($rootNamespace)
-    {
-        return $rootNamespace.'Http\Controllers\\'.$this->getSectionName().'\Requests';
-    }
-
-    /**
-     * Get directory path.
+     * @param string $rootNamespace
      *
      * @return string
      */
-    protected function getBaseDirectory()
-    {
-        return app_path('Http/Controllers/'.$this->getSectionName().'/Requests/');
+    protected function getDefaultNamespace($rootNamespace){
+
+        $namespace = $rootNamespace.'\Http';
+        if(!is_null($this->option('section'))) {
+            $namespace = $namespace.'\Controllers\\'.Str::studly($this->option('section'));
+        }
+        $namespace = $namespace.'\Requests';
+        if($this->option('admin')) {
+            $namespace = $namespace.'\Admin';
+        }
+        if($this->option('site')) {
+            $namespace = $namespace.'\Site';
+        }
+        if($this->option('api')) {
+            $namespace = $namespace.'\Api';
+        }
+        if(!is_null($this->option('request-version'))) {
+            $namespace = $namespace.'\\'.Str::studly($this->option('request-version'));
+        }
+
+        return $namespace;
     }
 
-    /**
-     * Get file path to generate.
-     *
-     * @return string
-     */
-    protected function getFilePath()
-    {
-        return $this->directoryPath.'/'.studly_case($this->argument('name')).'.php';
-    }
 }
