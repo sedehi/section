@@ -32,8 +32,6 @@ class SectionServiceProvider extends ArtisanServiceProvider
         $this->commands([
                             SectionAdd::class,
                             SectionController::class,
-                            SectionEvent::class,
-                            SectionFactory::class,
                             SectionMigration::class,
                             SectionModel::class,
                             SectionSeed::class,
@@ -83,17 +81,27 @@ class SectionServiceProvider extends ArtisanServiceProvider
         });
     }
 
-    protected function registerPolicyMakeCommand()
-    {
-        $this->app->singleton('command.policy.make', function ($app) {
+    protected function registerPolicyMakeCommand(){
+
+        $this->app->singleton('command.policy.make', function($app){
+
             return new SectionPolicy($app['files']);
         });
     }
 
-    protected function registerFactoryMakeCommand()
-    {
-        $this->app->singleton('command.factory.make', function ($app) {
+    protected function registerFactoryMakeCommand(){
+
+        $this->app->singleton('command.factory.make', function($app){
+
             return new SectionFactory($app['files']);
+        });
+    }
+
+    protected function registerEventMakeCommand(){
+
+        $this->app->singleton('command.event.make', function($app){
+
+            return new SectionEvent($app['files']);
         });
     }
 }
