@@ -63,8 +63,8 @@ class SectionJob extends GeneratorCommand
     protected function getStub()
     {
         return $this->option('sync')
-            ? __DIR__.'/Template/job/sync.stub'
-            : __DIR__.'/Template/job/queued.stub';
+            ? __DIR__.'/stubs/job/sync.stub'
+            : __DIR__.'/stubs/job/queued.stub';
     }
 
     /**

@@ -102,10 +102,10 @@ class SectionController extends Command
         $data = null;
         if ($this->option('resource')) {
             if ($this->option('upload')) {
-                $data = File::get(__DIR__.'/Template/controller/resource/AdminController-upload');
+                $data = File::get(__DIR__.'/stubs/controller/resource/AdminController-upload');
             } else {
                 if ($this->option('crud')) {
-                    $data = File::get(__DIR__.'/Template/controller/resource/AdminController');
+                    $data = File::get(__DIR__.'/stubs/controller/resource/AdminController');
                 } else {
                     Artisan::call('make:controller', [
                         'name'       => $this->controllerName,

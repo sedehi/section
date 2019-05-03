@@ -113,7 +113,7 @@ class SectionAuth extends Command
             $this->warn($controller.' already exists.');
         } else {
             $this->makeDirectory('Auth','Controllers/Site');
-            $data = File::get(__DIR__.'/Template/auth/'.$folder.'/controller/'.$controller.'.stub');
+            $data = File::get(__DIR__.'/stubs/auth/'.$folder.'/controller/'.$controller.'.stub');
             $data = str_replace('{{{appName}}}', $this->getAppNamespace(), $data);
             File::put(app_path('Http/Controllers/Auth/Controllers/Site/'.$controller.'.php'),$data);
             $this->info($controller.' created successfully.');
@@ -126,7 +126,7 @@ class SectionAuth extends Command
             $this->warn('PasswordReminderMail already exists.');
         } else {
             $this->makeDirectory('Auth','Mail');
-            $data = File::get(__DIR__.'/Template/auth/email-only/mail/PasswordReminderMail.stub');
+            $data = File::get(__DIR__.'/stubs/auth/email-only/mail/PasswordReminderMail.stub');
             $data = str_replace('{{{appName}}}', $this->getAppNamespace(), $data);
             File::put(app_path('Http/Controllers/Auth/Mail/PasswordReminderMail.php'),$data);
             $this->info('PasswordReminderMail created successfully.');
@@ -139,7 +139,7 @@ class SectionAuth extends Command
             $this->warn($request.' already exists.');
         } else {
             $this->makeDirectory('Auth','Requests/Site');
-            $data = File::get(__DIR__.'/Template/auth/'.$folder.'/request/site/'.$request.'.stub');
+            $data = File::get(__DIR__.'/stubs/auth/'.$folder.'/request/site/'.$request.'.stub');
             $data = str_replace('{{{appName}}}', $this->getAppNamespace(), $data);
             File::put(app_path('Http/Controllers/Auth/Requests/Site/'.$request.'.php'),$data);
             $this->info($request.' created successfully.');
@@ -153,7 +153,7 @@ class SectionAuth extends Command
         if (File::exists(app_path('Http/Controllers/Auth/views/site/'.$viewName.'.blade.php'))) {
             $this->warn($viewName.'.blade.php already exists.');
         } else {
-            $data = File::get(__DIR__.'/Template/auth/'.$folder.'/view/site/'.$viewName.'.stub');
+            $data = File::get(__DIR__.'/stubs/auth/'.$folder.'/view/site/'.$viewName.'.stub');
             File::put(app_path('Http/Controllers/Auth/views/site/'.$viewName.'.blade.php'),$data);
             $this->info($viewName.'.blade.php created successfully.');
         }
@@ -164,7 +164,7 @@ class SectionAuth extends Command
         $webRoutePath = app_path('Http/Controllers/Auth/routes/web.php');
 
         if (File::exists($webRoutePath)) {
-            $data = File::get(__DIR__.'/Template/auth/route.stub');
+            $data = File::get(__DIR__.'/stubs/auth/route.stub');
 
             $written = File::append($webRoutePath,"\n\n");
 
@@ -177,7 +177,7 @@ class SectionAuth extends Command
             $this->info('Auth routes added to web.php successfully.');
         } else {
             $this->makeDirectory('Auth','routes');
-            $data = File::get(__DIR__.'/Template/auth/route.stub');
+            $data = File::get(__DIR__.'/stubs/auth/route.stub');
             File::put(app_path('Http/Controllers/Auth/routes/web.php'),"<?php\n\n".$data);
             $this->info('Route file created successfully.');
         }

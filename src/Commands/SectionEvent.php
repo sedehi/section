@@ -80,16 +80,16 @@ class SectionEvent extends GeneratorCommand
     protected function getStub()
     {
         if ($this->stubType == 'event') {
-            return $this->files->get(__DIR__.'/Template/event/event.stub');
+            return $this->files->get(__DIR__.'/stubs/event/event.stub');
         }
 
         if ($this->stubType == 'listener') {
 
             if ($this->option('queued')) {
-                return $this->files->get(__DIR__.'/Template/event/listener-queued.stub');
+                return $this->files->get(__DIR__.'/stubs/event/listener-queued.stub');
             }
 
-            return $this->files->get(__DIR__.'/Template/event/listener.stub');
+            return $this->files->get(__DIR__.'/stubs/event/listener.stub');
         }
     }
 

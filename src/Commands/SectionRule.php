@@ -46,7 +46,7 @@ class SectionRule extends Command
         if (File::exists(app_path('Http/Controllers/'.ucfirst($this->argument('section')).'/Rules/'.$this->argument('name').'.php'))) {
             $this->error('Rule already exists.');
         } else {
-            $data = File::get(__DIR__.'/Template/rule');
+            $data = File::get(__DIR__.'/stubs/rule');
 
             $data = str_replace('{{{name}}}', ucfirst($this->argument('name')), $data);
             $data = str_replace('{{{section}}}', ucfirst($this->argument('section')), $data);

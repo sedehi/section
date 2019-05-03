@@ -190,7 +190,7 @@ class SectionAdd extends Command
         if(File::exists(app_path('Http/Controllers/'.ucfirst($this->argument('name')).'/menu.php'))) {
             $this->error('menu already exists.');
         }else {
-            $data = File::get(__DIR__.'/Template/menu');
+            $data = File::get(__DIR__.'/stubs/menu');
             $data = str_replace('{{{title}}}', $title, $data);
             $data = str_replace('{{{name}}}', strtolower($this->argument('name')), $data);
             $data = str_replace('{{{Classname}}}', ucfirst($this->argument('name')), $data);
@@ -205,7 +205,7 @@ class SectionAdd extends Command
         if(File::exists(app_path('Http/Controllers/'.ucfirst($this->argument('name')).'/roles.php'))) {
             $this->error('roles already exists.');
         }else {
-            $data = File::get(__DIR__.'/Template/roles');
+            $data = File::get(__DIR__.'/stubs/roles');
             $data = str_replace('{{{name}}}', strtolower($this->argument('name')), $data);
             $data = str_replace('{{{ucFirstname}}}', ucfirst($this->argument('name')), $data);
             $data = str_replace('{{{title}}}', $title, $data);
@@ -222,7 +222,7 @@ class SectionAdd extends Command
                 $this->error('routes already exists.');
             }else {
                 File::put(app_path('Http/Controllers/'.ucfirst($this->argument('name')).'/routes/'.'web.php'), '<?php ');
-                $data = File::get(__DIR__.'/Template/routeAdmin');
+                $data = File::get(__DIR__.'/stubs/routeAdmin');
                 $data = str_replace('{{{name}}}', ucfirst($this->argument('name')), $data);
                 $data = str_replace('{{{controller}}}', ucfirst($this->argument('name')).'Controller', $data);
                 $data = str_replace('{{{url}}}', strtolower($this->argument('name')), $data);

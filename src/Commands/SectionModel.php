@@ -83,7 +83,7 @@ class SectionModel extends GeneratorCommand
      */
     protected function getStub()
     {
-        return __DIR__.'/Template/model.stub';
+        return __DIR__.'/stubs/model.stub';
     }
 
     /**

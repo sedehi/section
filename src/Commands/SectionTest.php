@@ -40,11 +40,11 @@ class SectionTest extends Command
         if($this->option('unit')) {
             $this->makeDirectory($this->argument('section'), 'tests/Unit/');
             $path = app_path('Http/Controllers/'.ucfirst($this->argument('section')).'/tests/Unit/'.$this->argument('name').'.php');
-            $data = File::get(__DIR__.'/Template/unit-test');
+            $data = File::get(__DIR__.'/stubs/unit-test');
         }else {
             $this->makeDirectory($this->argument('section'), 'tests/Feature/');
             $path = app_path('Http/Controllers/'.ucfirst($this->argument('section')).'/tests/Feature/'.$this->argument('name').'.php');
-            $data = File::get(__DIR__.'/Template/test');
+            $data = File::get(__DIR__.'/stubs/test');
         }
         if(File::exists($path)) {
             $this->error('tests already exists.');

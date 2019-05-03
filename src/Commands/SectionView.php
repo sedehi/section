@@ -41,11 +41,11 @@ class SectionView extends Command
         $viewPath = 'views/admin/'.strtolower($this->argument('name')).'/';
         $this->makeDirectory($this->argument('section'), $viewPath);
         if($this->option('upload')) {
-            foreach(File::files(__DIR__.'/Template/View/Admin-upload') as $templateFile) {
+            foreach(File::files(__DIR__.'/stubs/View/Admin-upload') as $templateFile) {
                 if(File::exists(app_path('Http/Controllers/'.ucfirst($this->argument('section')).'/views/admin/'.strtolower($this->argument('name')).'/'.File::name($templateFile).'.blade.php'))) {
                     $this->error('Admin '.File::name($templateFile).' view already exists.');
                 }else {
-                    $data = File::get(__DIR__.'/Template/View/Admin-upload/'.File::name($templateFile));
+                    $data = File::get(__DIR__.'/stubs/View/Admin-upload/'.File::name($templateFile));
                     $data = str_replace('{{{section}}}', ucfirst($this->argument('section')), $data);
                     $data = str_replace('{{{controller}}}', ucfirst($this->argument('controller')), $data);
                     $data = str_replace('{{{title}}}', $this->argument('title'), $data);
@@ -55,11 +55,11 @@ class SectionView extends Command
                 }
             }
         }else {
-            foreach(File::files(__DIR__.'/Template/View/Admin') as $templateFile) {
+            foreach(File::files(__DIR__.'/stubs/View/Admin') as $templateFile) {
                 if(File::exists(app_path('Http/Controllers/'.ucfirst($this->argument('section')).'/views/admin/'.strtolower($this->argument('name')).'/'.File::name($templateFile).'.blade.php'))) {
                     $this->error('Admin '.File::name($templateFile).' view already exists.');
                 }else {
-                    $data = File::get(__DIR__.'/Template/View/Admin/'.File::name($templateFile));
+                    $data = File::get(__DIR__.'/stubs/View/Admin/'.File::name($templateFile));
                     $data = str_replace('{{{section}}}', ucfirst($this->argument('section')), $data);
                     $data = str_replace('{{{name}}}', strtolower($this->argument('name')), $data);
                     $data = str_replace('{{{controller}}}', ucfirst($this->argument('controller')), $data);

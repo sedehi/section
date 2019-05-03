@@ -47,7 +47,7 @@ class SectionPolicy extends Command
         if (File::exists(app_path('Http/Controllers/'.ucfirst($this->argument('section')).'/Policies/'.ucfirst($this->argument('name')).'.php'))) {
             $this->error('Policy already exists.');
         } else {
-            $data = File::get(__DIR__.'/Template/policy');
+            $data = File::get(__DIR__.'/stubs/policy');
 
             $data = str_replace('{{{name}}}', ucfirst($this->argument('name')), $data);
             $data = str_replace('{{{section}}}', ucfirst($this->argument('section')), $data);
