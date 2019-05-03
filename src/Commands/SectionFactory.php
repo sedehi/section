@@ -3,7 +3,6 @@
 namespace Sedehi\Section\Commands;
 
 use Illuminate\Database\Console\Factories\FactoryMakeCommand;
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
 use Sedehi\Section\SectionOption;
 
@@ -11,11 +10,6 @@ class SectionFactory extends FactoryMakeCommand
 {
 
     use SectionOption;
-
-    public function __construct(Filesystem $files){
-
-        parent::__construct($files);
-    }
 
     protected function getPath($name){
 

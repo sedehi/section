@@ -2,7 +2,6 @@
 
 namespace Sedehi\Section\Commands;
 
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Foundation\Console\MailMakeCommand;
 use Illuminate\Support\Str;
 use Sedehi\Section\SectionOption;
@@ -12,10 +11,6 @@ class SectionMail extends MailMakeCommand
 
     use SectionOption;
 
-    public function __construct(Filesystem $files){
-
-        parent::__construct($files);
-    }
 
     protected function getDefaultNamespace($rootNamespace){
 

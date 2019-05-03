@@ -2,18 +2,12 @@
 
 namespace Sedehi\Section\Commands;
 
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Foundation\Console\ResourceMakeCommand;
 use Illuminate\Support\Str;
 use Symfony\Component\Console\Input\InputOption;
 
 class SectionResource extends ResourceMakeCommand
 {
-
-    public function __construct(Filesystem $files){
-
-        parent::__construct($files);
-    }
 
     protected function getOptions(){
 
