@@ -3,6 +3,7 @@
 namespace Sedehi\Section;
 
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Foundation\Console\MailMakeCommand;
 use Illuminate\Foundation\Console\ResourceMakeCommand;
 use Illuminate\Foundation\Providers\ArtisanServiceProvider;
 use Sedehi\Section\Commands\SectionAdd;
@@ -50,7 +51,6 @@ class SectionServiceProvider extends ArtisanServiceProvider
                             SectionTest::class,
                             SectionAuth::class,
                             SectionNotification::class,
-                            SectionMail::class,
                             SectionView::class,
                         ]);
     }
@@ -60,6 +60,13 @@ class SectionServiceProvider extends ArtisanServiceProvider
         $this->app->singleton('command.resource.make', function($app){
 
             return new SectionResource($app['files']);
+        });
+    }
+
+    protected function registerMailMakeCommand()
+    {
+        $this->app->singleton('command.mail.make', function ($app) {
+            return new SectionMail($app['files']);
         });
     }
 
