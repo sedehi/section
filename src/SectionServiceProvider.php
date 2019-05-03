@@ -34,7 +34,6 @@ class SectionServiceProvider extends ArtisanServiceProvider
                             SectionController::class,
                             SectionEvent::class,
                             SectionFactory::class,
-                            SectionJob::class,
                             SectionMigration::class,
                             SectionModel::class,
                             SectionPolicy::class,
@@ -74,6 +73,14 @@ class SectionServiceProvider extends ArtisanServiceProvider
         $this->app->singleton('command.request.make', function($app){
 
             return new SectionRequest($app['files']);
+        });
+    }
+
+    protected function registerJobMakeCommand(){
+
+        $this->app->singleton('command.job.make', function($app){
+
+            return new SectionJob($app['files']);
         });
     }
 }
