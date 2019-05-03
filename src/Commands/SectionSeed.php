@@ -2,58 +2,30 @@
 
 namespace Sedehi\Section\Commands;
 
-use Illuminate\Console\Command;
-use File;
-use Illuminate\Console\DetectsApplicationNamespace;
+use Illuminate\Database\Console\Seeds\SeederMakeCommand;
+use Illuminate\Support\Str;
+use Sedehi\Section\SectionOption;
 
-class SectionSeed extends Command
+class SectionSeed extends SeederMakeCommand
 {
 
-    use DetectsApplicationNamespace;
+    use SectionOption;
 
     /**
-     * The name and signature of the console command.
+     * Get the destination class path.
      *
-     * @var string
-     */
-    protected $signature = 'section:seeder {section : The name of the section}  {name : The name of the seeder}';
-
-    /**
-     * The console command description.
+     * @param string $name
      *
-     * @var string
+     * @return string
      */
-    protected $description = 'Create a new seeder class in section';
+    protected function getPath($name){
 
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
-    public function handle()
-    {
-        $this->makeDirectory($this->argument('section'), 'database/seeds/');
-        if (File::exists(app_path('Http/Controllers/'.ucfirst($this->argument('section')).'/database/seeds/'.$this->argument('name')).'.php')) {
-            $this->error('seed already exists.');
-        } else {
-            $data = File::get(__DIR__.'/stubs/seed');
-
-            $data = str_replace('{{{name}}}', ucfirst($this->argument('name')), $data);
-            $data = str_replace('{{{section}}}', ucfirst($this->argument('section')), $data);
-            $data = str_replace('{{{appName}}}', $this->getAppNamespace(), $data);
-            File::put(app_path('Http/Controllers/'.ucfirst($this->argument('section')).'/database/seeds/'.ucfirst($this->argument('name')).'.php'),
-                      $data);
-            $this->info('seed created successfully.');
+        $name = str_replace(['\\', '/'], '', $this->argument('name'));
+        if(!is_null($this->option('section'))) {
+            return app_path("Http/Controllers/".Str::studly($this->option('section'))."/database/seeds/{$name}.php");
         }
+
+        return $this->laravel->databasePath().'/seeds/'.$name.'.php';
     }
+
 }
