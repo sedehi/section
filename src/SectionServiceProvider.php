@@ -36,7 +36,6 @@ class SectionServiceProvider extends ArtisanServiceProvider
                             SectionFactory::class,
                             SectionMigration::class,
                             SectionModel::class,
-                            SectionPolicy::class,
                             SectionSeed::class,
                             SectionTest::class,
                             SectionAuth::class,
@@ -81,6 +80,13 @@ class SectionServiceProvider extends ArtisanServiceProvider
         $this->app->singleton('command.job.make', function($app){
 
             return new SectionJob($app['files']);
+        });
+    }
+
+    protected function registerPolicyMakeCommand()
+    {
+        $this->app->singleton('command.policy.make', function ($app) {
+            return new SectionPolicy($app['files']);
         });
     }
 }

@@ -5,56 +5,28 @@ namespace Sedehi\Section\Commands;
 use Illuminate\Console\Command;
 use File;
 use Illuminate\Console\DetectsApplicationNamespace;
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Foundation\Console\PolicyMakeCommand;
+use Illuminate\Support\Str;
+use Sedehi\Section\SectionOption;
 
-
-class SectionPolicy extends Command
+class SectionPolicy extends PolicyMakeCommand
 {
-    use DetectsApplicationNamespace;
 
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'section:policy {section : The name of the section}  {name : The name of the model}';
+    use SectionOption;
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Create a new Policy class in section';
+    public function __construct(Filesystem $files){
 
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
+        parent::__construct($files);
     }
 
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
-    public function handle()
-    {
-        $this->makeDirectory($this->argument('section'), 'Policies/');
+    protected function getDefaultNamespace($rootNamespace){
 
-        if (File::exists(app_path('Http/Controllers/'.ucfirst($this->argument('section')).'/Policies/'.ucfirst($this->argument('name')).'.php'))) {
-            $this->error('Policy already exists.');
-        } else {
-            $data = File::get(__DIR__.'/stubs/policy');
-
-            $data = str_replace('{{{name}}}', ucfirst($this->argument('name')), $data);
-            $data = str_replace('{{{section}}}', ucfirst($this->argument('section')), $data);
-            $data = str_replace('{{{appName}}}', $this->getAppNamespace(), $data);
-            File::put(app_path('Http/Controllers/'.ucfirst($this->argument('section')).'/Policies/'.ucfirst($this->argument('name')).'.php'),
-                      $data);
-            $this->info('Policy created successfully.');
+        $namespace = $rootNamespace.'\Http';
+        if(!is_null($this->option('section'))) {
+            $namespace = $namespace.'\Controllers\\'.Str::studly($this->option('section'));
         }
+
+        return $namespace.'\Policies';
     }
 }
