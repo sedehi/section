@@ -89,4 +89,11 @@ class SectionServiceProvider extends ArtisanServiceProvider
             return new SectionPolicy($app['files']);
         });
     }
+
+    protected function registerFactoryMakeCommand()
+    {
+        $this->app->singleton('command.factory.make', function ($app) {
+            return new SectionFactory($app['files']);
+        });
+    }
 }

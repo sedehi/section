@@ -2,114 +2,29 @@
 
 namespace Sedehi\Section\Commands;
 
-use Illuminate\Console\GeneratorCommand;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\InputArgument;
+use Illuminate\Database\Console\Factories\FactoryMakeCommand;
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Str;
+use Sedehi\Section\SectionOption;
 
-class SectionFactory extends GeneratorCommand
+class SectionFactory extends FactoryMakeCommand
 {
 
+    use SectionOption;
 
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $name = 'section:factory';
+    public function __construct(Filesystem $files){
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Create a factory file in section';
-
-    /**
-     * Create a new command instance.
-     * @return void
-     */
-    public function __construct(){
-
-        parent::__construct(app()->files);
+        parent::__construct($files);
     }
 
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
-    public function handle()
-    {
-        $this->createDirectory('database');
+    protected function getPath($name){
 
-        $filePath = $this->getFilePath();
-
-        if ($this->files->exists($filePath)) {
-            $this->error('factory already exists.');
-            return;
+        $name = str_replace(['\\', '/'], '', $this->argument('name'));
+        if(!is_null($this->option('section'))) {
+            return app_path("Http/Controllers/".Str::studly($this->option('section'))."/database/factories/{$name}.php");
         }
 
-        $this->files->put(
-            $filePath,
-            $this->buildClass($this->getFullModelName())
-        );
-
-        $this->info('factory created successfully.');
+        return $this->laravel->databasePath()."/factories/{$name}.php";
     }
 
-    /**
-     * Get the stub file for the generator.
-     *
-     * @return string
-     */
-    protected function getStub()
-    {
-        return __DIR__.'/stubs/factory.stub';
-    }
-
-    /**
-     * Get the console command arguments.
-     *
-     * @return array
-     */
-    protected function getArguments()
-    {
-        return [
-            ['section', InputArgument::REQUIRED, 'The name of the section'],
-        ];
-    }
-
-    /**
-     * Get the console command options.
-     *
-     * @return array
-     */
-    protected function getOptions()
-    {
-        return [
-            ['model', 'm', InputOption::VALUE_OPTIONAL, 'The name of the model'],
-        ];
-    }
-
-    /**
-     * Get file path to generate.
-     *
-     * @return string
-     */
-    protected function getFilePath()
-    {
-        return app_path('Http/Controllers/'.$this->getSectionName().'/database/factory.php');
-    }
-
-    /**
-     * Get full model name.
-     *
-     * @return string
-     */
-    protected function getFullModelName()
-    {
-        $modelName = is_null($this->option('model')) ? $this->getSectionName() : studly_case($this->option('model'));
-
-        return 'Http\\Controllers\\'.$this->getSectionName().'\\Models\\'.$modelName;
-    }
 }
