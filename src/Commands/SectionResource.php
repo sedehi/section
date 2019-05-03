@@ -2,74 +2,45 @@
 
 namespace Sedehi\Section\Commands;
 
-use Illuminate\Console\Command;
-use Illuminate\Support\Facades\File;
-use Illuminate\Console\DetectsApplicationNamespace;
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Foundation\Console\ResourceMakeCommand;
+use Illuminate\Support\Str;
+use Symfony\Component\Console\Input\InputOption;
 
-class SectionResource extends Command
+class SectionResource extends ResourceMakeCommand
 {
-    use DetectsApplicationNamespace, SectionsTrait;
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'section:resource {section : The name of the section}  {name : The name of the resource} {--collection : Create a resource collection.} {--v= : Set api version}';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Create a new api resource in section';
 
     /**
      * Create a new command instance.
      *
-     * @return void
+     * @param Filesystem $files
      */
-    public function __construct()
-    {
-        parent::__construct();
+    public function __construct(Filesystem $files){
+
+        parent::__construct($files);
     }
 
-    private function init()
-    {
-        $this->makeDirectory($this->argument('section'), 'Resources');
+    protected function getOptions(){
 
-        if ($this->option('v')) {
-            $this->makeDirectory($this->argument('section'), 'Resources/'.ucfirst($this->option('v')));
-            $this->resourcesName = ucfirst($this->argument('section')).'/Resources/'.ucfirst($this->option('v'));
-            $this->namespace    = $this->getAppNamespace().'Http\Controllers\\'.ucfirst($this->argument("section")).'\Resources\\'.ucfirst($this->option('v'));
-        } else {
-            $this->resourcesName = ucfirst($this->argument('section')).'/Resources';
-            $this->namespace    = $this->getAppNamespace().'Http\Controllers\\'.ucfirst($this->argument("section")).'\Resources';
-        }
+        $options = parent::getOptions();
+        $options = array_merge($options, [
+            ['section', 's', InputOption::VALUE_OPTIONAL, 'The name of the section'],
+            ['api-version', 'av', InputOption::VALUE_OPTIONAL, 'Set api version']
+        ]);
+
+        return $options;
     }
-    
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
-    public function handle()
-    {
-        $this->init();
 
-        if (File::exists(app_path('Http/Controllers/'.$this->resourcesName.'/'.$this->argument('name').'.php'))) {
-            $this->error('Resource already exists.');
-        } else {
-            if ($this->option('collection')) {
-                $data = File::get(__DIR__.'/Template/resource/collection');
-            } else {
-                $data = File::get(__DIR__.'/Template/resource/single');
-            }
+    protected function getDefaultNamespace($rootNamespace){
 
-            $data = str_replace('{{{name}}}', ucfirst($this->argument('name')), $data);
-            $data = str_replace('{{{namespace}}}', $this->namespace, $data);
-            File::put(app_path('Http/Controllers/'.$this->resourcesName.'/'.$this->argument('name').'.php'),
-                      $data);
-            $this->info('Resource created successfully.');
+        $namespace = $rootNamespace.'\Http';
+        if(!is_null($this->option('section'))) {
+            $namespace = $namespace.'\Controllers\\'.Str::studly($this->option('section'));
         }
+        if(!is_null($this->option('api-version'))) {
+            return $namespace.'\Resources\\'.Str::studly($this->option('api-version'));
+        }
+
+        return $namespace.'\Resources';
     }
 }

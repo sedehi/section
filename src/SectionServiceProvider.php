@@ -2,7 +2,9 @@
 
 namespace Sedehi\Section;
 
-use Illuminate\Support\ServiceProvider;
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Foundation\Console\ResourceMakeCommand;
+use Illuminate\Foundation\Providers\ArtisanServiceProvider;
 use Sedehi\Section\Commands\SectionAdd;
 use Sedehi\Section\Commands\SectionAuth;
 use Sedehi\Section\Commands\SectionController;
@@ -18,17 +20,14 @@ use Sedehi\Section\Commands\SectionMigrateRollback;
 use Sedehi\Section\Commands\SectionMigration;
 use Sedehi\Section\Commands\SectionModel;
 use Sedehi\Section\Commands\SectionNotification;
-use Sedehi\Section\Commands\SectionPicture;
 use Sedehi\Section\Commands\SectionPolicy;
 use Sedehi\Section\Commands\SectionRequest;
 use Sedehi\Section\Commands\SectionResource;
-use Sedehi\Section\Commands\SectionRule;
 use Sedehi\Section\Commands\SectionSeed;
 use Sedehi\Section\Commands\SectionTest;
-use Sedehi\Section\Commands\SectionUpdateRoles;
 use Sedehi\Section\Commands\SectionView;
 
-class SectionServiceProvider extends ServiceProvider
+class SectionServiceProvider extends ArtisanServiceProvider
 {
 
     /**
@@ -47,7 +46,6 @@ class SectionServiceProvider extends ServiceProvider
                             SectionModel::class,
                             SectionPolicy::class,
                             SectionRequest::class,
-                            SectionResource::class,
                             SectionSeed::class,
                             SectionTest::class,
                             SectionAuth::class,
@@ -57,11 +55,12 @@ class SectionServiceProvider extends ServiceProvider
                         ]);
     }
 
-    /**
-     * Register any package services.
-     * @return void
-     */
-    public function register(){
-        //
+    protected function registerResourceMakeCommand(){
+
+        $this->app->singleton('command.resource.make', function($app){
+
+            return new SectionResource($app['files']);
+        });
     }
+
 }
