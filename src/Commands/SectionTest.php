@@ -2,58 +2,60 @@
 
 namespace Sedehi\Section\Commands;
 
-use Illuminate\Console\Command;
-use Illuminate\Support\Facades\File;
-use Illuminate\Console\DetectsApplicationNamespace;
+use Illuminate\Foundation\Console\TestMakeCommand;
+use Illuminate\Support\Str;
 
-class SectionTest extends Command
+class SectionTest extends TestMakeCommand
 {
 
-    use DetectsApplicationNamespace;
-    /**
-     * The name and signature of the console command.
-     * @var string
-     */
-    protected $signature = 'section:test {section : The name of the section}  {name : The name of the test} {--unit : Create a unit test}';
+    public function __construct($files){
 
-    /**
-     * The console command description.
-     * @var string
-     */
-    protected $description = 'Create a new test class in section';
-
-    /**
-     * Create a new command instance.
-     * @return void
-     */
-    public function __construct(){
-
-        parent::__construct();
+        $this->signature .= '
+        {--section= : The name of the section}
+        {--test-version= : Set test version}
+        ';
+        parent::__construct($files);
     }
 
-    /**
-     * Execute the console command.
-     * @return mixed
-     */
-    public function handle(){
+    protected function getDefaultNamespace($rootNamespace){
 
+        $namespace = $rootNamespace;
+        if(!is_null($this->option('section'))) {
+            $namespace = $namespace.'\Http\Controllers\\'.Str::studly($this->option('section'));
+        }
+        if(!is_null($this->option('section'))) {
+            $namespace .= '\Tests';
+        }
         if($this->option('unit')) {
-            $this->makeDirectory($this->argument('section'), 'tests/Unit/');
-            $path = app_path('Http/Controllers/'.ucfirst($this->argument('section')).'/tests/Unit/'.$this->argument('name').'.php');
-            $data = File::get(__DIR__.'/stubs/unit-test');
+            $namespace .= '\Unit';
         }else {
-            $this->makeDirectory($this->argument('section'), 'tests/Feature/');
-            $path = app_path('Http/Controllers/'.ucfirst($this->argument('section')).'/tests/Feature/'.$this->argument('name').'.php');
-            $data = File::get(__DIR__.'/stubs/test');
+            $namespace .= '\Feature';
         }
-        if(File::exists($path)) {
-            $this->error('tests already exists.');
-        }else {
-            $data = str_replace('{{{name}}}', ucfirst($this->argument('name')), $data);
-            $data = str_replace('{{{section}}}', ucfirst($this->argument('section')), $data);
-            $data = str_replace('{{{appName}}}', $this->getAppNamespace(), $data);
-            File::put($path, $data);
-            $this->info('tests created successfully.');
+        if(!is_null($this->option('test-version'))) {
+            $namespace .= '\\'.Str::studly($this->option('test-version'));
         }
+
+        return $namespace;
     }
+
+    protected function rootNamespace(){
+
+        if(!is_null($this->option('section'))) {
+            return app()->getNamespace();
+        }
+
+        return 'Tests';
+    }
+
+    protected function getPath($name){
+
+        $name = Str::replaceFirst($this->rootNamespace(), '', $name);
+        $name = str_replace('\\Tests\\','\\tests\\',$name);
+        if(!is_null($this->option('section'))) {
+            return app_path().'/'.str_replace('\\', '/', $name).'.php';
+        }
+
+        return base_path('tests').str_replace('\\', '/', $name).'.php';
+    }
+
 }

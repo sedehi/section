@@ -32,7 +32,6 @@ class SectionServiceProvider extends ArtisanServiceProvider
         $this->commands([
                             SectionAdd::class,
                             SectionController::class,
-                            SectionTest::class,
                             SectionAuth::class,
                             SectionView::class,
                         ]);
@@ -113,17 +112,27 @@ class SectionServiceProvider extends ArtisanServiceProvider
     protected function registerMigrateMakeCommand(){
 
         $this->app->singleton('command.migrate.make', function($app){
-            $creator = $app['migration.creator'];
+
+            $creator  = $app['migration.creator'];
             $composer = $app['composer'];
 
             return new SectionMigration($creator, $composer);
         });
     }
 
-    protected function registerModelMakeCommand()
-    {
-        $this->app->singleton('command.model.make', function ($app) {
+    protected function registerModelMakeCommand(){
+
+        $this->app->singleton('command.model.make', function($app){
+
             return new SectionModel($app['files']);
+        });
+    }
+
+    protected function registerTestMakeCommand(){
+
+        $this->app->singleton('command.test.make', function($app){
+
+            return new SectionTest($app['files']);
         });
     }
 }
