@@ -16,6 +16,7 @@ use Sedehi\Section\Commands\SectionNotification;
 use Sedehi\Section\Commands\SectionPolicy;
 use Sedehi\Section\Commands\SectionRequest;
 use Sedehi\Section\Commands\SectionResource;
+use Sedehi\Section\Commands\SectionRule;
 use Sedehi\Section\Commands\SectionSeed;
 use Sedehi\Section\Commands\SectionTest;
 use Sedehi\Section\Commands\SectionView;
@@ -133,6 +134,13 @@ class SectionServiceProvider extends ArtisanServiceProvider
         $this->app->singleton('command.test.make', function($app){
 
             return new SectionTest($app['files']);
+        });
+    }
+
+    protected function registerRuleMakeCommand()
+    {
+        $this->app->singleton('command.rule.make', function ($app) {
+            return new SectionRule($app['files']);
         });
     }
 }
