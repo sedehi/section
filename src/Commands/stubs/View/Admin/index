@@ -11,11 +11,8 @@
                             <button type="button" class="btn btn-primary table-header-btn" data-toggle="collapse" data-target="#searchCollapse" role="button" aria-expanded="false" aria-controls="collapseExample">
                                 <i class="fa fa-search"></i>
                             </button>
-                            <form method="POST action="{{action('{{{section}}}\Controllers\Admin\{{{controller}}}@destroy',1)">
-                            @csrf
-                            @method('DELETE')
                             @if(permission('{{{section}}}.{{{controller}}}.destroy'))
-                                <button type="submit" onclick="return confirm('از حذف اطلاعات اطمینان دارید؟');" class="btn btn-danger table-header-btn">
+                                <button type="submit" class="btn btn-danger table-header-btn">
                                         حذف
                                 </button>
                             @endif
@@ -47,7 +44,7 @@
                             <tr>
                                 <td scope="row">
                                     <div class="form-check">
-                                        <input type="checkbox" name="deleteId[]" value="{{$item->id}}" class="form-check-input position-static">
+                                        <input type="checkbox" name="deleteId[]" value="{{$item->id}}" class="form-check-input position-static delete-item">
                                     </div>
                                 </td>
                                  <td>{{ $item->title }}</td>
@@ -77,5 +74,8 @@
             </div>
         </div>
     </div>
-    {!! Form::close() !!}
+    <form method="POST" action="{{action('{{{section}}}\Controllers\Admin\{{{controller}}}@destroy',1)}}" id="delete-form">
+        @csrf
+        @method('delete')
+    </form>
 @endsection
