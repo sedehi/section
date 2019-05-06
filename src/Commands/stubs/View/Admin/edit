@@ -3,7 +3,6 @@
     <div class="row gap-20 pos-r">
         <div class="col-md-12">
             <div class="bgc-white p-20 bd">
-                {{--<h6 class="c-grey-900">Basic Form</h6>--}}
                 <div class="mT-30">
                     <form method="POST" action="{{action('{{{section}}}\Controllers\Admin\{{{controller}}}@update',$item->id)}}">
                         @csrf
