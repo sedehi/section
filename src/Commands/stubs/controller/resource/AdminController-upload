@@ -11,15 +11,7 @@ use Image;
 
 class {{{name}}} extends Controller
 {
-    public $uploadPath = 'uploads/{{{sectionLower}}}/';
-
-    public $imageSize = [
-        [
-            'width'     =>  1280,
-            'height'    =>  720
-        ]
-    ];
-
+    
     public function index()
     {
         $items = {{{model}}}::filter()->latest('id')->simplePaginate(10);
