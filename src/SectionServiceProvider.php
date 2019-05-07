@@ -3,6 +3,7 @@
 namespace Sedehi\Section;
 
 use Illuminate\Foundation\Providers\ArtisanServiceProvider;
+use Illuminate\Routing\Console\ControllerMakeCommand;
 use Sedehi\Section\Commands\SectionAdd;
 use Sedehi\Section\Commands\SectionAuth;
 use Sedehi\Section\Commands\SectionController;
@@ -32,8 +33,6 @@ class SectionServiceProvider extends ArtisanServiceProvider
 
         $this->commands([
                             SectionAdd::class,
-                            SectionController::class,
-                            SectionAuth::class,
                             SectionView::class,
                         ]);
     }
@@ -137,10 +136,19 @@ class SectionServiceProvider extends ArtisanServiceProvider
         });
     }
 
-    protected function registerRuleMakeCommand()
-    {
-        $this->app->singleton('command.rule.make', function ($app) {
+    protected function registerRuleMakeCommand(){
+
+        $this->app->singleton('command.rule.make', function($app){
+
             return new SectionRule($app['files']);
+        });
+    }
+
+    protected function registerControllerMakeCommand(){
+
+        $this->app->singleton('command.controller.make', function($app){
+
+            return new SectionController($app['files']);
         });
     }
 }
