@@ -1,0 +1,105 @@
+<?php
+
+namespace DummyNamespace;
+
+use DummyFullModelClass;
+use DummyRootNamespaceHttp\Controllers\Controller;
+use DummyFullRequestClass;
+use App\Libs\ImageMaker;
+
+class DummyClass extends Controller
+{
+    
+	public function index()
+	{
+	   $items = DummyModelClass::filter()->latest('id')->simplePaginate(10);
+
+	   return view('DummyViewPath.index', compact('items'));
+	}
+
+	public function create()
+	{
+	   return view('DummyViewPath.add');
+	}
+
+	public function store(DummyRequestClass $request)
+	{
+	    $item             = new DummyModelClass();
+	    $item->title       = $request->get('title');
+	    if ($request->hasFile('picture')) {
+
+	        $file     = $request->file('picture');
+	        $fileName = time().'-'.$file->hashName();
+	        ImageMaker::make($file)
+	                  ->disk('public')
+	                  ->keepOriginal()
+	                  ->keepLargeSize()
+	                  ->path(config('image.paths.DummySectionLower'))
+	                  ->dimensions(config('image.DummySectionLower'))
+	                  ->name($fileName)
+	                  ->store();
+	        $item->picture = $fileName;
+	    }
+	    $item->save();
+
+	    return redirect()->action('DummyAction@index')->with('success', trans('admin.saved'));
+
+	}
+
+    public function edit($id)
+    {
+        $item = DummyModelClass::findOrFail($id);
+        return view('DummyViewPath.edit', compact('item'));
+    }
+
+    public function show($id)
+    {
+        $item = DummyModelClass::findOrFail($id);
+        return view('DummyViewPath.show', compact('item'));
+    }
+
+    public function update(DummyRequestClass $request, $id)
+    {
+        $item = DummyModelClass::findOrFail($id);
+        $item->title       = $request->get('title');
+        if ($request->hasFile('picture')) {
+
+            $file     = $request->file('picture');
+            $fileName = time().'-'.$file->hashName();
+            ImageMaker::make($file)
+                      ->disk('public')
+                      ->keepOriginal()
+                      ->keepLargeSize()
+                      ->path(config('image.paths.DummySectionLower'))
+                      ->dimensions(config('image.DummySectionLower'))
+                      ->name($fileName)
+                      ->store();
+            if(!is_null($item->picture)) {
+                  ImageMaker::make()->path(config('image.paths.DummySectionLower'))->name($item->picture)->remove();
+            }
+            $item->picture = $fileName;
+        }else {
+            if ($request->get('file_remove') == 1) {
+                removeImage($this->uploadPath,$item->picture);
+                $item->picture = null;
+            }
+        }
+        $item->save();
+
+        return redirect()->action('DummyAction@index')->with('success', trans('admin.saved'));
+
+    }
+
+    public function destroy(DummyRequestClass $request)
+    {
+        $items  = DummyModelClass::whereIn('id', $request->get('deleteId'))->get();
+
+        foreach ($items as $item) {
+            removeImage($this->uploadPath,$item->picture);
+        }
+
+        $items->each->delete();
+
+        return redirect()->action('DummyAction@index')->with('success', trans('admin.deleted'));
+    }
+}

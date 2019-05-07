@@ -1,0 +1,62 @@
+<?php
+
+namespace DummyNamespace;
+
+use DummyFullModelClass;
+use DummyRootNamespaceHttp\Controllers\Controller;
+use DummyFullRequestClass;
+
+class DummyClass extends Controller
+{
+
+    public function index()
+    {
+        $items = DummyModelClass::filter()->latest('id')->simplePaginate(10);
+
+        return view('DummyViewPath.index', compact('items'));
+    }
+
+    public function create()
+    {
+        return view('DummyViewPath.add');
+    }
+
+    public function store(DummyRequestClass $request)
+    {
+        $item             = new DummyModelClass();
+        $item->title       = $request->get('title');
+        $item->save();
+
+        return redirect()->action('DummyAction@index')->with('success', trans('admin.saved'));
+
+    }
+
+    public function edit($id)
+    {
+        $item = DummyModelClass::findOrFail($id);
+        return view('DummyViewPath.edit', compact('item'));
+    }
+
+    public function show($id)
+    {
+        $item = DummyModelClass::findOrFail($id);
+        return view('DummyViewPath.show', compact('item'));
+    }
+
+    public function update(DummyRequestClass $request, $id)
+    {
+        $item             = DummyModelClass::findOrFail($id);
+        $item->title       = $request->get('title');
+        $item->save();
+
+        return redirect()->action('DummyAction@index')->with('success', trans('admin.saved'));
+
+    }
+
+    public function destroy(DummyRequestClass $request)
+    {
+        DummyModelClass::whereIn('id', $request->get('deleteId'))->get()->each->delete();
+
+        return redirect()->action('DummyAction@index')->with('success', trans('admin.deleted'));
+    }
+}
