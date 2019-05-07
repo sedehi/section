@@ -15,7 +15,7 @@ class SectionView extends Command
      * The name and signature of the console command.
      * @var string
      */
-    protected $signature = 'section:view {section : The name of the section} {name : The name of the folder} {title : The title of the views} {controller : The name of controller} {--upload}';
+    protected $signature = 'make:view {section : The name of the section} {name : The name of the folder} {title : The title of the views} {controller : The name of controller} {--upload}';
 
     /**
      * The console command description.
