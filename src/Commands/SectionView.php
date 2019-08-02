@@ -39,7 +39,9 @@ class SectionView extends Command
     public function handle(){
 
         $viewPath = 'views/admin/'.strtolower($this->argument('name')).'/';
-        $this->makeDirectory($this->argument('section'), $viewPath);
+        if(!File::isDirectory(app_path('Http/Controllers/'.ucfirst($this->argument('section')).'/'.$viewPath))) {
+            File::makeDirectory(app_path('Http/Controllers/'.ucfirst($this->argument('section')).'/'.$viewPath), 0775, true);
+        }
         if($this->option('upload')) {
             foreach(File::files(__DIR__.'/stubs/View/Admin-upload') as $templateFile) {
                 if(File::exists(app_path('Http/Controllers/'.ucfirst($this->argument('section')).'/views/admin/'.strtolower($this->argument('name')).'/'.File::name($templateFile).'.blade.php'))) {
