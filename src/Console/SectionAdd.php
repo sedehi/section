@@ -3,6 +3,7 @@
 namespace Sedehi\Section\Console;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\File;
 
 class SectionAdd extends Command
 {

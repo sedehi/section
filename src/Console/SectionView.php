@@ -4,6 +4,7 @@ namespace Sedehi\Section\Console;
 
 use Illuminate\Console\Command;
 use Illuminate\Console\DetectsApplicationNamespace;
+use Illuminate\Support\Facades\File;
 
 class SectionView extends Command
 {
