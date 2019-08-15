@@ -4,12 +4,3 @@
         $migratePaths = glob(app_path('Http/Controllers/*/database/migrations'));
         $this->loadMigrationsFrom($migratePaths);
     }
-
-    protected function factories()
-    {
-        if (in_array($this->app->environment(), ['local', 'testing'])) {
-            $this->app->singleton(EloquentFactory::class, function ($app) {
-                return EloquentFactory::construct($app->make(FakerGenerator::class), database_path('factories'));
-            });
-        }
-    }
