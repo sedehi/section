@@ -1,16 +1,15 @@
 <?php
 
-namespace Sedehi\Section\Commands;
+namespace Sedehi\Section\Console;
 
-use Illuminate\Foundation\Console\MailMakeCommand;
+use Illuminate\Foundation\Console\PolicyMakeCommand;
 use Illuminate\Support\Str;
 use Sedehi\Section\SectionOption;
 
-class SectionMail extends MailMakeCommand
+class SectionPolicy extends PolicyMakeCommand
 {
 
     use SectionOption;
-
 
     protected function getDefaultNamespace($rootNamespace){
 
@@ -19,6 +18,6 @@ class SectionMail extends MailMakeCommand
             $namespace = $namespace.'\Controllers\\'.Str::studly($this->option('section'));
         }
 
-        return $namespace.'\Mail';
+        return $namespace.'\Policies';
     }
 }

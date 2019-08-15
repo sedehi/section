@@ -1,6 +1,6 @@
 <?php
 
-namespace Sedehi\Section\Commands;
+namespace Sedehi\Section\Console;
 
 use Illuminate\Foundation\Console\TestMakeCommand;
 use Illuminate\Support\Str;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Sedehi\Section\Commands;
+namespace Sedehi\Section\Console;
 
 use Illuminate\Database\Console\Factories\FactoryMakeCommand;
 use Illuminate\Support\Str;

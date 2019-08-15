@@ -1,6 +1,6 @@
 <?php
 
-namespace Sedehi\Section\Commands;
+namespace Sedehi\Section\Console;
 
 use Illuminate\Routing\Console\ControllerMakeCommand;
 use Illuminate\Support\Str;

@@ -1,8 +1,7 @@
 <?php
 
-namespace Sedehi\Section\Commands;
+namespace Sedehi\Section\Console;
 
-use File;
 use Illuminate\Console\Command;
 
 class SectionAdd extends Command

@@ -1,12 +1,12 @@
 <?php
 
-namespace Sedehi\Section\Commands;
+namespace Sedehi\Section\Console;
 
-use Illuminate\Foundation\Console\NotificationMakeCommand;
+use Illuminate\Foundation\Console\RuleMakeCommand;
 use Illuminate\Support\Str;
 use Sedehi\Section\SectionOption;
 
-class SectionNotification extends NotificationMakeCommand
+class SectionRule extends RuleMakeCommand
 {
 
     use SectionOption;
@@ -18,6 +18,6 @@ class SectionNotification extends NotificationMakeCommand
             $namespace = $namespace.'\Controllers\\'.Str::studly($this->option('section'));
         }
 
-        return $namespace.'\Notifications';
+        return $namespace.'\Rules';
     }
 }

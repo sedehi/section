@@ -1,6 +1,6 @@
 <?php
 
-namespace Sedehi\Section\Commands;
+namespace Sedehi\Section\Console;
 
 use Illuminate\Foundation\Console\JobMakeCommand;
 use Illuminate\Support\Str;

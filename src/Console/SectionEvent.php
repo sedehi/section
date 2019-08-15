@@ -1,12 +1,12 @@
 <?php
 
-namespace Sedehi\Section\Commands;
+namespace Sedehi\Section\Console;
 
-use Illuminate\Foundation\Console\PolicyMakeCommand;
+use Illuminate\Foundation\Console\EventMakeCommand;
 use Illuminate\Support\Str;
 use Sedehi\Section\SectionOption;
 
-class SectionPolicy extends PolicyMakeCommand
+class SectionEvent extends EventMakeCommand
 {
 
     use SectionOption;
@@ -18,6 +18,6 @@ class SectionPolicy extends PolicyMakeCommand
             $namespace = $namespace.'\Controllers\\'.Str::studly($this->option('section'));
         }
 
-        return $namespace.'\Policies';
+        return $namespace.'\Events';
     }
 }

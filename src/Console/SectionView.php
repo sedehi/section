@@ -1,8 +1,7 @@
 <?php
 
-namespace Sedehi\Section\Commands;
+namespace Sedehi\Section\Console;
 
-use File;
 use Illuminate\Console\Command;
 use Illuminate\Console\DetectsApplicationNamespace;
 
@@ -23,14 +22,6 @@ class SectionView extends Command
      */
     protected $description = 'Create admin views in section';
 
-    /**
-     * Create a new command instance.
-     * @return void
-     */
-    public function __construct(){
-
-        parent::__construct();
-    }
 
     /**
      * Execute the console command.

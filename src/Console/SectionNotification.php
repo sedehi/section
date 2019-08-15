@@ -1,12 +1,12 @@
 <?php
 
-namespace Sedehi\Section\Commands;
+namespace Sedehi\Section\Console;
 
-use Illuminate\Foundation\Console\EventMakeCommand;
+use Illuminate\Foundation\Console\NotificationMakeCommand;
 use Illuminate\Support\Str;
 use Sedehi\Section\SectionOption;
 
-class SectionEvent extends EventMakeCommand
+class SectionNotification extends NotificationMakeCommand
 {
 
     use SectionOption;
@@ -18,6 +18,6 @@ class SectionEvent extends EventMakeCommand
             $namespace = $namespace.'\Controllers\\'.Str::studly($this->option('section'));
         }
 
-        return $namespace.'\Events';
+        return $namespace.'\Notifications';
     }
 }
