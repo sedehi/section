@@ -35,10 +35,8 @@ class InstallCommand extends Command
     public function registerMigrations(){
 
         $appServiceProviderPath = app_path('Providers/AppServiceProvider.php');
-        $appServiceProvider = file_get_contents($appServiceProviderPath);
-        $eol = $this->EOL($appServiceProvider);
-
-
+        $appServiceProvider     = file_get_contents($appServiceProviderPath);
+        $eol                    = $this->EOL($appServiceProvider);
         if(!Str::contains($appServiceProvider, 'loadMigration')) {
             $lines              = file($appServiceProviderPath);
             $appServiceProvider = '';
@@ -66,48 +64,25 @@ class InstallCommand extends Command
 
     public function registerRoutes(){
 
-        if(!File::exists(base_path('routes/admin.php'))){
+        if(!File::exists(base_path('routes/admin.php'))) {
             file_put_contents(base_path('routes/admin.php'), '<?php ');
         }
-
         $routeServiceProviderPath = app_path('Providers/RouteServiceProvider.php');
-        $routeServiceProvider = file_get_contents($routeServiceProviderPath);
-
-        if (Str::contains($routeServiceProvider, 'mapAdminRoutes')) {
+        $routeServiceProvider     = file_get_contents($routeServiceProviderPath);
+        if(Str::contains($routeServiceProvider, 'mapAdminRoutes')) {
             return;
         }
-
         $eol = $this->EOL($routeServiceProvider);
-
-        file_put_contents($routeServiceProviderPath, str_replace(
-            "->group(base_path('routes/api.php'));",
-            $this->apiRouteCode(),
-            $routeServiceProvider
-        ));
-
+        file_put_contents($routeServiceProviderPath, str_replace("->group(base_path('routes/api.php'));", $this->apiRouteCode(), $routeServiceProvider));
         $routeServiceProvider = file_get_contents($routeServiceProviderPath);
-
-        file_put_contents($routeServiceProviderPath, str_replace(
-            "->group(base_path('routes/web.php'));",
-            $this->webRouteCode(),
-            $routeServiceProvider
-        ));
-
+        file_put_contents($routeServiceProviderPath, str_replace("->group(base_path('routes/web.php'));", $this->webRouteCode(), $routeServiceProvider));
         $routeServiceProvider = file_get_contents($routeServiceProviderPath);
-
-        file_put_contents($routeServiceProviderPath, str_replace(
-            '$this->mapWebRoutes();',
-            '$this->mapWebRoutes();'.$eol.'        $this->mapAdminRoutes();',
-            $routeServiceProvider
-        ));
-
+        file_put_contents($routeServiceProviderPath, str_replace('$this->mapWebRoutes();', '$this->mapWebRoutes();'.$eol.'        $this->mapAdminRoutes();', $routeServiceProvider));
         $routeServiceProvider = file_get_contents($routeServiceProviderPath);
-
         if(!Str::contains(file_get_contents($routeServiceProviderPath), 'function mapAdminRoutes')) {
             $routeServiceProvider = substr_replace($routeServiceProvider, $eol.$this->adminRouteCode(), strrpos($routeServiceProvider, '}') - 1, 0);
             file_put_contents($routeServiceProviderPath, $routeServiceProvider);
         }
-
     }
 
     protected function migrationsLoadCode(){
@@ -118,6 +93,7 @@ class InstallCommand extends Command
     }
 
     protected function adminRouteCode(){
+
         return '    protected function mapAdminRoutes(){
 
         Route::namespace($this->namespace)->middleware(\'admin\')->group(function(){
@@ -132,6 +108,7 @@ class InstallCommand extends Command
     }
 
     protected function apiRouteCode(){
+
         return '->group(function () {
             $routes = glob(app_path(\'Http/Controllers/*/routes/api.php\'));
             foreach ($routes as $route) {
@@ -140,7 +117,9 @@ class InstallCommand extends Command
             require base_path(\'routes/api.php\');
         });';
     }
+
     protected function webRouteCode(){
+
         return '->group(function () {
             $routes = glob(app_path(\'Http/Controllers/*/routes/web.php\'));
             foreach ($routes as $route) {
@@ -157,6 +136,7 @@ class InstallCommand extends Command
             "\r"   => substr_count($routeServiceProvider, "\r"),
             "\n"   => substr_count($routeServiceProvider, "\n"),
         ];
+
         return array_keys($lineEndingCount, max($lineEndingCount))[0];
     }
 }
