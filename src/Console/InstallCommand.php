@@ -35,7 +35,11 @@ class InstallCommand extends Command
     public function registerMigrations(){
 
         $appServiceProviderPath = app_path('Providers/AppServiceProvider.php');
-        if(!Str::contains(file_get_contents($appServiceProviderPath), 'loadMigration')) {
+        $appServiceProvider = file_get_contents($appServiceProviderPath);
+        $eol = $this->EOL($appServiceProvider);
+
+
+        if(!Str::contains($appServiceProvider, 'loadMigration')) {
             $lines              = file($appServiceProviderPath);
             $appServiceProvider = '';
             $linePointer        = null;
@@ -43,7 +47,7 @@ class InstallCommand extends Command
                 $appServiceProvider .= $line;
                 if(Str::contains($line, 'boot()')) {
                     if(Str::contains($line, '{')) {
-                        $appServiceProvider .= "\n";
+                        $appServiceProvider .= $eol;
                         $appServiceProvider .= $this->migrationsLoadCode();
                     }else {
                         $linePointer = $lineNumber + 1;
@@ -55,7 +59,7 @@ class InstallCommand extends Command
                     $linePointer        = null;
                 }
             }
-            $appServiceProvider = substr_replace($appServiceProvider, "\n".file_get_contents(__DIR__.'/stubs/serviceprovider-methods.stub'), strrpos($appServiceProvider, '}') - 1, 0);
+            $appServiceProvider = substr_replace($appServiceProvider, $eol.file_get_contents(__DIR__.'/stubs/serviceprovider-methods.stub'), strrpos($appServiceProvider, '}') - 1, 0);
             file_put_contents(app_path('Providers/AppServiceProvider.php'), $appServiceProvider);
         }
     }
@@ -100,7 +104,7 @@ class InstallCommand extends Command
         $routeServiceProvider = file_get_contents($routeServiceProviderPath);
 
         if(!Str::contains(file_get_contents($routeServiceProviderPath), 'function mapAdminRoutes')) {
-            $routeServiceProvider = substr_replace($routeServiceProvider, "\n".$this->adminRouteCode(), strrpos($routeServiceProvider, '}') - 1, 0);
+            $routeServiceProvider = substr_replace($routeServiceProvider, $eol.$this->adminRouteCode(), strrpos($routeServiceProvider, '}') - 1, 0);
             file_put_contents($routeServiceProviderPath, $routeServiceProvider);
         }
 
