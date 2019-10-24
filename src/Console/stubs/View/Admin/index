@@ -12,7 +12,7 @@
                                 <i class="fa fa-search"></i>
                             </button>
                             @if(permission('{{{section}}}.{{{controller}}}.destroy'))
-                                <button type="submit" class="btn btn-danger table-header-btn d-none">
+                                <button type="submit" class="btn btn-danger table-header-btn d-none delete-btn">
                                         حذف
                                 </button>
                             @endif
