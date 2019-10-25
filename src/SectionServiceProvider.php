@@ -15,13 +15,17 @@ class SectionServiceProvider extends ServiceProvider
      */
     public function boot(){
 
+        if($this->app->runningInConsole()) {
+            $this->publishes([
+                                 __DIR__.'/../resources/views' => resource_path('views/admin'),
+                             ], 'section-assets');
+        }
         $this->factories();
     }
 
     public function register(){
 
         $this->app->register(ArtisanServiceProvider::class);
-
     }
 
     protected function factories(){

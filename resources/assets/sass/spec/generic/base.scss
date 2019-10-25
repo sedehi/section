@@ -1,0 +1,122 @@
+html, html a, body {
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  transition: all 0.3s ease-in-out;
+}
+
+body {
+  font-family: $font-primary;
+  font-size: 14px;
+  color: $default-text-color;
+  line-height: 1.5;
+  letter-spacing: 0.2px;
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: $font-secondary;
+  letter-spacing: 0.5px;
+  line-height: 1.5;
+
+  a {
+    font-family: $font-secondary;
+  }
+
+  small {
+    font-weight: 300;
+    color: lighten($default-dark, 5%);
+  }
+}
+
+p {
+  font-family: $font-primary;
+  line-height: 1.9;
+}
+
+.lead {
+  font-size: 18px;
+}
+
+ul {
+  margin-bottom: 0;
+}
+
+a {
+  color: $default-info;
+
+  &:hover,
+  &:focus {
+    text-decoration: none;
+    color: darken($default-info, 10%);
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &.text-gray {
+    &:hover,
+    &:focus,
+    &.active {
+      color: $default-dark !important;
+    }
+  }
+}
+
+:focus {
+  outline: none;
+}
+
+hr {
+  border-top: 1px solid $border-color;
+}
+
+
+.table-responsive-stack tr {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: row;
+  flex-direction: row;
+}
+
+
+.table-responsive-stack td,
+.table-responsive-stack th {
+  display:block;
+  /*
+     flex-grow | flex-shrink | flex-basis   */
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+}
+
+.table-responsive-stack .table-responsive-stack-thead {
+  font-weight: bold;
+}
+
+@media screen and (max-width: 768px) {
+  .table-responsive-stack tr {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    border-bottom: 3px solid #ccc;
+    display:block;
+
+  }
+  /*  IE9 FIX   */
+  .table-responsive-stack td {
+    float: left\9;
+    width:100%;
+  }
+}
+

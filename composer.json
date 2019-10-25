@@ -20,7 +20,10 @@
   "autoload": {
     "psr-4": {
       "Sedehi\\Section\\": "src/"
-    }
+    },
+    "files": [
+      "src/helpers.php"
+    ]
   },
   "extra": {
     "laravel": {
