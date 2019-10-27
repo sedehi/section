@@ -29,6 +29,7 @@ class InstallCommand extends Command
 
         $this->registerMigrations();
         $this->registerRoutes();
+        $this->publishViews();
         $this->info('Section scaffolding installed successfully.');
     }
 
@@ -138,5 +139,34 @@ class InstallCommand extends Command
         ];
 
         return array_keys($lineEndingCount, max($lineEndingCount))[0];
+    }
+
+    private function publishViews()
+    {
+        $this->updateViewConfig();
+
+        $this->call('vendor:publish',[
+            '--tag' =>  'section-assets'
+        ]);
+    }
+
+    private function updateViewConfig()
+    {
+        $viewConfigPath = config_path('view.php');
+        $viewConfig     = file_get_contents($viewConfigPath);
+        $eol                    = $this->EOL($viewConfig);
+        if(!Str::contains($viewConfig, 'app_path(\'Http/Controllers\')')) {
+            $lines      = file($viewConfigPath);
+            $viewConfig = '';
+            foreach($lines as $lineNumber => $line) {
+                $viewConfig .= $line;
+                if(Str::contains($line, 'paths')) {
+                    if(Str::contains($line, '[')) {
+                        $viewConfig .= "\t\t".'app_path(\'Http/Controllers\'),'.$eol;
+                    }
+                }
+            }
+            file_put_contents($viewConfigPath, $viewConfig);
+        }
     }
 }
