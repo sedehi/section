@@ -160,10 +160,8 @@ class InstallCommand extends Command
             $viewConfig = '';
             foreach($lines as $lineNumber => $line) {
                 $viewConfig .= $line;
-                if(Str::contains($line, 'paths')) {
-                    if(Str::contains($line, '[')) {
+                if(Str::contains($line, 'resource_path(\'views\')')) {
                         $viewConfig .= "\t\t".'app_path(\'Http/Controllers\'),'.$eol;
-                    }
                 }
             }
             file_put_contents($viewConfigPath, $viewConfig);
