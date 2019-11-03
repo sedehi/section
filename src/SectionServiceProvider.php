@@ -15,10 +15,13 @@ class SectionServiceProvider extends ServiceProvider
      */
     public function boot(){
 
+        $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'section');
+
         if($this->app->runningInConsole()) {
             $this->publishes([
                                  __DIR__.'/../resources/views' => resource_path('views/admin'),
                                  __DIR__.'/../resources/assets' => public_path('assets/admin'),
+                                __DIR__.'/../resources/lang' => resource_path('lang/vendor/section'),
                              ], 'section-assets');
         }
         $this->factories();

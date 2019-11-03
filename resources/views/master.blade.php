@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>
-        مدیریت
+        @lang('section::admin.name')
         @if (trim($__env->yieldContent('title')))
         - @yield('title')
         @endif
@@ -73,7 +73,7 @@
     });
     $(document).on('change', '.delete-item , .check-all', function () {
         var btn = $('.delete-btn');
-        btn.html('@lang('admin.delete')');
+        btn.html('@lang('section::admin.delete')');
         $(this).closest('table').find('.delete-item:checked').each(function () {
             btn.append('<input type="hidden" name="deleteId[]" value="' + $(this).val() + '">');
         });

@@ -9,7 +9,7 @@
                                 <div class="logo"></div>
                             </div>
                             <div class="peer peer-greed">
-                                <h5 class="lh-1 mB-0 logo-text">@lang('admin.name')</h5>
+                                <h5 class="lh-1 mB-0 logo-text">@lang('section::admin.name')</h5>
                             </div>
                         </div>
                     </a>
@@ -29,7 +29,7 @@
                 <span class="icon-holder">
                   <i class="c-blue-500 ti-home"></i>
                 </span>
-                    <span class="title">@lang('admin.first_page')</span>
+                    <span class="title">@lang('section::admin.first_page')</span>
                 </a>
             </li>
             @foreach(adminMenu() as $keyMenu=>$valueMenu)
