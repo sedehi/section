@@ -18,7 +18,7 @@ if (!function_exists('adminRole')) {
         $list = glob(app_path('Http/Controllers/*/roles.php'));
         $role = [];
         foreach ($list as $dir) {
-            $role += include($dir);
+            $role += include $dir;
         }
 
         return $role;
@@ -30,7 +30,7 @@ if (!function_exists('adminMenu')) {
         $list = glob(app_path('Http/Controllers/*/menu.php'));
         $menu = [];
         foreach ($list as $dir) {
-            $menu += include($dir);
+            $menu += include $dir;
         }
         $unSort = [];
         foreach ($menu as $key => $row) {
