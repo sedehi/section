@@ -9,20 +9,19 @@ use Symfony\Component\Console\Input\InputOption;
 
 class SectionRequest extends RequestMakeCommand
 {
-
     use SectionOption;
 
-    protected function getStub(){
-
-        if($this->option('admin')) {
+    protected function getStub()
+    {
+        if ($this->option('admin')) {
             return __DIR__.'/stubs/admin-request.stub';
         }
 
         return parent::getStub();
     }
 
-    protected function getOptions(){
-
+    protected function getOptions()
+    {
         $options = parent::getOptions();
         $options = array_merge($options, [
             ['section', 's', InputOption::VALUE_OPTIONAL, 'The name of the section'],
@@ -42,27 +41,26 @@ class SectionRequest extends RequestMakeCommand
      *
      * @return string
      */
-    protected function getDefaultNamespace($rootNamespace){
-
+    protected function getDefaultNamespace($rootNamespace)
+    {
         $namespace = $rootNamespace.'\Http';
-        if(!is_null($this->option('section'))) {
+        if (!is_null($this->option('section'))) {
             $namespace = $namespace.'\Controllers\\'.Str::studly($this->option('section'));
         }
         $namespace = $namespace.'\Requests';
-        if($this->option('admin')) {
+        if ($this->option('admin')) {
             $namespace = $namespace.'\Admin';
         }
-        if($this->option('site')) {
+        if ($this->option('site')) {
             $namespace = $namespace.'\Site';
         }
-        if($this->option('api')) {
+        if ($this->option('api')) {
             $namespace = $namespace.'\Api';
         }
-        if(!is_null($this->option('request-version'))) {
+        if (!is_null($this->option('request-version'))) {
             $namespace = $namespace.'\\'.Str::studly($this->option('request-version'));
         }
 
         return $namespace;
     }
-
 }

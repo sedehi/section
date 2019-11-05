@@ -8,7 +8,6 @@ use Sedehi\Section\SectionOption;
 
 class SectionSeed extends SeederMakeCommand
 {
-
     use SectionOption;
 
     /**
@@ -18,14 +17,13 @@ class SectionSeed extends SeederMakeCommand
      *
      * @return string
      */
-    protected function getPath($name){
-
+    protected function getPath($name)
+    {
         $name = str_replace(['\\', '/'], '', $this->argument('name'));
-        if(!is_null($this->option('section'))) {
-            return app_path("Http/Controllers/".Str::studly($this->option('section'))."/database/seeds/{$name}.php");
+        if (!is_null($this->option('section'))) {
+            return app_path('Http/Controllers/'.Str::studly($this->option('section'))."/database/seeds/{$name}.php");
         }
 
         return $this->laravel->databasePath().'/seeds/'.$name.'.php';
     }
-
 }
