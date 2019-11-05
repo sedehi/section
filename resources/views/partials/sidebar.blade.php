@@ -3,13 +3,13 @@
         <div class="sidebar-logo">
             <div class="peers ai-c fxw-nw">
                 <div class="peer peer-greed">
-                    <a class="sidebar-link td-n" href="{{route('admin.homepage')}}">
+                    <a class="sidebar-link td-n" href="{{route('home')}}">
                         <div class="peers ai-c fxw-nw">
                             <div class="peer">
                                 <div class="logo"></div>
                             </div>
                             <div class="peer peer-greed">
-                                <h5 class="lh-1 mB-0 logo-text">@lang('section::admin.name')</h5>
+                                <h5 class="lh-1 mB-0 logo-text">@lang('admin.name')</h5>
                             </div>
                         </div>
                     </a>
@@ -25,11 +25,11 @@
         </div>
         <ul class="sidebar-menu scrollable pos-r">
             <li class="nav-item mT-30 active">
-                <a class="sidebar-link" href="{{route('admin.homepage')}}">
+                <a class="sidebar-link" href="{{route('home')}}">
                 <span class="icon-holder">
                   <i class="c-blue-500 ti-home"></i>
                 </span>
-                    <span class="title">@lang('section::admin.first_page')</span>
+                    <span class="title">@lang('admin.first_page')</span>
                 </a>
             </li>
             @foreach(adminMenu() as $keyMenu=>$valueMenu)
