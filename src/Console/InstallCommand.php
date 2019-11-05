@@ -25,11 +25,24 @@ class InstallCommand extends Command
      * Execute the console command.
      * @return mixed
      */
-    public function handle(){
-
+    public function handle()
+    {
         $this->registerMigrations();
         $this->registerRoutes();
-        $this->publishViews();
+
+        if($this->confirm('Do you want to create admin panel ? [y|n]', false)) {
+
+            $this->registerAdminRoutes();
+            $this->publishAdminFiles();
+            $this->call('make:auth');
+
+            if($this->confirm('Do you want to publish assets sources ? [y|n]', false)) {
+                $this->call('vendor:publish',[
+                    '--tag' =>  'section-assets-sources'
+                ]);
+            }
+        }
+
         $this->info('Section scaffolding installed successfully.');
     }
 
@@ -65,6 +78,16 @@ class InstallCommand extends Command
 
     public function registerRoutes(){
 
+        $routeServiceProviderPath = app_path('Providers/RouteServiceProvider.php');
+        $routeServiceProvider     = file_get_contents($routeServiceProviderPath);
+        $eol = $this->EOL($routeServiceProvider);
+        file_put_contents($routeServiceProviderPath, str_replace("->group(base_path('routes/api.php'));", $this->apiRouteCode(), $routeServiceProvider));
+        $routeServiceProvider = file_get_contents($routeServiceProviderPath);
+        file_put_contents($routeServiceProviderPath, str_replace("->group(base_path('routes/web.php'));", $this->webRouteCode(), $routeServiceProvider));
+    }
+
+    public function registerAdminRoutes(){
+
         if(!File::exists(base_path('routes/admin.php'))) {
             file_put_contents(base_path('routes/admin.php'), '<?php ');
         }
@@ -74,14 +97,10 @@ class InstallCommand extends Command
             return;
         }
         $eol = $this->EOL($routeServiceProvider);
-        file_put_contents($routeServiceProviderPath, str_replace("->group(base_path('routes/api.php'));", $this->apiRouteCode(), $routeServiceProvider));
-        $routeServiceProvider = file_get_contents($routeServiceProviderPath);
-        file_put_contents($routeServiceProviderPath, str_replace("->group(base_path('routes/web.php'));", $this->webRouteCode(), $routeServiceProvider));
-        $routeServiceProvider = file_get_contents($routeServiceProviderPath);
-        file_put_contents($routeServiceProviderPath, str_replace('$this->mapWebRoutes();', '$this->mapWebRoutes();'.$eol.'        $this->mapAdminRoutes();', $routeServiceProvider));
+        file_put_contents($routeServiceProviderPath, str_replace('$this->mapWebRoutes();', '$this->mapWebRoutes();'.$eol."\t\t".'$this->mapAdminRoutes();', $routeServiceProvider));
         $routeServiceProvider = file_get_contents($routeServiceProviderPath);
         if(!Str::contains(file_get_contents($routeServiceProviderPath), 'function mapAdminRoutes')) {
-            $routeServiceProvider = substr_replace($routeServiceProvider, $eol.$this->adminRouteCode(), strrpos($routeServiceProvider, '}') - 1, 0);
+            $routeServiceProvider = substr_replace($routeServiceProvider, $eol.$eol.$this->adminRouteCode(), strrpos($routeServiceProvider, '}') - 1, 0);
             file_put_contents($routeServiceProviderPath, $routeServiceProvider);
         }
     }
@@ -97,7 +116,7 @@ class InstallCommand extends Command
 
         return '    protected function mapAdminRoutes(){
 
-        Route::namespace($this->namespace)->middleware(\'admin\')->group(function(){
+        Route::namespace($this->namespace)->middleware([\'web\',\'auth\'])->group(function(){
 
             $routes = glob(app_path(\'Http/Controllers/*/routes/admin.php\'));
             foreach($routes as $route) {
@@ -141,13 +160,13 @@ class InstallCommand extends Command
         return array_keys($lineEndingCount, max($lineEndingCount))[0];
     }
 
-    private function publishViews()
+    private function publishAdminFiles()
     {
         $this->updateViewConfig();
 
-        $this->call('vendor:publish',[
-            '--tag' =>  'section-assets'
-        ]);
+        $this->call('vendor:publish',['--tag' =>  'section-views']);
+        $this->call('vendor:publish',['--tag' =>  'section-assets']);
+        $this->call('vendor:publish',['--tag' =>  'section-translations']);
     }
 
     private function updateViewConfig()
