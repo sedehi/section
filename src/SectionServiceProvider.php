@@ -23,8 +23,8 @@ class SectionServiceProvider extends ServiceProvider
                 __DIR__.'/../resources/assets/dist' => public_path('assets/admin'),
             ], 'section-assets');
             $this->publishes([
-                __DIR__.'/../resources/assets/sass' => resource_path('assets/sass'),
-                __DIR__.'/../resources/assets/js' => resource_path('assets/js'),
+                __DIR__.'/../resources/assets/sass'   => resource_path('assets/sass'),
+                __DIR__.'/../resources/assets/js'     => resource_path('assets/js'),
                 __DIR__.'/../resources/assets/static' => resource_path('assets/static'),
             ], 'section-assets-sources');
             $this->publishes([

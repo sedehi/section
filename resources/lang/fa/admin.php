@@ -1,4 +1,5 @@
 <?php
+
 return [
     'name'                        => 'مدیریت',
     'first_page'                  => 'صفحه نخست',
