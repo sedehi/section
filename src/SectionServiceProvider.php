@@ -17,8 +17,20 @@ class SectionServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                                 __DIR__.'/../resources/views' => resource_path('views/admin'),
-                             ], 'section-assets');
+                __DIR__.'/../resources/views' => resource_path('views/admin'),
+            ], 'section-views');
+            $this->publishes([
+                __DIR__.'/../resources/assets/dist' => public_path('assets/admin'),
+            ], 'section-assets');
+            $this->publishes([
+                __DIR__.'/../resources/assets/sass' => resource_path('assets/sass'),
+                __DIR__.'/../resources/assets/js' => resource_path('assets/js'),
+                __DIR__.'/../resources/assets/static' => resource_path('assets/static'),
+            ], 'section-assets-sources');
+            $this->publishes([
+                __DIR__.'/../resources/lang/en/admin.php' => resource_path('lang/en/admin.php'),
+                __DIR__.'/../resources/lang/fa/admin.php' => resource_path('lang/fa/admin.php'),
+            ], 'section-translations');
         }
         $this->factories();
     }
