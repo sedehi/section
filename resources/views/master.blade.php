@@ -6,15 +6,15 @@
     <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>
-        مدیریت
+        @lang('admin.name')
         @if (trim($__env->yieldContent('title')))
         - @yield('title')
         @endif
     </title>
-    <link href="{!! asset('assets/administration/css/app.css') !!}" rel="stylesheet">
-    <link href="{!! asset('assets/administration/css/fileinput.min.css') !!}" rel="stylesheet">
-    <link href="{!! asset('assets/administration/css/fileinput-rtl.min.css') !!}" rel="stylesheet">
-    <script type="text/javascript" src="{!! asset('assets/administration/editor/ckeditor.js') !!}"></script>
+    <link href="{!! asset('assets/admin/css/app.css') !!}" rel="stylesheet">
+    <link href="{!! asset('assets/admin/css/fileinput.min.css') !!}" rel="stylesheet">
+    <link href="{!! asset('assets/admin/css/fileinput-rtl.min.css') !!}" rel="stylesheet">
+    <script type="text/javascript" src="{!! asset('assets/admin/editor/ckeditor.js') !!}"></script>
     <style>
         .clickable-row:hover {
             cursor: pointer;
@@ -54,8 +54,8 @@
         </main>
     </div>
 </div>
-<script type="text/javascript" src="{!! asset('assets/administration/js/persian-date.min.js') !!}"></script>
-<script type="text/javascript" src="{!! asset('assets/administration/js/app.js') !!}"></script>
+<script type="text/javascript" src="{!! asset('assets/admin/js/persian-date.min.js') !!}"></script>
+<script type="text/javascript" src="{!! asset('assets/admin/js/app.js') !!}"></script>
 <script>
     $ = window.jquery;
 </script>

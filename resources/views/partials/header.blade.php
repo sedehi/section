@@ -11,7 +11,7 @@
             <li class="dropdown">
                 <a href="" class="dropdown-toggle no-after peers fxw-nw ai-c lh-1" data-toggle="dropdown">
                     <div class="peer mR-10">
-                        <img class="w-2r bdrs-50p" src="{!! asset('assets/administration/images/avatar.png') !!}">
+                        <img class="w-2r bdrs-50p" src="{!! asset('assets/admin/images/avatar.png') !!}">
                     </div>
                     <div class="peer">
                         <span class="fsz-sm c-grey-900">{{auth()->user()->full_name}}</span>
@@ -19,12 +19,7 @@
                 </a>
                 <ul class="dropdown-menu fsz-sm">
                     <li>
-                        <a href="{!! action('User\Controllers\Admin\ChangePasswordController@index') !!}" class="d-b td-n pY-5 bgcH-grey-100 c-grey-700">
-                            <span>تغییر رمز عبور</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{!! action('Auth\Controllers\Admin\AuthController@logout') !!}" class="d-b td-n pY-5 bgcH-grey-100 c-grey-700">
+                        <a href="{!! route('logout') !!}" class="d-b td-n pY-5 bgcH-grey-100 c-grey-700">
                             <span>خروج</span>
                         </a>
                     </li>

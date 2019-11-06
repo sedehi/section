@@ -3,7 +3,7 @@
         <div class="sidebar-logo">
             <div class="peers ai-c fxw-nw">
                 <div class="peer peer-greed">
-                    <a class="sidebar-link td-n" href="{{route('admin.homepage')}}">
+                    <a class="sidebar-link td-n" href="#">
                         <div class="peers ai-c fxw-nw">
                             <div class="peer">
                                 <div class="logo"></div>
@@ -25,7 +25,7 @@
         </div>
         <ul class="sidebar-menu scrollable pos-r">
             <li class="nav-item mT-30 active">
-                <a class="sidebar-link" href="{{route('admin.homepage')}}">
+                <a class="sidebar-link" href="#">
                 <span class="icon-holder">
                   <i class="c-blue-500 ti-home"></i>
                 </span>

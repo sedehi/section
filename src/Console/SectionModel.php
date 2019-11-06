@@ -8,20 +8,19 @@ use Sedehi\Section\SectionOption;
 
 class SectionModel extends ModelMakeCommand
 {
-
     use SectionOption;
 
-    protected function getDefaultNamespace($rootNamespace){
-
-        if(!is_null($this->option('section'))) {
+    protected function getDefaultNamespace($rootNamespace)
+    {
+        if (!is_null($this->option('section'))) {
             return $rootNamespace.'\Http\Controllers\\'.Str::studly($this->option('section')).'\\Models';
         }
 
         return $rootNamespace;
     }
 
-    protected function createFactory(){
-
+    protected function createFactory()
+    {
         $factory = Str::studly(class_basename($this->argument('name')));
         $this->call('make:factory', [
             'name'      => "{$factory}Factory",
@@ -30,10 +29,10 @@ class SectionModel extends ModelMakeCommand
         ]);
     }
 
-    protected function createMigration(){
-
+    protected function createMigration()
+    {
         $table = Str::snake(Str::pluralStudly(class_basename($this->argument('name'))));
-        if($this->option('pivot')) {
+        if ($this->option('pivot')) {
             $table = Str::singular($table);
         }
         $this->call('make:migration', [
