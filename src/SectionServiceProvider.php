@@ -28,7 +28,8 @@ class SectionServiceProvider extends ServiceProvider
                 __DIR__.'/../resources/assets/static' => resource_path('assets/static'),
             ], 'section-assets-sources');
             $this->publishes([
-                __DIR__.'/../resources/lang/'.app()->getLocale().'/admin.php' => resource_path('lang/'.app()->getLocale().'/admin.php'),
+                __DIR__.'/../resources/lang/en/admin.php' => resource_path('lang/en/admin.php'),
+                __DIR__.'/../resources/lang/fa/admin.php' => resource_path('lang/fa/admin.php'),
             ], 'section-translations');
         }
         $this->factories();
