@@ -32,15 +32,14 @@ class InstallCommand extends Command
         $this->registerMigrations();
         $this->registerRoutes();
 
-        if($this->confirm('Do you want to create admin panel ? [y|n]', false)) {
-
+        if ($this->confirm('Do you want to create admin panel ? [y|n]', false)) {
             $this->registerAdminRoutes();
             $this->publishAdminFiles();
             $this->call('make:auth');
 
-            if($this->confirm('Do you want to publish assets sources ? [y|n]', false)) {
-                $this->call('vendor:publish',[
-                    '--tag' =>  'section-assets-sources'
+            if ($this->confirm('Do you want to publish assets sources ? [y|n]', false)) {
+                $this->call('vendor:publish', [
+                    '--tag' => 'section-assets-sources',
                 ]);
             }
         }
@@ -77,19 +76,19 @@ class InstallCommand extends Command
         }
     }
 
-    public function registerRoutes(){
-
+    public function registerRoutes()
+    {
         $routeServiceProviderPath = app_path('Providers/RouteServiceProvider.php');
-        $routeServiceProvider     = file_get_contents($routeServiceProviderPath);
+        $routeServiceProvider = file_get_contents($routeServiceProviderPath);
         $eol = $this->EOL($routeServiceProvider);
         file_put_contents($routeServiceProviderPath, str_replace("->group(base_path('routes/api.php'));", $this->apiRouteCode(), $routeServiceProvider));
         $routeServiceProvider = file_get_contents($routeServiceProviderPath);
         file_put_contents($routeServiceProviderPath, str_replace("->group(base_path('routes/web.php'));", $this->webRouteCode(), $routeServiceProvider));
     }
 
-    public function registerAdminRoutes(){
-
-        if(!File::exists(base_path('routes/admin.php'))) {
+    public function registerAdminRoutes()
+    {
+        if (!File::exists(base_path('routes/admin.php'))) {
             file_put_contents(base_path('routes/admin.php'), '<?php ');
         }
         $routeServiceProviderPath = app_path('Providers/RouteServiceProvider.php');
@@ -165,23 +164,23 @@ class InstallCommand extends Command
     {
         $this->updateViewConfig();
 
-        $this->call('vendor:publish',['--tag' =>  'section-views']);
-        $this->call('vendor:publish',['--tag' =>  'section-assets']);
-        $this->call('vendor:publish',['--tag' =>  'section-translations']);
+        $this->call('vendor:publish', ['--tag' =>  'section-views']);
+        $this->call('vendor:publish', ['--tag' =>  'section-assets']);
+        $this->call('vendor:publish', ['--tag' =>  'section-translations']);
     }
 
     private function updateViewConfig()
     {
         $viewConfigPath = config_path('view.php');
-        $viewConfig     = file_get_contents($viewConfigPath);
-        $eol                    = $this->EOL($viewConfig);
-        if(!Str::contains($viewConfig, 'app_path(\'Http/Controllers\')')) {
-            $lines      = file($viewConfigPath);
+        $viewConfig = file_get_contents($viewConfigPath);
+        $eol = $this->EOL($viewConfig);
+        if (!Str::contains($viewConfig, 'app_path(\'Http/Controllers\')')) {
+            $lines = file($viewConfigPath);
             $viewConfig = '';
-            foreach($lines as $lineNumber => $line) {
+            foreach ($lines as $lineNumber => $line) {
                 $viewConfig .= $line;
-                if(Str::contains($line, 'resource_path(\'views\')')) {
-                        $viewConfig .= "\t\t".'app_path(\'Http/Controllers\'),'.$eol;
+                if (Str::contains($line, 'resource_path(\'views\')')) {
+                    $viewConfig .= "\t\t".'app_path(\'Http/Controllers\'),'.$eol;
                 }
             }
             file_put_contents($viewConfigPath, $viewConfig);

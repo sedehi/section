@@ -1,4 +1,5 @@
 <?php
+
 return [
     'name'                        => 'Manage',
     'first_page'                  => 'First page',
