@@ -8,9 +8,8 @@ use Symfony\Component\Console\Input\InputOption;
 
 class SectionController extends ControllerMakeCommand
 {
-
-    protected function getOptions(){
-
+    protected function getOptions()
+    {
         $options = parent::getOptions();
         $options = array_merge($options, [
             ['section', 's', InputOption::VALUE_OPTIONAL, 'The name of the section'],
@@ -24,49 +23,49 @@ class SectionController extends ControllerMakeCommand
         return $options;
     }
 
-    protected function getDefaultNamespace($rootNamespace){
-
+    protected function getDefaultNamespace($rootNamespace)
+    {
         $namespace = $rootNamespace.'\Http\Controllers';
-        if(!is_null($this->option('section'))) {
+        if (!is_null($this->option('section'))) {
             $namespace .= '\\'.Str::studly($this->option('section')).'\\Controllers';
         }
-        if($this->option('site')) {
+        if ($this->option('site')) {
             $namespace .= '\\Site';
         }
-        if($this->option('admin')) {
+        if ($this->option('admin')) {
             $namespace .= '\\Admin';
         }
-        if($this->option('api')) {
+        if ($this->option('api')) {
             $namespace .= '\\Api';
         }
-        if(!is_null($this->option('controller-version'))) {
+        if (!is_null($this->option('controller-version'))) {
             $namespace .= '\\'.Str::studly($this->option('controller-version'));
         }
 
         return $namespace;
     }
 
-    protected function getStub(){
-
+    protected function getStub()
+    {
         $stub = null;
-        if($this->option('crud') && $this->option('model')) {
+        if ($this->option('crud') && $this->option('model')) {
             return __DIR__.'/stubs/controller-crud.stub';
         }
-        if($this->option('upload') && $this->option('model')) {
+        if ($this->option('upload') && $this->option('model')) {
             return __DIR__.'/stubs/controller-upload.stub';
         }
-        if($this->option('parent')) {
+        if ($this->option('parent')) {
             $stub = '/stubs/controller.nested.stub';
-        }elseif($this->option('model')) {
+        } elseif ($this->option('model')) {
             $stub = '/stubs/controller.model.stub';
-        }elseif($this->option('invokable')) {
+        } elseif ($this->option('invokable')) {
             $stub = '/stubs/controller.invokable.stub';
-        }elseif($this->option('resource')) {
+        } elseif ($this->option('resource')) {
             $stub = '/stubs/controller.stub';
         }
-        if($this->option('api') && is_null($stub)) {
+        if ($this->option('api') && is_null($stub)) {
             $stub = '/stubs/controller.api.stub';
-        }elseif($this->option('api') && !is_null($stub) && !$this->option('invokable')) {
+        } elseif ($this->option('api') && !is_null($stub) && !$this->option('invokable')) {
             $stub = str_replace('.stub', '.api.stub', $stub);
         }
         $stub = $stub ?? '/stubs/controller.plain.stub';
@@ -74,41 +73,41 @@ class SectionController extends ControllerMakeCommand
         return base_path('vendor/laravel/framework/src/Illuminate/Routing/Console/').$stub;
     }
 
-    protected function buildClass($name){
-
+    protected function buildClass($name)
+    {
         $controllerNamespace = $this->getNamespace($name);
-        $replace             = [];
-        if($this->option('parent')) {
+        $replace = [];
+        if ($this->option('parent')) {
             $replace = $this->buildParentReplacements();
         }
-        if($this->option('model')) {
+        if ($this->option('model')) {
             $replace = $this->buildModelReplacements($replace);
         }
-        if($this->option('section')) {
+        if ($this->option('section')) {
             $replace = $this->buildSectionReplacements($replace);
         }
-        $replace                                             = $this->buildRequestReplacements($replace);
-        $replace                                             = $this->buildViewsReplacements($replace);
-        $replace                                             = $this->buildActionReplacements($replace);
+        $replace = $this->buildRequestReplacements($replace);
+        $replace = $this->buildViewsReplacements($replace);
+        $replace = $this->buildActionReplacements($replace);
         $replace["use {$controllerNamespace}\Controller;\n"] = '';
 
         return str_replace(array_keys($replace), array_values($replace), parent::buildClass($name));
     }
 
-    protected function buildModelReplacements(array $replace){
-
+    protected function buildModelReplacements(array $replace)
+    {
         $modelClass = $this->parseModel($this->option('model'));
-        if($this->option('section')) {
+        if ($this->option('section')) {
             $modelClass = $this->laravel->getNamespace().'Http\\Controllers\\'.Str::studly($this->option('section')).'\\Models\\'.Str::studly($this->option('model'));
         }
-        if(!class_exists($modelClass)) {
-            if($this->confirm("A {$modelClass} model does not exist. Do you want to generate it?", true)) {
-                if($this->option('section')) {
+        if (!class_exists($modelClass)) {
+            if ($this->confirm("A {$modelClass} model does not exist. Do you want to generate it?", true)) {
+                if ($this->option('section')) {
                     $this->call('make:model', [
                         'name'      => $this->option('model'),
-                        '--section' => $this->option('section')
+                        '--section' => $this->option('section'),
                     ]);
-                }else {
+                } else {
                     $this->call('make:model', ['name' => $modelClass]);
                 }
             }
@@ -121,8 +120,8 @@ class SectionController extends ControllerMakeCommand
         ]);
     }
 
-    protected function buildSectionReplacements($replace){
-
+    protected function buildSectionReplacements($replace)
+    {
         $section = Str::studly($this->option('section'));
 
         return array_merge($replace, [
@@ -131,11 +130,11 @@ class SectionController extends ControllerMakeCommand
         ]);
     }
 
-    protected function buildViewsReplacements($replace){
-
-        if($this->option('section')) {
+    protected function buildViewsReplacements($replace)
+    {
+        if ($this->option('section')) {
             $path = Str::studly($this->option('section')).'.views.'.str_replace('\\', '', strtolower($this->type())).'.'.strtolower($this->option('section'));
-        }else {
+        } else {
             $path = 'views.'.strtolower($this->nameWithoutController());
         }
 
@@ -144,11 +143,11 @@ class SectionController extends ControllerMakeCommand
         ]);
     }
 
-    protected function buildActionReplacements($replace){
-
-        if($this->option('section')) {
+    protected function buildActionReplacements($replace)
+    {
+        if ($this->option('section')) {
             $path = Str::studly($this->option('section')).'\\Controllers\\'.Str::studly($this->type()).Str::studly($this->argument('name'));
-        }else {
+        } else {
             $path = Str::studly($this->argument('name'));
         }
 
@@ -157,18 +156,18 @@ class SectionController extends ControllerMakeCommand
         ]);
     }
 
-    protected function buildRequestReplacements($replace){
-
-        if($this->option('section')) {
+    protected function buildRequestReplacements($replace)
+    {
+        if ($this->option('section')) {
             $requestClass = $this->laravel->getNamespace().'Http\\Controllers\\'.Str::studly($this->option('section')).'\\Requests\\'.Str::studly($this->nameWithoutController()).'Request';
-            if(!class_exists($requestClass)) {
-                if($this->confirm("A {$requestClass} Request does not exist. Do you want to generate it?", true)) {
-                    if($this->option('section')) {
+            if (!class_exists($requestClass)) {
+                if ($this->confirm("A {$requestClass} Request does not exist. Do you want to generate it?", true)) {
+                    if ($this->option('section')) {
                         $this->call('make:request', [
                             'name'      => Str::studly($this->nameWithoutController()).'Request',
-                            '--section' => $this->option('section')
+                            '--section' => $this->option('section'),
                         ]);
-                    }else {
+                    } else {
                         $this->call('make:request', ['name' => Str::studly($this->nameWithoutController()).'Request']);
                     }
                 }
@@ -183,22 +182,21 @@ class SectionController extends ControllerMakeCommand
         ]);
     }
 
-    protected function type(){
-
-        if($this->option('api')) {
+    protected function type()
+    {
+        if ($this->option('api')) {
             return 'Api\\';
-        }elseif($this->option('site')) {
+        } elseif ($this->option('site')) {
             return 'Site\\';
-        }elseif($this->option('admin')) {
+        } elseif ($this->option('admin')) {
             return 'Admin\\';
-        }else {
+        } else {
             return '';
         }
     }
 
-    protected function nameWithoutController(){
-
+    protected function nameWithoutController()
+    {
         return str_replace('Controller', '', $this->argument('name'));
     }
-
 }
