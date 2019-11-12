@@ -9,6 +9,7 @@ use Sedehi\Section\Console\SectionController;
 use Sedehi\Section\Console\SectionEvent;
 use Sedehi\Section\Console\SectionFactory;
 use Sedehi\Section\Console\SectionJob;
+use Sedehi\Section\Console\SectionListener;
 use Sedehi\Section\Console\SectionMail;
 use Sedehi\Section\Console\SectionMigration;
 use Sedehi\Section\Console\SectionModel;
@@ -90,6 +91,13 @@ class ArtisanServiceProvider extends LaravelArtisanServiceProvider
     {
         $this->app->singleton('command.event.make', function ($app) {
             return new SectionEvent($app['files']);
+        });
+    }
+
+    protected function registerListenerMakeCommand()
+    {
+        $this->app->singleton('command.listener.make', function ($app) {
+            return new SectionListener($app['files']);
         });
     }
 
