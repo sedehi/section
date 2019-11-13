@@ -5,6 +5,7 @@ namespace Sedehi\Section;
 use Illuminate\Foundation\Providers\ArtisanServiceProvider as LaravelArtisanServiceProvider;
 use Sedehi\Section\Console\InstallCommand;
 use Sedehi\Section\Console\SectionAdd;
+use Sedehi\Section\Console\SectionChannel;
 use Sedehi\Section\Console\SectionController;
 use Sedehi\Section\Console\SectionEvent;
 use Sedehi\Section\Console\SectionFactory;
@@ -143,6 +144,13 @@ class ArtisanServiceProvider extends LaravelArtisanServiceProvider
     {
         $this->app->singleton('command.controller.make', function ($app) {
             return new SectionController($app['files']);
+        });
+    }
+
+    protected function registerChannelMakeCommand()
+    {
+        $this->app->singleton('command.channel.make', function ($app) {
+            return new SectionChannel($app['files']);
         });
     }
 }
