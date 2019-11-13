@@ -14,6 +14,7 @@ use Sedehi\Section\Console\SectionFactory;
 use Sedehi\Section\Console\SectionJob;
 use Sedehi\Section\Console\SectionListener;
 use Sedehi\Section\Console\SectionMail;
+use Sedehi\Section\Console\SectionMiddleware;
 use Sedehi\Section\Console\SectionMigration;
 use Sedehi\Section\Console\SectionModel;
 use Sedehi\Section\Console\SectionNotification;
@@ -167,6 +168,13 @@ class ArtisanServiceProvider extends LaravelArtisanServiceProvider
     {
         $this->app->singleton('command.exception.make', function ($app) {
             return new SectionException($app['files']);
+        });
+    }
+
+    protected function registerMiddlewareMakeCommand()
+    {
+        $this->app->singleton('command.middleware.make', function ($app) {
+            return new SectionMiddleware($app['files']);
         });
     }
 }
