@@ -9,6 +9,7 @@ use Sedehi\Section\Console\SectionChannel;
 use Sedehi\Section\Console\SectionCommand;
 use Sedehi\Section\Console\SectionController;
 use Sedehi\Section\Console\SectionEvent;
+use Sedehi\Section\Console\SectionException;
 use Sedehi\Section\Console\SectionFactory;
 use Sedehi\Section\Console\SectionJob;
 use Sedehi\Section\Console\SectionListener;
@@ -159,6 +160,13 @@ class ArtisanServiceProvider extends LaravelArtisanServiceProvider
     {
         $this->app->singleton('command.console.make', function ($app) {
             return new SectionCommand($app['files']);
+        });
+    }
+
+    protected function registerExceptionMakeCommand()
+    {
+        $this->app->singleton('command.exception.make', function ($app) {
+            return new SectionException($app['files']);
         });
     }
 }
