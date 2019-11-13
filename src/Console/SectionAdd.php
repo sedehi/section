@@ -75,9 +75,6 @@ class SectionAdd extends Command
         if (empty($title)) {
             $title = $this->argument('name');
         }
-        if ($this->confirm('Do you want create menu ? [y|n]', true)) {
-            $this->makeMenu($title);
-        }
         if ($this->confirm('Do you want create role ? [y|n]', true)) {
             $this->makeRole($title);
         }
@@ -179,23 +176,6 @@ class SectionAdd extends Command
                 'name'      => ucfirst($this->argument('name')).'Request',
                 '--site'    => true,
             ]);
-        }
-    }
-
-    private function makeMenu($title)
-    {
-        if (!File::isDirectory(app_path('Http/Controllers/'.ucfirst($this->argument('name')).'/'.''))) {
-            File::makeDirectory(app_path('Http/Controllers/'.ucfirst($this->argument('name')).'/'.''), 0775, true);
-        }
-        if (File::exists(app_path('Http/Controllers/'.ucfirst($this->argument('name')).'/menu.php'))) {
-            $this->error('menu already exists.');
-        } else {
-            $data = File::get(__DIR__.'/stubs/menu.stub');
-            $data = str_replace('{{{title}}}', $title, $data);
-            $data = str_replace('{{{name}}}', strtolower($this->argument('name')), $data);
-            $data = str_replace('{{{Classname}}}', ucfirst($this->argument('name')), $data);
-            File::put(app_path('Http/Controllers/'.ucfirst($this->argument('name')).'/menu.php'), $data);
-            $this->info('Menu created successfully.');
         }
     }
 
