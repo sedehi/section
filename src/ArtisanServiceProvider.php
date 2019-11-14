@@ -5,14 +5,20 @@ namespace Sedehi\Section;
 use Illuminate\Foundation\Providers\ArtisanServiceProvider as LaravelArtisanServiceProvider;
 use Sedehi\Section\Console\InstallCommand;
 use Sedehi\Section\Console\SectionAdd;
+use Sedehi\Section\Console\SectionChannel;
+use Sedehi\Section\Console\SectionCommand;
 use Sedehi\Section\Console\SectionController;
 use Sedehi\Section\Console\SectionEvent;
+use Sedehi\Section\Console\SectionException;
 use Sedehi\Section\Console\SectionFactory;
 use Sedehi\Section\Console\SectionJob;
+use Sedehi\Section\Console\SectionListener;
 use Sedehi\Section\Console\SectionMail;
+use Sedehi\Section\Console\SectionMiddleware;
 use Sedehi\Section\Console\SectionMigration;
 use Sedehi\Section\Console\SectionModel;
 use Sedehi\Section\Console\SectionNotification;
+use Sedehi\Section\Console\SectionObserver;
 use Sedehi\Section\Console\SectionPolicy;
 use Sedehi\Section\Console\SectionRequest;
 use Sedehi\Section\Console\SectionResource;
@@ -93,6 +99,13 @@ class ArtisanServiceProvider extends LaravelArtisanServiceProvider
         });
     }
 
+    protected function registerListenerMakeCommand()
+    {
+        $this->app->singleton('command.listener.make', function ($app) {
+            return new SectionListener($app['files']);
+        });
+    }
+
     protected function registerSeederMakeCommand()
     {
         $this->app->singleton('command.seeder.make', function ($app) {
@@ -135,6 +148,41 @@ class ArtisanServiceProvider extends LaravelArtisanServiceProvider
     {
         $this->app->singleton('command.controller.make', function ($app) {
             return new SectionController($app['files']);
+        });
+    }
+
+    protected function registerChannelMakeCommand()
+    {
+        $this->app->singleton('command.channel.make', function ($app) {
+            return new SectionChannel($app['files']);
+        });
+    }
+
+    protected function registerConsoleMakeCommand()
+    {
+        $this->app->singleton('command.console.make', function ($app) {
+            return new SectionCommand($app['files']);
+        });
+    }
+
+    protected function registerExceptionMakeCommand()
+    {
+        $this->app->singleton('command.exception.make', function ($app) {
+            return new SectionException($app['files']);
+        });
+    }
+
+    protected function registerMiddlewareMakeCommand()
+    {
+        $this->app->singleton('command.middleware.make', function ($app) {
+            return new SectionMiddleware($app['files']);
+        });
+    }
+
+    protected function registerObserverMakeCommand()
+    {
+        $this->app->singleton('command.observer.make', function ($app) {
+            return new SectionObserver($app['files']);
         });
     }
 }
