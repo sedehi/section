@@ -2,9 +2,9 @@
 
 namespace Sedehi\Section\Console;
 
+use Illuminate\Foundation\Console\ConsoleMakeCommand;
 use Illuminate\Support\Str;
 use Sedehi\Section\SectionOption;
-use Illuminate\Foundation\Console\ConsoleMakeCommand;
 
 class SectionCommand extends ConsoleMakeCommand
 {

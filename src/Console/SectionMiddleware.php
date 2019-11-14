@@ -2,9 +2,9 @@
 
 namespace Sedehi\Section\Console;
 
+use Illuminate\Routing\Console\MiddlewareMakeCommand;
 use Illuminate\Support\Str;
 use Sedehi\Section\SectionOption;
-use Illuminate\Routing\Console\MiddlewareMakeCommand;
 
 class SectionMiddleware extends MiddlewareMakeCommand
 {

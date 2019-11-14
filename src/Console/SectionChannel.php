@@ -2,9 +2,9 @@
 
 namespace Sedehi\Section\Console;
 
+use Illuminate\Foundation\Console\ChannelMakeCommand;
 use Illuminate\Support\Str;
 use Sedehi\Section\SectionOption;
-use Illuminate\Foundation\Console\ChannelMakeCommand;
 
 class SectionChannel extends ChannelMakeCommand
 {
