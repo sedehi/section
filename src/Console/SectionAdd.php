@@ -59,9 +59,6 @@ class SectionAdd extends Command
             $apiController = true;
             $this->makeApiController();
         }
-        if ($this->confirm('Do you want create form request ? [y|n]', true)) {
-            $this->makeRequest($adminController, $siteController);
-        }
         if ($this->confirm('Do you want create factory ? [y|n]', true)) {
             $this->makeFactory();
         }
@@ -160,24 +157,6 @@ class SectionAdd extends Command
             '--api'                => true,
             '--controller-version' => 'v1',
         ]);
-    }
-
-    private function makeRequest($adminController, $siteController)
-    {
-        if ($adminController) {
-            $this->call('make:request', [
-                '--section' => $this->argument('name'),
-                'name'      => ucfirst($this->argument('name')).'Request',
-                '--admin'   => true,
-            ]);
-        }
-        if ($siteController) {
-            $this->call('make:request', [
-                '--section' => $this->argument('name'),
-                'name'      => ucfirst($this->argument('name')).'Request',
-                '--site'    => true,
-            ]);
-        }
     }
 
     private function makeRole($title)
