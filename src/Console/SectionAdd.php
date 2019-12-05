@@ -4,6 +4,7 @@ namespace Sedehi\Section\Console;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 
 class SectionAdd extends Command
 {
@@ -85,7 +86,7 @@ class SectionAdd extends Command
 
     private function makeModel()
     {
-        $this->call('make:model', ['--section' => $this->argument('name'), 'name' => $this->argument('name')]);
+        $this->call('make:model', ['--section' => $this->argument('name'), 'name' => Str::studly($this->argument('name'))]);
     }
 
     private function makeAdminController()
