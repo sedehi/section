@@ -56,9 +56,9 @@ class SectionRequest extends RequestMakeCommand
         }
         if ($this->option('api')) {
             $namespace = $namespace.'\Api';
-        }
-        if (!is_null($this->option('request-version'))) {
-            $namespace = $namespace.'\\'.Str::studly($this->option('request-version'));
+            if (!is_null($this->option('request-version'))) {
+                $namespace = $namespace.'\\'.Str::studly($this->option('request-version'));
+            }
         }
 
         return $namespace;

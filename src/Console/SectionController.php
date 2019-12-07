@@ -159,13 +159,17 @@ class SectionController extends ControllerMakeCommand
     protected function buildRequestReplacements($replace)
     {
         if ($this->option('section')) {
-            $requestClass = $this->laravel->getNamespace().'Http\\Controllers\\'.Str::studly($this->option('section')).'\\Requests\\'.Str::studly($this->nameWithoutController()).'Request';
+            $requestClass = $this->getRequestClass();
             if (!class_exists($requestClass)) {
                 if ($this->confirm("A {$requestClass} Request does not exist. Do you want to generate it?", true)) {
                     if ($this->option('section')) {
                         $this->call('make:request', [
                             'name'      => Str::studly($this->nameWithoutController()).'Request',
                             '--section' => $this->option('section'),
+                            '--admin'   => $this->option('admin'),
+                            '--site'    => $this->option('site'),
+                            '--api'     => $this->option('api'),
+                            '--request-version' => 'V1',
                         ]);
                     } else {
                         $this->call('make:request', ['name' => Str::studly($this->nameWithoutController()).'Request']);
@@ -198,5 +202,22 @@ class SectionController extends ControllerMakeCommand
     protected function nameWithoutController()
     {
         return str_replace('Controller', '', $this->argument('name'));
+    }
+
+    protected function getRequestClass()
+    {
+        $class = $this->laravel->getNamespace().'Http\\Controllers\\'.Str::studly($this->option('section')).'\\Requests\\';
+
+        if ($this->option('api')) {
+            $class .= 'Api\\V1\\';
+        } elseif ($this->option('site')) {
+            $class .= 'Site\\';
+        } elseif ($this->option('admin')) {
+            $class .= 'Admin\\';
+        }
+
+        $class .= Str::studly($this->nameWithoutController()).'Request';
+
+        return $class;
     }
 }

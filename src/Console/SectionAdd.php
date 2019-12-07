@@ -4,6 +4,7 @@ namespace Sedehi\Section\Console;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 
 class SectionAdd extends Command
 {
@@ -58,9 +59,6 @@ class SectionAdd extends Command
             $apiController = true;
             $this->makeApiController();
         }
-        if ($this->confirm('Do you want create form request ? [y|n]', true)) {
-            $this->makeRequest($adminController, $siteController);
-        }
         if ($this->confirm('Do you want create factory ? [y|n]', true)) {
             $this->makeFactory();
         }
@@ -71,11 +69,11 @@ class SectionAdd extends Command
             }
             $this->makeMigration($name);
         }
-        $title = $this->ask('What is section title?');
-        if (empty($title)) {
-            $title = $this->argument('name');
-        }
         if ($this->confirm('Do you want create role ? [y|n]', true)) {
+            $title = $this->ask('What is section title?');
+            if (empty($title)) {
+                $title = $this->argument('name');
+            }
             $this->makeRole($title);
         }
         if ($this->confirm('Do you want create route ? [y|n]', true)) {
@@ -85,7 +83,7 @@ class SectionAdd extends Command
 
     private function makeModel()
     {
-        $this->call('make:model', ['--section' => $this->argument('name'), 'name' => $this->argument('name')]);
+        $this->call('make:model', ['--section' => $this->argument('name'), 'name' => Str::studly($this->argument('name'))]);
     }
 
     private function makeAdminController()
@@ -161,24 +159,6 @@ class SectionAdd extends Command
         ]);
     }
 
-    private function makeRequest($adminController, $siteController)
-    {
-        if ($adminController) {
-            $this->call('make:request', [
-                '--section' => $this->argument('name'),
-                'name'      => ucfirst($this->argument('name')).'Request',
-                '--admin'   => true,
-            ]);
-        }
-        if ($siteController) {
-            $this->call('make:request', [
-                '--section' => $this->argument('name'),
-                'name'      => ucfirst($this->argument('name')).'Request',
-                '--site'    => true,
-            ]);
-        }
-    }
-
     private function makeRole($title)
     {
         if (!File::isDirectory(app_path('Http/Controllers/'.ucfirst($this->argument('name')).'/'.''))) {
@@ -234,9 +214,12 @@ class SectionAdd extends Command
 
     private function makeFactory()
     {
+        $section = Str::studly($this->argument('name'));
+
         $this->call('make:factory', [
             'name'      => ucfirst($this->argument('name')).'Factory',
             '--section' => ucfirst($this->argument('name')),
+            '--model'   => $this->laravel->getNamespace().'Http\Controllers\\'.$section.'\\Models\\'.$section
         ]);
     }
 }
