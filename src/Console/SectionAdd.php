@@ -69,11 +69,11 @@ class SectionAdd extends Command
             }
             $this->makeMigration($name);
         }
-        $title = $this->ask('What is section title?');
-        if (empty($title)) {
-            $title = $this->argument('name');
-        }
         if ($this->confirm('Do you want create role ? [y|n]', true)) {
+            $title = $this->ask('What is section title?');
+            if (empty($title)) {
+                $title = $this->argument('name');
+            }
             $this->makeRole($title);
         }
         if ($this->confirm('Do you want create route ? [y|n]', true)) {
@@ -214,9 +214,12 @@ class SectionAdd extends Command
 
     private function makeFactory()
     {
+        $section = Str::studly($this->argument('name'));
+
         $this->call('make:factory', [
             'name'      => ucfirst($this->argument('name')).'Factory',
             '--section' => ucfirst($this->argument('name')),
+            '--model'   => $this->laravel->getNamespace().'Http\Controllers\\'.$section.'\\Models\\'.$section
         ]);
     }
 }
