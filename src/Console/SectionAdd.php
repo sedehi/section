@@ -219,7 +219,7 @@ class SectionAdd extends Command
         $this->call('make:factory', [
             'name'      => ucfirst($this->argument('name')).'Factory',
             '--section' => ucfirst($this->argument('name')),
-            '--model'   => $this->laravel->getNamespace().'Http\Controllers\\'.$section.'\\Models\\'.$section
+            '--model'   => $this->laravel->getNamespace().'Http\Controllers\\'.$section.'\\Models\\'.$section,
         ]);
     }
 }

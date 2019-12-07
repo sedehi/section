@@ -164,11 +164,11 @@ class SectionController extends ControllerMakeCommand
                 if ($this->confirm("A {$requestClass} Request does not exist. Do you want to generate it?", true)) {
                     if ($this->option('section')) {
                         $this->call('make:request', [
-                            'name'      => Str::studly($this->nameWithoutController()).'Request',
-                            '--section' => $this->option('section'),
-                            '--admin'   => $this->option('admin'),
-                            '--site'    => $this->option('site'),
-                            '--api'     => $this->option('api'),
+                            'name'              => Str::studly($this->nameWithoutController()).'Request',
+                            '--section'         => $this->option('section'),
+                            '--admin'           => $this->option('admin'),
+                            '--site'            => $this->option('site'),
+                            '--api'             => $this->option('api'),
                             '--request-version' => 'V1',
                         ]);
                     } else {
