@@ -5,7 +5,7 @@ namespace DummyNamespace;
 use Tests\TestCase;
 use DummyFullModelClass;
 
-class BankTest extends TestCase
+class DummyTestClass extends TestCase
 {
     public function setUp()
     {
