@@ -1,0 +1,128 @@
+<?php
+
+namespace DummyNamespace;
+
+use Tests\TestCase;
+use DummyFullModelClass;
+
+class BankTest extends TestCase
+{
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->signInAdmin();
+    }
+
+    /**
+     * @test
+     */
+    public function can_see_bank_list()
+    {
+        $items = factory(DummyModelClass::class, 3)->create();
+        $this->get(action('DummyFullControllerClass@index'))
+            ->assertSee($items->first()->title)
+            ->assertSee($items->last()->title)
+            ->assertStatus(200);
+    }
+    /**
+     * @test
+     */
+    public function can_search_bank_by_title()
+    {
+        $items = factory(DummyModelClass::class, 2)->create();
+        $this->get(action('DummyFullControllerClass@index', ['title' => $items->first()->title]))
+            ->assertSee($items->first()->title)
+            ->assertDontSee($items->last()->title)
+            ->assertStatus(200);
+    }
+
+    /**
+     * @test
+     */
+    public function can_add_new_bank()
+    {
+        $item = factory(DummyModelClass::class)->make();
+        $this->from(action('DummyFullControllerClass@create'))
+            ->post(action('DummyFullControllerClass@store'), ['title' => $item->title])
+            ->assertRedirect(action('DummyFullControllerClass@index'));
+
+        $this->assertDatabaseHas((new DummyModelClass())->getTable(), [
+            'title' => $item->title
+        ]);
+    }
+    /**
+     * @test
+     */
+    public function check_create_validation()
+    {
+        $this->from(action('DummyFullControllerClass@create'))
+            ->post(action('DummyFullControllerClass@store'), ['title' => ''])
+            ->assertRedirect(action('DummyFullControllerClass@create'))
+            ->assertSessionHasErrors('title');
+    }
+
+    /**
+     * @test
+     */
+    public function can_edit_bank_data()
+    {
+        $item = factory(DummyModelClass::class)->create();
+        $this->from(action('DummyFullControllerClass@edit', $item->id))
+            ->patch(action('DummyFullControllerClass@update', $item->id), ['title' => 'new title'])
+            ->assertRedirect(action('DummyFullControllerClass@index'));
+
+        $this->assertDatabaseHas((new DummyModelClass())->getTable(), [
+            'id'    => $item->id,
+            'title' => 'new title'
+        ]);
+    }
+
+    /**
+     * @test
+     */
+    public function check_edit_validation()
+    {
+        $item = factory(DummyModelClass::class)->create();
+        $this->from(action('DummyFullControllerClass@edit', $item->id))
+            ->patch(action('DummyFullControllerClass@update', $item->id), ['title' => ''])
+            ->assertRedirect(action('DummyFullControllerClass@edit', $item->id))
+            ->assertSessionHasErrors('title');
+
+        $this->assertDatabaseHas((new DummyModelClass())->getTable(), [
+            'id'    => $item->id,
+            'title' => $item->title
+        ]);
+    }
+
+    /**
+     * @test
+     */
+    public function can_delete_bank()
+    {
+        $item = factory(DummyModelClass::class, 2)->create();
+        $this->from(action('DummyFullControllerClass@index'))
+            ->delete(action('DummyFullControllerClass@destroy', 1), ['deleteId' => [$item->first()->id]])
+            ->assertRedirect(action('DummyFullControllerClass@index'));
+
+        $this->assertSoftDeleted((new DummyModelClass())->getTable(), [
+            'id' => $item->first()->id,
+        ]);
+
+        $this->assertDatabaseHas((new DummyModelClass())->getTable(), [
+            'id'         => $item->last()->id,
+            'deleted_at' => null,
+        ]);
+    }
+
+    /**
+     * @test
+     */
+    public function check_delete_validation()
+    {
+        $this->from(action('DummyFullControllerClass@index'))
+            ->delete(action('DummyFullControllerClass@destroy', 1))
+            ->assertRedirect(action('DummyFullControllerClass@index'))
+            ->assertSessionHasErrors('deleteId');
+    }
+}
