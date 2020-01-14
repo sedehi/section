@@ -1,8 +1,10 @@
 <?php
+
 namespace Sedehi\Section;
 
-use Sedehi\Section\Console\SectionMigration;
 use Illuminate\Database\MigrationServiceProvider as LaravelMigrationServiceProvider;
+use Sedehi\Section\Console\SectionMigration;
+
 class MigrationServiceProvider extends LaravelMigrationServiceProvider
 {
     protected function registerMigrateMakeCommand()
