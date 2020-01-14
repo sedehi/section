@@ -38,6 +38,9 @@ class SectionServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->register(ArtisanServiceProvider::class);
+        if(class_exists(Illuminate\Database\MigrationServiceProvider::class)){
+            $this->app->register(MigrationServiceProvider::class);
+        }
     }
 
     protected function factories()
