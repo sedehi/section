@@ -12,7 +12,7 @@ class SectionController extends ControllerMakeCommand
     {
         $options = parent::getOptions();
         $options = array_merge($options, [
-            ['section', 's', InputOption::VALUE_OPTIONAL, 'The name of the section'],
+            ['section', null, InputOption::VALUE_OPTIONAL, 'The name of the section'],
             ['crud', null, InputOption::VALUE_NONE, 'Generate a crud controller class'],
             ['upload', null, InputOption::VALUE_NONE, 'Generate a upload controller class'],
             ['site', null, InputOption::VALUE_NONE, 'Generate a site controller class'],

@@ -10,7 +10,7 @@ trait SectionOption
     {
         $options = parent::getOptions();
         $options = array_merge($options, [
-            ['section', 's', InputOption::VALUE_OPTIONAL, 'The name of the section'],
+            ['section', null, InputOption::VALUE_OPTIONAL, 'The name of the section'],
         ]);
 
         return $options;

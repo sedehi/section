@@ -24,7 +24,7 @@ class SectionRequest extends RequestMakeCommand
     {
         $options = parent::getOptions();
         $options = array_merge($options, [
-            ['section', 's', InputOption::VALUE_OPTIONAL, 'The name of the section'],
+            ['section', null, InputOption::VALUE_OPTIONAL, 'The name of the section'],
             ['request-version', 'av', InputOption::VALUE_OPTIONAL, 'Set request version'],
             ['admin', null, InputOption::VALUE_NONE, 'Generate request for admin'],
             ['site', null, InputOption::VALUE_NONE, 'Generate request for site'],
