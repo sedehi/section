@@ -37,10 +37,10 @@ class ArtisanServiceProvider extends LaravelArtisanServiceProvider
     public function boot()
     {
         $this->commands([
-                            SectionAdd::class,
-                            SectionView::class,
-                            InstallCommand::class,
-                        ]);
+            SectionAdd::class,
+            SectionView::class,
+            InstallCommand::class,
+        ]);
     }
 
     protected function registerResourceMakeCommand()
