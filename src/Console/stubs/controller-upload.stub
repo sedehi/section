@@ -12,7 +12,7 @@ class DummyClass extends Controller
     
 	public function index()
 	{
-	   $items = DummyModelClass::filter()->latest('id')->simplePaginate(10);
+	   $items = DummyModelClass::latest('id')->simplePaginate(10);
 
 	   return view('DummyViewPath.index', compact('items'));
 	}
