@@ -32,7 +32,7 @@
                     <span class="title">@lang('admin.first_page')</span>
                 </a>
             </li>
-            @foreach(adminMenu() as $keyMenu=>$valueMenu)
+            {{--@foreach(adminMenu() as $keyMenu=>$valueMenu)
                 @if(permission($keyMenu))
                     @php
                         $parameters = [];
@@ -81,7 +81,7 @@
                         @endif
                     </li>
                 @endif
-            @endforeach
+            @endforeach--}}
         </ul>
     </div>
 </div>

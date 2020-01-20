@@ -12,12 +12,12 @@
                                 <i class="fa fa-search"></i>
                             </button>
                         
-                            @if(permission('{{{section}}}.{{{controller}}}.destroy'))
+                            @if(Gate::allows('{{{section}}}.{{{controller}}}.destroy'))
                                 <button type="submit" class="btn btn-danger table-header-btn d-none delete-btn">
                                         حذف
                                 </button>
                             @endif
-                            @if(permission('{{{section}}}.{{{controller}}}.create'))
+                            @if(Gate::allows('{{{section}}}.{{{controller}}}.create'))
                                 <a class="btn btn-success table-header-btn" href="{!! action('{{{section}}}\Controllers\Admin\{{{controller}}}@create') !!}">
                                     <i class="fa fa-plus"></i>
                                 </a>
@@ -53,10 +53,10 @@
                                     {{ Jalalian::fromCarbon($item->created_at)->format('H:i - Y/m/d') }}
                                 </td>
                                 <td>
-                                    @if(permission('{{{section}}}.{{{controller}}}.edit'))
+                                    @if(Gate::allows('{{{section}}}.{{{controller}}}.edit'))
                                         <a href="{!! action('{{{section}}}\Controllers\Admin\{{{controller}}}@edit',$item->id) !!}"><i class="fa fa-pencil-square-o"></i></a>
                                     @endif
-                                    @if(permission('{{{section}}}.{{{controller}}}.show'))
+                                    @if(Gate::allows('{{{section}}}.{{{controller}}}.show'))
                                         <a href="{!! action('{{{section}}}\Controllers\Admin\{{{controller}}}@show',$item->id) !!}"><i class="fa fa-eye"></i></a>
                                     @endif
                                 </td>
