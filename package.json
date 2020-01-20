@@ -16,15 +16,15 @@
     "cross-env": "^5.2.0",
     "file-loader": "^1.1.11",
     "laravel-mix": "^2.0",
-    "lodash": "^4.17.13"
+    "lodash": "^4.17.13",
+    "cross-env": "^5.2.0"
   },
   "dependencies": {
     "babel-polyfill": "^6.26.0",
     "bootbox": "^5.3.4",
     "bootstrap": "^4.3.1",
     "bootstrap-fileinput": "^4.5.0",
-    "chart.js": "^2.7.2",
-    "cross-env": "^5.2.0",
+    "chart.js": "^2.9.2",
     "easy-pie-chart": "^2.1.7",
     "file-loader": "^1.1.11",
     "fullcalendar": "^3.9.0",
