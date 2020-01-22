@@ -1,0 +1,32 @@
+@extends('admin.master')
+@section('content')
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row">
+                        <h4 class="c-grey-900 col-md-6">@lang('admin.show')</h4>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <tbody>
+                        <tr>
+                            <td>@lang('admin.title')</td>
+                            <td>{{$item->title}}</td>
+                        </tr>
+                        <tr>
+                            <td>@lang('admin.creation_date')</td>
+                            <td>
+                                {{ Jalalian::fromCarbon($item->created_at)->format('H:i - Y/m/d') }}
+                                ({{$item->created_at->diffForHumans()}})
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+@endsection

@@ -31,4 +31,8 @@ return [
     'edit_or_delete_only_creator' => 'ویرایش و حذف اطلاعات درج شده توسط کاربر',
     'data_exists'                 => 'اطلاعات وجود دارد',
     'you_dont_have_access'        => 'شما به این قسمت دسترسی ندارید',
+    'to'                          => 'تا',
+    'result'                      => 'نتیجه',
+    'title'                       => 'عنوان',
+    'creation_date'               => 'تاریخ درج',
 ];

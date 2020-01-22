@@ -15,7 +15,7 @@ class SectionView extends Command
      *
      * @var string
      */
-    protected $signature = 'make:view {section : The name of the section} {name : The name of the folder} {title : The title of the views} {controller : The name of controller} {--upload}';
+    protected $signature = 'make:view {section : The name of the section} {name : The name of the folder} {title : The title of the views} {controller : The name of controller} {--upload} {--custom}';
 
     /**
      * The console command description.
@@ -36,13 +36,19 @@ class SectionView extends Command
             File::makeDirectory(app_path('Http/Controllers/'.ucfirst($this->argument('section')).'/'.$viewPath), 0775, true);
         }
         if ($this->option('upload')) {
-            foreach (File::files(__DIR__.'/stubs/View/Admin-upload') as $templateFile) {
+            $stubPath = __DIR__.'/stubs/dynamic/View/Admin-upload/';
+            if ($this->option('custom')) {
+                $stubPath = __DIR__.'/stubs/View/Admin-upload/';
+            }
+            foreach (File::files($stubPath) as $templateFile) {
                 if (File::exists(app_path('Http/Controllers/'.ucfirst($this->argument('section')).'/views/admin/'.strtolower($this->argument('name')).'/'.File::name($templateFile).'.blade.php'))) {
                     $this->error('Admin '.File::name($templateFile).' view already exists.');
                 } else {
-                    $data = File::get(__DIR__.'/stubs/View/Admin-upload/'.File::name($templateFile));
+                    $data = File::get($stubPath.File::name($templateFile));
                     $data = str_replace('{{{section}}}', ucfirst($this->argument('section')), $data);
+                    $data = str_replace('{{{sectionLower}}}', strtolower($this->argument('section')), $data);
                     $data = str_replace('{{{controller}}}', ucfirst($this->argument('controller')), $data);
+                    $data = str_replace('{{{controllerLower}}}', strtolower($this->argument('controller')), $data);
                     $data = str_replace('{{{title}}}', $this->argument('title'), $data);
                     $data = str_replace('{{{name}}}', strtolower($this->argument('name')), $data);
                     File::put(app_path('Http/Controllers/'.ucfirst($this->argument('section')).'/views/admin/'.strtolower($this->argument('name')).'/'.File::name($templateFile).'.blade.php'), $data);
@@ -50,14 +56,20 @@ class SectionView extends Command
                 }
             }
         } else {
-            foreach (File::files(__DIR__.'/stubs/View/Admin') as $templateFile) {
+            $stubPath = __DIR__.'/stubs/dynamic/View/Admin/';
+            if ($this->option('custom')) {
+                $stubPath = __DIR__.'/stubs/View/Admin/';
+            }
+            foreach (File::files($stubPath) as $templateFile) {
                 if (File::exists(app_path('Http/Controllers/'.ucfirst($this->argument('section')).'/views/admin/'.strtolower($this->argument('name')).'/'.File::name($templateFile).'.blade.php'))) {
                     $this->error('Admin '.File::name($templateFile).' view already exists.');
                 } else {
-                    $data = File::get(__DIR__.'/stubs/View/Admin/'.File::name($templateFile));
+                    $data = File::get($stubPath.File::name($templateFile));
                     $data = str_replace('{{{section}}}', ucfirst($this->argument('section')), $data);
+                    $data = str_replace('{{{sectionLower}}}', strtolower($this->argument('section')), $data);
                     $data = str_replace('{{{name}}}', strtolower($this->argument('name')), $data);
                     $data = str_replace('{{{controller}}}', ucfirst($this->argument('controller')), $data);
+                    $data = str_replace('{{{controllerLower}}}', strtolower($this->argument('controller')), $data);
                     $data = str_replace('{{{title}}}', $this->argument('title'), $data);
                     File::put(app_path('Http/Controllers/'.ucfirst($this->argument('section')).'/views/admin/'.strtolower($this->argument('name')).'/'.File::name($templateFile).'.blade.php'), $data);
                     $this->info('Admin '.File::name($templateFile).' view created successfully.');

@@ -33,6 +33,7 @@ class InstallCommand extends Command
         $this->registerRoutes();
 
         if ($this->confirm('Do you want to create admin panel ? [y|n]', false)) {
+            $this->updateConfigFiles();
             $this->registerAdminRoutes();
             $this->publishAdminFiles();
             $this->call('make:auth');
@@ -162,11 +163,33 @@ class InstallCommand extends Command
 
     private function publishAdminFiles()
     {
-        $this->updateViewConfig();
-
         $this->call('vendor:publish', ['--tag' =>  'section-views']);
         $this->call('vendor:publish', ['--tag' =>  'section-assets']);
         $this->call('vendor:publish', ['--tag' =>  'section-translations']);
+    }
+
+    private function updateConfigFiles()
+    {
+        $this->updateAppConfig();
+        $this->updateViewConfig();
+    }
+
+    private function updateAppConfig()
+    {
+        $appConfigPath = config_path('app.php');
+        $appConfig = file_get_contents($appConfigPath);
+        $eol = $this->EOL($appConfig);
+        if (!Str::contains($appConfig, 'Morilog\Jalali\Jalalian::class')) {
+            $lines = file($appConfigPath);
+            $appConfig = '';
+            foreach ($lines as $lineNumber => $line) {
+                $appConfig .= $line;
+                if (Str::contains($line, '\'aliases\'')) {
+                    $appConfig .= "\t\t".'\'Jalalian\' => Morilog\Jalali\Jalalian::class,';
+                }
+            }
+            file_put_contents($appConfigPath, $appConfig);
+        }
     }
 
     private function updateViewConfig()

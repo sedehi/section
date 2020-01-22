@@ -1,27 +1,29 @@
 @extends('admin.master')
 @section('content')
     <div class="row">
-    @include('{{{section}}}.views.admin.{{{name}}}.search')
+        @include('admin.search')
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
                     <div class="row">
-                        <h4 class="c-grey-900 col-md-6">{{{title}}}</h4>
+                        <h4 class="c-grey-900 col-md-6">
+                            <span>{{{title}}}</span>
+                            @include('admin.partials.pagination-info',$items)
+                        </h4>
                         <div class="col-md-6">
                             <button type="button" class="btn btn-primary table-header-btn" data-toggle="collapse" data-target="#searchCollapse" role="button" aria-expanded="false" aria-controls="collapseExample">
                                 <i class="fa fa-search"></i>
                             </button>
-                            @if(Gate::allows('{{{section}}}.{{{controller}}}.destroy'))
+                            @if(Gate::allows('{{{sectionLower}}}.{{{controllerLower}}}.destroy'))
                                 <button type="submit" class="btn btn-danger table-header-btn d-none delete-btn">
                                         حذف
                                 </button>
                             @endif
-                            @if(Gate::allows('{{{section}}}.{{{controller}}}.create'))
+                            @if(Gate::allows('{{{sectionLower}}}.{{{controllerLower}}}.create'))
                                 <a class="btn btn-success table-header-btn" href="{!! action('{{{section}}}\Controllers\Admin\{{{controller}}}@create') !!}">
                                     <i class="fa fa-plus"></i>
                                 </a>
                             @endif
-
                         </div>
                     </div>
                 </div>
@@ -52,10 +54,10 @@
                                     {{ Jalalian::fromCarbon($item->created_at)->format('H:i - Y/m/d') }}
                                 </td>
                                 <td>
-                                    @if(Gate::allows('{{{section}}}.{{{controller}}}.edit'))
+                                    @if(Gate::allows('{{{sectionLower}}}.{{{controllerLower}}}.edit'))
                                         <a href="{!! action('{{{section}}}\Controllers\Admin\{{{controller}}}@edit',$item->id) !!}"><i class="fa fa-pencil-square-o"></i></a>
                                     @endif
-                                    @if(Gate::allows('{{{section}}}.{{{controller}}}.show'))
+                                    @if(Gate::allows('{{{sectionLower}}}.{{{controllerLower}}}.show'))
                                         <a href="{!! action('{{{section}}}\Controllers\Admin\{{{controller}}}@show',$item->id) !!}"><i class="fa fa-eye"></i></a>
                                     @endif
                                 </td>

@@ -18,6 +18,7 @@ class SectionController extends ControllerMakeCommand
             ['site', null, InputOption::VALUE_NONE, 'Generate a site controller class'],
             ['admin', null, InputOption::VALUE_NONE, 'Generate a admin controller class'],
             ['controller-version', null, InputOption::VALUE_OPTIONAL, 'Set version'],
+            ['custom-views', null, InputOption::VALUE_NONE, 'Generate views from old stubs'],
         ]);
 
         return $options;
@@ -49,10 +50,16 @@ class SectionController extends ControllerMakeCommand
     {
         $stub = null;
         if ($this->option('crud') && $this->option('model')) {
-            return __DIR__.'/stubs/controller-crud.stub';
+            if ($this->option('custom-views')) {
+                return __DIR__.'/stubs/controller-crud.stub';
+            }
+            return __DIR__.'/stubs/dynamic/controller-crud.stub';
         }
         if ($this->option('upload') && $this->option('model')) {
-            return __DIR__.'/stubs/controller-upload.stub';
+            if ($this->option('custom-views')) {
+                return __DIR__.'/stubs/controller-upload.stub';
+            }
+            return __DIR__.'/stubs/dynamic/controller-upload.stub';
         }
         if ($this->option('parent')) {
             $stub = '/stubs/controller.nested.stub';
