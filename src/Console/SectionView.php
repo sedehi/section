@@ -35,16 +35,18 @@ class SectionView extends Command
         if (!File::isDirectory(app_path('Http/Controllers/'.ucfirst($this->argument('section')).'/'.$viewPath))) {
             File::makeDirectory(app_path('Http/Controllers/'.ucfirst($this->argument('section')).'/'.$viewPath), 0775, true);
         }
+        $stubFolder = $this->option('custom') ? 'custom' : 'dynamic';
         if ($this->option('upload')) {
-            $stubPath = __DIR__.'/stubs/dynamic/View/Admin-upload/';
-            if ($this->option('custom')) {
-                $stubPath = __DIR__.'/stubs/View/Admin-upload/';
-            }
+            $stubPath = __DIR__.'/stubs/views/'.$stubFolder.'/with-upload/';
             foreach (File::files($stubPath) as $templateFile) {
                 if (File::exists(app_path('Http/Controllers/'.ucfirst($this->argument('section')).'/views/admin/'.strtolower($this->argument('name')).'/'.File::name($templateFile).'.blade.php'))) {
                     $this->error('Admin '.File::name($templateFile).' view already exists.');
                 } else {
-                    $data = File::get($stubPath.File::name($templateFile));
+                    if (File::exists(resource_path('section-stubs/'.$stubFolder.'/with-upload/'.File::name($templateFile).'.stub'))) {
+                        $data = File::get(resource_path('section-stubs/'.$stubFolder.'/with-upload/'.File::name($templateFile).'.stub'));
+                    } else {
+                        $data = File::get($stubPath.File::name($templateFile));
+                    }
                     $data = str_replace('{{{section}}}', ucfirst($this->argument('section')), $data);
                     $data = str_replace('{{{sectionLower}}}', strtolower($this->argument('section')), $data);
                     $data = str_replace('{{{controller}}}', ucfirst($this->argument('controller')), $data);
@@ -56,15 +58,16 @@ class SectionView extends Command
                 }
             }
         } else {
-            $stubPath = __DIR__.'/stubs/dynamic/View/Admin/';
-            if ($this->option('custom')) {
-                $stubPath = __DIR__.'/stubs/View/Admin/';
-            }
+            $stubPath = __DIR__.'/stubs/views/'.$stubFolder.'/';
             foreach (File::files($stubPath) as $templateFile) {
                 if (File::exists(app_path('Http/Controllers/'.ucfirst($this->argument('section')).'/views/admin/'.strtolower($this->argument('name')).'/'.File::name($templateFile).'.blade.php'))) {
                     $this->error('Admin '.File::name($templateFile).' view already exists.');
                 } else {
-                    $data = File::get($stubPath.File::name($templateFile));
+                    if (File::exists(resource_path('section-stubs/'.$stubFolder.'/'.File::name($templateFile).'.stub'))) {
+                        $data = File::get(resource_path('section-stubs/'.$stubFolder.'/'.File::name($templateFile).'.stub'));
+                    } else {
+                        $data = File::get($stubPath.File::name($templateFile));
+                    }
                     $data = str_replace('{{{section}}}', ucfirst($this->argument('section')), $data);
                     $data = str_replace('{{{sectionLower}}}', strtolower($this->argument('section')), $data);
                     $data = str_replace('{{{name}}}', strtolower($this->argument('name')), $data);
