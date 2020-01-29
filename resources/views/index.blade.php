@@ -1,2 +1,2 @@
 @extends('admin.master')
-@section('title','مدیریت سایت')
+@section('title',trans('admin.name'))
