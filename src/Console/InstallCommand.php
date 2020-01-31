@@ -33,9 +33,9 @@ class InstallCommand extends Command
         $this->registerRoutes();
 
         if ($this->confirm('Do you want to create admin panel ? [y|n]', false)) {
+            $this->updateConfigFiles();
             $this->registerAdminRoutes();
             $this->publishAdminFiles();
-            $this->call('make:auth');
 
             if ($this->confirm('Do you want to publish assets sources ? [y|n]', false)) {
                 $this->call('vendor:publish', [
@@ -89,7 +89,7 @@ class InstallCommand extends Command
     public function registerAdminRoutes()
     {
         if (!File::exists(base_path('routes/admin.php'))) {
-            file_put_contents(base_path('routes/admin.php'), '<?php ');
+            file_put_contents(base_path('routes/admin.php'), file_get_contents(__DIR__.'/stubs/admin-routes.stub'));
         }
         $routeServiceProviderPath = app_path('Providers/RouteServiceProvider.php');
         $routeServiceProvider = file_get_contents($routeServiceProviderPath);
@@ -116,13 +116,14 @@ class InstallCommand extends Command
     {
         return '    protected function mapAdminRoutes(){
 
-        Route::namespace($this->namespace)->middleware([\'web\',\'auth\'])->group(function(){
-
-            $routes = glob(app_path(\'Http/Controllers/*/routes/admin.php\'));
-            foreach($routes as $route) {
-                require $route;
-            }
+        Route::namespace($this->namespace)->middleware(\'web\')->group(function(){
             require base_path(\'routes/admin.php\');
+            Route::middleware(\'auth\')->group(function(){
+                $routes = glob(app_path(\'Http/Controllers/*/routes/admin.php\'));
+                foreach($routes as $route) {
+                    require $route;
+                }
+            });
         });
     }';
     }
@@ -162,11 +163,50 @@ class InstallCommand extends Command
 
     private function publishAdminFiles()
     {
-        $this->updateViewConfig();
-
         $this->call('vendor:publish', ['--tag' =>  'section-views']);
         $this->call('vendor:publish', ['--tag' =>  'section-assets']);
         $this->call('vendor:publish', ['--tag' =>  'section-translations']);
+
+        // create admin controllers
+        if (!File::isDirectory(app_path('Http/Controllers/Auth/Controllers/Admin/'))) {
+            File::makeDirectory(app_path('Http/Controllers/Auth/Controllers/Admin/'),0755,true,true);
+        }
+        if (!File::exists(app_path('Http/Controllers/Auth/Controllers/Admin/LoginController.php'))) {
+            File::put(
+                app_path('Http/Controllers/Auth/Controllers/Admin/LoginController.php'),
+                File::get(__DIR__.'/stubs/login-controller.stub')
+            );
+        }
+        if (!File::exists(app_path('Http/Controllers/AdminController.php'))) {
+            File::put(
+                app_path('Http/Controllers/AdminController.php'),
+                File::get(__DIR__.'/stubs/admin-controller.stub')
+            );
+        }
+    }
+
+    private function updateConfigFiles()
+    {
+        $this->updateAppConfig();
+        $this->updateViewConfig();
+    }
+
+    private function updateAppConfig()
+    {
+        $appConfigPath = config_path('app.php');
+        $appConfig = file_get_contents($appConfigPath);
+        $eol = $this->EOL($appConfig);
+        if (!Str::contains($appConfig, 'Morilog\Jalali\Jalalian::class')) {
+            $lines = file($appConfigPath);
+            $appConfig = '';
+            foreach ($lines as $lineNumber => $line) {
+                $appConfig .= $line;
+                if (Str::contains($line, '\'aliases\'')) {
+                    $appConfig .= "\t\t".'\'Jalalian\' => Morilog\Jalali\Jalalian::class,';
+                }
+            }
+            file_put_contents($appConfigPath, $appConfig);
+        }
     }
 
     private function updateViewConfig()

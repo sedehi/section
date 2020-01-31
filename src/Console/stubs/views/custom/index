@@ -69,7 +69,7 @@
                     </table>
                 </div>
                 <div class="card-footer">
-                    @include('admin.pagination', ['items' => $items])
+                    {!! $items->appends(Request::except('page'))->render() !!}
                 </div>
             </div>
         </div>

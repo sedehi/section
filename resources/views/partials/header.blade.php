@@ -20,7 +20,7 @@
                 <ul class="dropdown-menu fsz-sm">
                     <li>
                         <a href="{!! route('logout') !!}" class="d-b td-n pY-5 bgcH-grey-100 c-grey-700">
-                            <span>خروج</span>
+                            <span>{{ __('admin.logout') }}</span>
                         </a>
                     </li>
                 </ul>
