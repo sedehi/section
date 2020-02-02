@@ -37,6 +37,10 @@ class InstallCommand extends Command
             $this->registerAdminRoutes();
             $this->publishAdminFiles();
 
+            if ($this->confirm('Do you want to create role section ? [y|n]', false)) {
+                // @todo make role section
+            }
+
             if ($this->confirm('Do you want to publish assets sources ? [y|n]', false)) {
                 $this->call('vendor:publish', [
                     '--tag' => 'section-assets-sources',
