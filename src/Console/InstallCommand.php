@@ -210,6 +210,9 @@ class InstallCommand extends Command
                 }
             }
             file_put_contents($appConfigPath, $appConfig);
+            $this->alert('For use jalalian dates please run this command ');
+            $this->output->title('composer require morilog/jalali:3.*');
+            $this->output->newLine();
         }
     }
 
