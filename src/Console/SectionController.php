@@ -27,7 +27,7 @@ class SectionController extends ControllerMakeCommand
     protected function getDefaultNamespace($rootNamespace)
     {
         $namespace = $rootNamespace.'\Http\Controllers';
-        if (!is_null($this->option('section'))) {
+        if ($this->option('section') !== null) {
             $namespace .= '\\'.Str::studly($this->option('section')).'\\Controllers';
         }
         if ($this->option('site')) {

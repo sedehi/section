@@ -47,12 +47,21 @@ class SectionView extends Command
                     } else {
                         $data = File::get($stubPath.File::name($templateFile));
                     }
-                    $data = str_replace('{{{section}}}', ucfirst($this->argument('section')), $data);
-                    $data = str_replace('{{{sectionLower}}}', strtolower($this->argument('section')), $data);
-                    $data = str_replace('{{{controller}}}', ucfirst($this->argument('controller')), $data);
-                    $data = str_replace('{{{controllerLower}}}', strtolower($this->argument('controller')), $data);
-                    $data = str_replace('{{{title}}}', $this->argument('title'), $data);
-                    $data = str_replace('{{{name}}}', strtolower($this->argument('name')), $data);
+                    $data = str_replace([
+                        '{{{section}}}',
+                        '{{{sectionLower}}}',
+                        '{{{controller}}}',
+                        '{{{controllerLower}}}',
+                        '{{{title}}}',
+                        '{{{name}}}'
+                    ], [
+                        ucfirst($this->argument('section')),
+                        strtolower($this->argument('section')),
+                        ucfirst($this->argument('controller')),
+                        strtolower($this->argument('controller')),
+                        $this->argument('title'),
+                        strtolower($this->argument('name'))
+                    ], $data);
                     File::put(app_path('Http/Controllers/'.ucfirst($this->argument('section')).'/views/admin/'.strtolower($this->argument('name')).'/'.File::name($templateFile).'.blade.php'), $data);
                     $this->info('Admin '.File::name($templateFile).' view created successfully.');
                 }
@@ -68,12 +77,21 @@ class SectionView extends Command
                     } else {
                         $data = File::get($stubPath.File::name($templateFile));
                     }
-                    $data = str_replace('{{{section}}}', ucfirst($this->argument('section')), $data);
-                    $data = str_replace('{{{sectionLower}}}', strtolower($this->argument('section')), $data);
-                    $data = str_replace('{{{name}}}', strtolower($this->argument('name')), $data);
-                    $data = str_replace('{{{controller}}}', ucfirst($this->argument('controller')), $data);
-                    $data = str_replace('{{{controllerLower}}}', strtolower($this->argument('controller')), $data);
-                    $data = str_replace('{{{title}}}', $this->argument('title'), $data);
+                    $data = str_replace([
+                        '{{{section}}}',
+                        '{{{sectionLower}}}',
+                        '{{{name}}}',
+                        '{{{controller}}}',
+                        '{{{controllerLower}}}',
+                        '{{{title}}}'
+                    ], [
+                        ucfirst($this->argument('section')),
+                        strtolower($this->argument('section')),
+                        strtolower($this->argument('name')),
+                        ucfirst($this->argument('controller')),
+                        strtolower($this->argument('controller')),
+                        $this->argument('title')
+                    ], $data);
                     File::put(app_path('Http/Controllers/'.ucfirst($this->argument('section')).'/views/admin/'.strtolower($this->argument('name')).'/'.File::name($templateFile).'.blade.php'), $data);
                     $this->info('Admin '.File::name($templateFile).' view created successfully.');
                 }

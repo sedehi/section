@@ -44,20 +44,20 @@ class SectionRequest extends RequestMakeCommand
     protected function getDefaultNamespace($rootNamespace)
     {
         $namespace = $rootNamespace.'\Http';
-        if (!is_null($this->option('section'))) {
-            $namespace = $namespace.'\Controllers\\'.Str::studly($this->option('section'));
+        if ($this->option('section') !== null) {
+            $namespace .= '\Controllers\\' . Str::studly($this->option('section'));
         }
-        $namespace = $namespace.'\Requests';
+        $namespace .= '\Requests';
         if ($this->option('admin')) {
-            $namespace = $namespace.'\Admin';
+            $namespace .= '\Admin';
         }
         if ($this->option('site')) {
-            $namespace = $namespace.'\Site';
+            $namespace .= '\Site';
         }
         if ($this->option('api')) {
-            $namespace = $namespace.'\Api';
-            if (!is_null($this->option('request-version'))) {
-                $namespace = $namespace.'\\'.Str::studly($this->option('request-version'));
+            $namespace .= '\Api';
+            if ($this->option('request-version') !== null) {
+                $namespace .= '\\' . Str::studly($this->option('request-version'));
             }
         }
 

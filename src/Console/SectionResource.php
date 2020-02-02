@@ -22,10 +22,10 @@ class SectionResource extends ResourceMakeCommand
     protected function getDefaultNamespace($rootNamespace)
     {
         $namespace = $rootNamespace.'\Http';
-        if (!is_null($this->option('section'))) {
-            $namespace = $namespace.'\Controllers\\'.Str::studly($this->option('section'));
+        if ($this->option('section') !== null) {
+            $namespace .= '\Controllers\\' . Str::studly($this->option('section'));
         }
-        if (!is_null($this->option('api-version'))) {
+        if ($this->option('api-version') !== null) {
             return $namespace.'\Resources\\'.Str::studly($this->option('api-version'));
         }
 

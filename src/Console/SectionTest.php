@@ -19,10 +19,10 @@ class SectionTest extends TestMakeCommand
     protected function getDefaultNamespace($rootNamespace)
     {
         $namespace = $rootNamespace;
-        if (!is_null($this->option('section'))) {
-            $namespace = $namespace.'\Http\Controllers\\'.Str::studly($this->option('section'));
+        if ($this->option('section') !== null) {
+            $namespace .= '\Http\Controllers\\' . Str::studly($this->option('section'));
         }
-        if (!is_null($this->option('section'))) {
+        if ($this->option('section') !== null) {
             $namespace .= '\Tests';
         }
         if ($this->option('unit')) {
@@ -30,7 +30,7 @@ class SectionTest extends TestMakeCommand
         } else {
             $namespace .= '\Feature';
         }
-        if (!is_null($this->option('test-version'))) {
+        if ($this->option('test-version') !== null) {
             $namespace .= '\\'.Str::studly($this->option('test-version'));
         }
 
@@ -39,7 +39,7 @@ class SectionTest extends TestMakeCommand
 
     protected function rootNamespace()
     {
-        if (!is_null($this->option('section'))) {
+        if ($this->option('section') !== null) {
             return app()->getNamespace();
         }
 
@@ -50,7 +50,7 @@ class SectionTest extends TestMakeCommand
     {
         $name = Str::replaceFirst($this->rootNamespace(), '', $name);
         $name = str_replace('\\Tests\\', '\\tests\\', $name);
-        if (!is_null($this->option('section'))) {
+        if ($this->option('section') !== null) {
             return app_path().'/'.str_replace('\\', '/', $name).'.php';
         }
 

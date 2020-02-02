@@ -13,8 +13,8 @@ class SectionCommand extends ConsoleMakeCommand
     protected function getDefaultNamespace($rootNamespace)
     {
         $namespace = $rootNamespace.'\Http';
-        if (!is_null($this->option('section'))) {
-            $namespace = $namespace.'\Controllers\\'.Str::studly($this->option('section'));
+        if ($this->option('section') !== null) {
+            $namespace .= '\Controllers\\' . Str::studly($this->option('section'));
         }
 
         return $namespace.'\Commands';

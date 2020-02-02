@@ -20,7 +20,7 @@ class SectionSeed extends SeederMakeCommand
     protected function getPath($name)
     {
         $name = str_replace(['\\', '/'], '', $this->argument('name'));
-        if (!is_null($this->option('section'))) {
+        if ($this->option('section') !== null) {
             return app_path('Http/Controllers/'.Str::studly($this->option('section'))."/database/seeds/{$name}.php");
         }
 
