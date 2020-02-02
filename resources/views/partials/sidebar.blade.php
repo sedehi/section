@@ -32,56 +32,9 @@
                     <span class="title">@lang('admin.first_page')</span>
                 </a>
             </li>
-            {{--@foreach(adminMenu() as $keyMenu=>$valueMenu)
-                @if(permission($keyMenu))
-                    @php
-                        $parameters = [];
-                    @endphp
-                    @if(isset($valueMenu['parameters']))
-                        @php $parameters = $valueMenu['parameters'] @endphp
-                    @endif
-
-                    <li @if(isset($valueMenu['action'])) class="nav-item" @else class="nav-item dropdown" @endif  title="{{$valueMenu['title']}}">
-                        <a @if(!isset($valueMenu['action'])) class="dropdown-toggle" @endif href="@if(isset($valueMenu['action'])){!! action($valueMenu['action'],$parameters) !!}@else javascript:void(0); @endif">
-                            <span class="icon-holder"><i class="c-blue-500 {{$valueMenu['icon']}}"></i></span>
-                            <span class="title">{{$valueMenu['title']}}</span>
-                            @if(isset($valueMenu['submenu']))
-                                <span class="arrow">
-                                    <i class="ti-angle-right"></i>
-                                </span>
-                            @endif
-                        </a>
-                        @if(isset($valueMenu['submenu']))
-                            <ul class="dropdown-menu">
-                                @foreach($valueMenu['submenu'] as $keyLevelTwo=>$valueLevelTwo)
-                                    @if(isset($valueLevelTwo['action']))
-                                        @php
-                                            $subMenuAction = explode('\\', strtolower($valueLevelTwo['action']));
-                                            $submenuController = explode('@', end($subMenuAction));
-                                        @endphp
-                                        @if(permission($keyMenu.'.'.$submenuController[0].'.'.$submenuController[1]))
-                                            <li>
-                                                @php
-                                                    $parameters = [];
-                                                @endphp
-                                                @if(isset($valueLevelTwo['parameters']))
-                                                    @php $parameters = $valueLevelTwo['parameters'] @endphp
-                                                @endif
-                                                @php
-                                                    $actionUrl = action($valueLevelTwo['action'],$parameters);
-                                                @endphp
-                                                <a class="sidebar-link @if(request()->fullUrl() == $actionUrl) font-weight-bold sidebar-active-link @endif" href="{{ $actionUrl }}">
-                                                    {{ $valueLevelTwo['title'] }}
-                                                </a>
-                                            </li>
-                                        @endif
-                                    @endif
-                                @endforeach
-                            </ul>
-                        @endif
-                    </li>
-                @endif
-            @endforeach--}}
+            @foreach (glob(app_path('Http/Controllers/*/views/menu*.blade.php')) as $menu)
+                @include(\Illuminate\Support\Str::after(str_replace('.blade.php','',$menu),'Controllers/'))
+            @endforeach
         </ul>
     </div>
 </div>

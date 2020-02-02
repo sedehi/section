@@ -40,44 +40,51 @@ class SectionAdd extends Command
     public function handle()
     {
         $adminController = $siteController = $apiController = false;
-        if ($this->confirm('Do you want create model ? [y|n]', true)) {
+        if ($this->confirm('Do you want to create model ? [y|n]', true)) {
             $this->makeModel();
         }
-        if ($this->confirm('Do you want create admin controller ? [y|n]', true)) {
+        if ($this->confirm('Do you want to create admin controller ? [y|n]', true)) {
             $adminController = true;
-            if ($this->confirm('Do you want upload picture in admin ? [y|n]', true)) {
+            if ($this->confirm('Do you want to upload picture in admin ? [y|n]', true)) {
                 $this->makeAdminControllerWithUpload();
             } else {
                 $this->makeAdminController();
             }
         }
-        if ($this->confirm('Do you want create site controller ? [y|n]', true)) {
+        if ($this->confirm('Do you want to create site controller ? [y|n]', true)) {
             $siteController = true;
             $this->makeSiteController();
         }
-        if ($this->confirm('Do you want create api controller ? [y|n]', true)) {
+        if ($this->confirm('Do you want to create api controller ? [y|n]', true)) {
             $apiController = true;
             $this->makeApiController();
         }
-        if ($this->confirm('Do you want create factory ? [y|n]', true)) {
+        if ($this->confirm('Do you want to create factory ? [y|n]', true)) {
             $this->makeFactory();
         }
-        if ($this->confirm('Do you want create migration ? [y|n]', true)) {
+        if ($this->confirm('Do you want to create migration ? [y|n]', true)) {
             $name = $this->ask('What is table name?');
             if (empty($name)) {
                 $name = $this->argument('name');
             }
             $this->makeMigration($name);
         }
-        if ($this->confirm('Do you want create role ? [y|n]', true)) {
+        if ($this->confirm('Do you want to create role ? [y|n]', true)) {
             $title = $this->ask('What is section title?');
             if (empty($title)) {
                 $title = $this->argument('name');
             }
             $this->makeRole($title);
         }
-        if ($this->confirm('Do you want create route ? [y|n]', true)) {
+        if ($this->confirm('Do you want to create route ? [y|n]', true)) {
             $this->makeRoute($adminController, $siteController, $apiController);
+        }
+        if ($this->confirm('Do you want to create menu ? [y|n]', true)) {
+            $title = $this->ask('What is menu title?');
+            if (empty($title)) {
+                $title = $this->argument('name');
+            }
+            $this->makeMenu($title);
         }
     }
 
@@ -221,5 +228,17 @@ class SectionAdd extends Command
             '--section' => ucfirst($this->argument('name')),
             '--model'   => $this->laravel->getNamespace().'Http\Controllers\\'.$section.'\\Models\\'.$section,
         ]);
+    }
+
+    private function makeMenu($title)
+    {
+        if (File::exists(app_path('Http/Controllers/'.ucfirst($this->argument('name')).'/views/menu.blade.php'))) {
+            $this->error('menu already exists.');
+        } else {
+            $data = File::get(__DIR__.'/stubs/menu.stub');
+            $data = str_replace('{{{title}}}', $title, $data);
+            File::put(app_path('Http/Controllers/'.ucfirst($this->argument('name')).'/views/menu.blade.php'), $data);
+            $this->info('menu created successfully.');
+        }
     }
 }
