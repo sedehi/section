@@ -13,7 +13,7 @@ class SectionFactory extends FactoryMakeCommand
     protected function getPath($name)
     {
         $name = str_replace(['\\', '/'], '', $this->argument('name'));
-        if (!is_null($this->option('section'))) {
+        if ($this->option('section') !== null) {
             return app_path('Http/Controllers/'.Str::studly($this->option('section'))."/database/factories/{$name}.php");
         }
 

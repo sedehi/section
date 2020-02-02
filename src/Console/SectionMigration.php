@@ -15,13 +15,13 @@ class SectionMigration extends MigrateMakeCommand
 
     protected function getMigrationPath()
     {
-        if (strlen($section = Str::studly($this->input->getOption('section')))) {
+        if ($section = (Str::studly($this->input->getOption('section')) !== '')) {
             $path = $this->laravel->basePath().'/app/Http/Controllers/'.$section.'/database/migrations';
             $this->makeDirectory($path);
 
             return $path;
         }
-        if (!is_null($targetPath = $this->input->getOption('path'))) {
+        if (($targetPath = $this->input->getOption('path')) !== null) {
             return !$this->usingRealPath() ? $this->laravel->basePath().'/'.$targetPath : $targetPath;
         }
 

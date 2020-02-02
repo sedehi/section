@@ -12,7 +12,7 @@ class SectionModel extends ModelMakeCommand
 
     protected function getDefaultNamespace($rootNamespace)
     {
-        if (!is_null($this->option('section'))) {
+        if ($this->option('section') !== null) {
             return $rootNamespace.'\Http\Controllers\\'.Str::studly($this->option('section')).'\\Models';
         }
 

@@ -27,7 +27,7 @@ class SectionController extends ControllerMakeCommand
     protected function getDefaultNamespace($rootNamespace)
     {
         $namespace = $rootNamespace.'\Http\Controllers';
-        if (!is_null($this->option('section'))) {
+        if ($this->option('section') !== null) {
             $namespace .= '\\'.Str::studly($this->option('section')).'\\Controllers';
         }
         if ($this->option('site')) {
@@ -53,12 +53,14 @@ class SectionController extends ControllerMakeCommand
             if ($this->option('custom-views')) {
                 return __DIR__.'/stubs/controller-crud.stub';
             }
+
             return __DIR__.'/stubs/controller-crud-dynamic.stub';
         }
         if ($this->option('upload') && $this->option('model')) {
             if ($this->option('custom-views')) {
                 return __DIR__.'/stubs/controller-upload.stub';
             }
+
             return __DIR__.'/stubs/controller-upload-dynamic.stub';
         }
         if ($this->option('parent')) {
