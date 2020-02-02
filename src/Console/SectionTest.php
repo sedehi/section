@@ -20,7 +20,7 @@ class SectionTest extends TestMakeCommand
     {
         $namespace = $rootNamespace;
         if ($this->option('section') !== null) {
-            $namespace .= '\Http\Controllers\\' . Str::studly($this->option('section'));
+            $namespace .= '\Http\Controllers\\'.Str::studly($this->option('section'));
         }
         if ($this->option('section') !== null) {
             $namespace .= '\Tests';

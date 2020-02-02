@@ -173,7 +173,7 @@ class InstallCommand extends Command
 
         // create admin controllers
         if (!File::isDirectory(app_path('Http/Controllers/Auth/Controllers/Admin/'))) {
-            File::makeDirectory(app_path('Http/Controllers/Auth/Controllers/Admin/'),0755,true,true);
+            File::makeDirectory(app_path('Http/Controllers/Auth/Controllers/Admin/'), 0755, true, true);
         }
         if (!File::exists(app_path('Http/Controllers/Auth/Controllers/Admin/LoginController.php'))) {
             File::put(

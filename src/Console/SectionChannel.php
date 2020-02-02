@@ -14,7 +14,7 @@ class SectionChannel extends ChannelMakeCommand
     {
         $namespace = $rootNamespace.'\Http';
         if ($this->option('section') !== null) {
-            $namespace .= '\Controllers\\' . Str::studly($this->option('section'));
+            $namespace .= '\Controllers\\'.Str::studly($this->option('section'));
         }
 
         return $namespace.'\Channels';
