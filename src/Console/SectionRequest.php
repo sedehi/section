@@ -45,7 +45,7 @@ class SectionRequest extends RequestMakeCommand
     {
         $namespace = $rootNamespace.'\Http';
         if ($this->option('section') !== null) {
-            $namespace .= '\Controllers\\' . Str::studly($this->option('section'));
+            $namespace .= '\Controllers\\'.Str::studly($this->option('section'));
         }
         $namespace .= '\Requests';
         if ($this->option('admin')) {
@@ -57,7 +57,7 @@ class SectionRequest extends RequestMakeCommand
         if ($this->option('api')) {
             $namespace .= '\Api';
             if ($this->option('request-version') !== null) {
-                $namespace .= '\\' . Str::studly($this->option('request-version'));
+                $namespace .= '\\'.Str::studly($this->option('request-version'));
             }
         }
 

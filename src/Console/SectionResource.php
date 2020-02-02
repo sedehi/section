@@ -23,7 +23,7 @@ class SectionResource extends ResourceMakeCommand
     {
         $namespace = $rootNamespace.'\Http';
         if ($this->option('section') !== null) {
-            $namespace .= '\Controllers\\' . Str::studly($this->option('section'));
+            $namespace .= '\Controllers\\'.Str::studly($this->option('section'));
         }
         if ($this->option('api-version') !== null) {
             return $namespace.'\Resources\\'.Str::studly($this->option('api-version'));

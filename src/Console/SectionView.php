@@ -53,14 +53,14 @@ class SectionView extends Command
                         '{{{controller}}}',
                         '{{{controllerLower}}}',
                         '{{{title}}}',
-                        '{{{name}}}'
+                        '{{{name}}}',
                     ], [
                         ucfirst($this->argument('section')),
                         strtolower($this->argument('section')),
                         ucfirst($this->argument('controller')),
                         strtolower($this->argument('controller')),
                         $this->argument('title'),
-                        strtolower($this->argument('name'))
+                        strtolower($this->argument('name')),
                     ], $data);
                     File::put(app_path('Http/Controllers/'.ucfirst($this->argument('section')).'/views/admin/'.strtolower($this->argument('name')).'/'.File::name($templateFile).'.blade.php'), $data);
                     $this->info('Admin '.File::name($templateFile).' view created successfully.');
@@ -83,14 +83,14 @@ class SectionView extends Command
                         '{{{name}}}',
                         '{{{controller}}}',
                         '{{{controllerLower}}}',
-                        '{{{title}}}'
+                        '{{{title}}}',
                     ], [
                         ucfirst($this->argument('section')),
                         strtolower($this->argument('section')),
                         strtolower($this->argument('name')),
                         ucfirst($this->argument('controller')),
                         strtolower($this->argument('controller')),
-                        $this->argument('title')
+                        $this->argument('title'),
                     ], $data);
                     File::put(app_path('Http/Controllers/'.ucfirst($this->argument('section')).'/views/admin/'.strtolower($this->argument('name')).'/'.File::name($templateFile).'.blade.php'), $data);
                     $this->info('Admin '.File::name($templateFile).' view created successfully.');
