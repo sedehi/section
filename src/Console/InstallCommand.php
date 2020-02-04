@@ -38,7 +38,7 @@ class InstallCommand extends Command
             $this->publishAdminFiles();
 
             if ($this->confirm('Do you want to create role section ? [y|n]', false)) {
-                // @todo make role section
+                $this->publishRoleSection();
             }
 
             if ($this->confirm('Do you want to publish assets sources ? [y|n]', false)) {
@@ -232,5 +232,11 @@ class InstallCommand extends Command
             }
             file_put_contents($viewConfigPath, $viewConfig);
         }
+    }
+    private function publishRoleSection()
+    {
+      return  $this->call('section:define-gates-middleware', [
+            'name' => 'DefineGates'
+        ]);
     }
 }
