@@ -233,10 +233,11 @@ class InstallCommand extends Command
             file_put_contents($viewConfigPath, $viewConfig);
         }
     }
+
     private function publishRoleSection()
     {
-      return  $this->call('section:define-gates-middleware', [
-            'name' => 'DefineGates'
+        return  $this->call('section:define-gates-middleware', [
+            'name' => 'DefineGates',
         ]);
     }
 }
