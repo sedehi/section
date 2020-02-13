@@ -8,6 +8,8 @@ use Sedehi\Section\Console\SectionAdd;
 use Sedehi\Section\Console\SectionChannel;
 use Sedehi\Section\Console\SectionCommand;
 use Sedehi\Section\Console\SectionController;
+use Sedehi\Section\Console\SectionDefineGatesMiddlewareCommand;
+use Sedehi\Section\Console\SectionPermissionMiddlewareCommand;
 use Sedehi\Section\Console\SectionEvent;
 use Sedehi\Section\Console\SectionException;
 use Sedehi\Section\Console\SectionFactory;
@@ -40,6 +42,8 @@ class ArtisanServiceProvider extends LaravelArtisanServiceProvider
             SectionAdd::class,
             SectionView::class,
             InstallCommand::class,
+            SectionDefineGatesMiddlewareCommand::class,
+            SectionPermissionMiddlewareCommand::class
         ]);
     }
 

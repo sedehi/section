@@ -2,9 +2,14 @@
 
 namespace Sedehi\Section\Console;
 
+use App\Http\Kernel;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Str;
+use App\Http\Controllers\Role\Models\Role;
+use App\Http\Controllers\User\Models\Admin;
+use App\Http\Controllers\Role\database\seeds\RoleTableSeeder;
 
 class InstallCommand extends Command
 {
@@ -37,8 +42,38 @@ class InstallCommand extends Command
             $this->registerAdminRoutes();
             $this->publishAdminFiles();
 
-            if ($this->confirm('Do you want to create role section ? [y|n]', false)) {
-                // @todo make role section
+            if ($this->confirm('Do you want to create admin account ? [y|n]', false)) {
+
+                $email = $this->ask('What`s the admin email ?','admin@example.com');
+                $password = $this->secret('What`s the admin password ? [default: 12345678]');
+
+                $this->updateAuthConfig();
+                $this->registerAdminMiddleware();
+                $this->publishRoleSection();
+                $this->publishUserSection();
+
+                $this->call('migrate',[
+                    '--path' => [
+                        'database/migrations',
+                        'app/Http/Controllers/User/database/migrations',
+                        'app/Http/Controllers/Role/database/migrations',
+                    ]
+                ]);
+
+                $admin = Admin::where('email',$email)->first();
+
+                if (is_null($admin)) {
+                    $admin = Admin::create([
+                        'email' => $email,
+                        'password' => bcrypt($password ?? '12345678')
+                    ]);
+                    $this->call('db:seed',[
+                        '--class' => RoleTableSeeder::class
+                    ]);
+                    $admin->roles()->attach(Role::first());
+                }
+
+                $this->info('Admin account created successfully.');
             }
 
             if ($this->confirm('Do you want to publish assets sources ? [y|n]', false)) {
@@ -122,7 +157,7 @@ class InstallCommand extends Command
 
         Route::namespace($this->namespace)->middleware(\'web\')->group(function(){
             require base_path(\'routes/admin.php\');
-            Route::middleware(\'auth\')->group(function(){
+            Route::prefix(\'admin\')->middleware(\'admin\')->group(function(){
                 $routes = glob(app_path(\'Http/Controllers/*/routes/admin.php\'));
                 foreach($routes as $route) {
                     require $route;
@@ -232,5 +267,74 @@ class InstallCommand extends Command
             }
             file_put_contents($viewConfigPath, $viewConfig);
         }
+    }
+
+    private function updateAuthConfig()
+    {
+        $authConfigData = config('auth');
+        $authConfigPath = config_path('auth.php');
+        $authConfig = file_get_contents($authConfigPath);
+        $eol = $this->EOL($authConfig);
+
+        if (! Arr::has($authConfigData,'guards.admin')) {
+
+            $authConfig = str_replace(
+                "'guards' => [".$eol,
+                "'guards' => [".$eol."\t\t'admin' => [
+            'driver' => 'session',
+            'provider' => 'admins',
+        ],".$eol,
+                $authConfig
+            );
+
+            file_put_contents($authConfigPath, $authConfig);
+        }
+
+        if (! Arr::has($authConfigData,'providers.admins')) {
+            file_put_contents($authConfigPath, str_replace(
+                "'providers' => [".$eol,
+                "'providers' => [".$eol."\t\t'admins' => [
+            'driver' => 'eloquent',
+            'model' => \App\Http\Controllers\User\Models\Admin::class,
+        ],".$eol,
+                $authConfig
+            ));
+        }
+    }
+
+    private function registerAdminMiddleware()
+    {
+        $middlewareGroups = app()->make(Kernel::class)->getMiddlewareGroups();
+        $kernelPath = app_path('Http/Kernel.php');
+        $kernel = file_get_contents($kernelPath);
+        $eol = $this->EOL($kernel);
+
+        if (! Arr::has($middlewareGroups,'admin')) {
+
+            $kernel = str_replace(
+                "'web' => [".$eol,
+                "'admin'  =>  [
+            'auth:admin',
+            \App\Http\Middleware\DefineGates::class,
+            \App\Http\Middleware\Permission::class,
+        ],".$eol."\t\t'web' => [".$eol,
+                $kernel
+            );
+
+            file_put_contents($kernelPath, $kernel);
+        }
+    }
+
+    private function publishRoleSection()
+    {
+        $this->call('section:define-gates-middleware', ['name' => 'DefineGates']);
+        $this->call('section:permission-middleware', ['name' => 'Permission']);
+
+        return $this->call('vendor:publish', ['--tag' =>  'section-role-directory']);
+    }
+
+    private function publishUserSection()
+    {
+        return $this->call('vendor:publish', ['--tag' =>  'section-user-directory']);
     }
 }
