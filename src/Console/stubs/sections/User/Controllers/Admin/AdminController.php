@@ -42,8 +42,8 @@ class AdminController extends Controller
 
     public function edit($id)
     {
-        $item         = Admin::withTrashed()->findOrFail($id);
-        $roles        = $this->roles();
+        $item = Admin::withTrashed()->findOrFail($id);
+        $roles = $this->roles();
         $relatedRoles = $item->roles()->allRelatedIds()->toArray();
 
         return view('User.views.admin.admin.edit', compact('item', 'roles', 'relatedRoles'));
@@ -51,7 +51,7 @@ class AdminController extends Controller
 
     public function update(AdminRequest $request, $id)
     {
-        $item               = Admin::withTrashed()->findOrFail($id);
+        $item = Admin::withTrashed()->findOrFail($id);
         $item->fill([
             'first_name' => $request->get('first_name'),
             'last_name'  => $request->get('last_name'),
@@ -59,7 +59,7 @@ class AdminController extends Controller
             'mobile'     => $request->get('mobile'),
         ]);
         if ($request->filled('password')) {
-            $item->password     = bcrypt($request->get('password'));
+            $item->password = bcrypt($request->get('password'));
         }
         $item->save();
         $item->roles()->sync($request->get('role'));

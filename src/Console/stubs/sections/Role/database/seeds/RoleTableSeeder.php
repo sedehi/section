@@ -2,19 +2,20 @@
 
 namespace App\Http\Controllers\Role\database\seeds;
 
-use Illuminate\Database\Seeder;
 use App\Http\Controllers\Role\Models\Role;
+use Illuminate\Database\Seeder;
 
 class RoleTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
+     *
      * @return void
      */
     public function run()
     {
-        $data             = new Role();
-        $data->title      = trans('admin.super_admin');
+        $data = new Role();
+        $data->title = trans('admin.super_admin');
         $data->permission = serialize($this->rolePermissions());
         $data->save();
     }
@@ -36,7 +37,7 @@ class RoleTableSeeder extends Seeder
                 }
 
                 $data[strtolower($section)][strtolower($controller)] = $finalMethods;
-                $finalMethods                                        = [];
+                $finalMethods = [];
             }
         }
 

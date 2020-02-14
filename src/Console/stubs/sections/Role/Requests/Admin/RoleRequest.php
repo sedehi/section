@@ -8,6 +8,7 @@ class RoleRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
+     *
      * @return array
      */
     public function rules()
@@ -16,7 +17,7 @@ class RoleRequest extends FormRequest
             case 'destroy':
                 return [
                     'deleteId'   => 'required|array',
-                    'deleteType' => 'required'
+                    'deleteType' => 'required',
                 ];
                 break;
             case 'store':

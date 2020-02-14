@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Role\Tests\Feature\Admin;
 
-use Tests\TestCase;
 use App\Http\Controllers\Role\Models\Role;
+use Tests\TestCase;
 
 class RoleTest extends TestCase
 {
-    public function setUp() :void
+    public function setUp(): void
     {
         parent::setUp();
         $this->signInAdmin();

@@ -13,7 +13,7 @@ class RoleController extends Controller
     public function index()
     {
         $items = Role::latest('id')->paginate(10);
-        $list  = Role::pluck('title', 'id');
+        $list = Role::pluck('title', 'id');
 
         return view('Role.views.admin.role.index', compact('items', 'list'));
     }
@@ -25,8 +25,8 @@ class RoleController extends Controller
 
     public function store(RoleRequest $request)
     {
-        $item             = new Role();
-        $item->title       = $request->get('title');
+        $item = new Role();
+        $item->title = $request->get('title');
         $item->permission = serialize($request->get('access'));
         $item->save();
 
@@ -36,7 +36,7 @@ class RoleController extends Controller
 
     public function edit($id)
     {
-        $item             = Role::findOrFail($id);
+        $item = Role::findOrFail($id);
         $item->permission = unserialize($item->permission);
 
         return view('admin.edit', compact('item'));
@@ -44,7 +44,7 @@ class RoleController extends Controller
 
     public function update(RoleRequest $request, $id)
     {
-        $item       = Role::findOrFail($id);
+        $item = Role::findOrFail($id);
         $item->title = $request->get('title');
         $item->permission = serialize($request->get('access'));
         $item->save();
