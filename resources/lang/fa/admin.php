@@ -26,6 +26,7 @@ return [
     'search'                      => 'جستجو',
     'start_date'                  => 'از تاریخ',
     'end_date'                    => 'تا تاریخ',
+    'select_all'                  => 'انتخاب همه',
     'select_this_part'            => 'انتخاب این قسمت',
     'no_data_to_show'             => 'اطلاعاتی برای نمایش وجود ندارد',
     'edit_or_delete_only_creator' => 'ویرایش و حذف اطلاعات درج شده توسط کاربر',
@@ -35,4 +36,7 @@ return [
     'result'                      => 'نتیجه',
     'title'                       => 'عنوان',
     'creation_date'               => 'تاریخ درج',
+    'modification_only_by_owner'  => 'ویرایش یا حذف فقط توسط سازنده',
+    'manager'                     => 'مدیر',
+    'super_admin'                 => 'مدیریت کل',
 ];

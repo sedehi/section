@@ -237,6 +237,10 @@ class SectionAdd extends Command
         } else {
             $data = File::get(__DIR__.'/stubs/menu.stub');
             $data = str_replace('{{{title}}}', $title, $data);
+            $data = str_replace('{{{name}}}', ucfirst($this->argument('name')), $data);
+            $data = str_replace('{{{namelower}}}', strtolower($this->argument('name')), $data);
+            $data = str_replace('{{{controller}}}', ucfirst($this->argument('name')).'Controller', $data);
+            $data = str_replace('{{{controllerlower}}}', strtolower($this->argument('name')).'controller', $data);
             File::put(app_path('Http/Controllers/'.ucfirst($this->argument('name')).'/views/menu.blade.php'), $data);
             $this->info('menu created successfully.');
         }

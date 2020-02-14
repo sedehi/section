@@ -31,6 +31,12 @@ class SectionServiceProvider extends ServiceProvider
                 __DIR__.'/../resources/lang/en/admin.php' => resource_path('lang/en/admin.php'),
                 __DIR__.'/../resources/lang/fa/admin.php' => resource_path('lang/fa/admin.php'),
             ], 'section-translations');
+            $this->publishes([
+                __DIR__.'/../src/Console/stubs/sections/Role' => app_path('Http/Controllers/Role'),
+            ], 'section-role-directory');
+            $this->publishes([
+                __DIR__.'/../src/Console/stubs/sections/User' => app_path('Http/Controllers/User'),
+            ], 'section-user-directory');
         }
         $this->factories();
     }
