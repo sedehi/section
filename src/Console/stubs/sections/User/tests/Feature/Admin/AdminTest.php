@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\User\Tests\Feature\Admin;
 
-use Tests\TestCase;
 use App\Http\Controllers\Role\Models\Role;
-use App\Http\Controllers\User\Models\User;
 use App\Http\Controllers\User\Models\Admin;
+use App\Http\Controllers\User\Models\User;
+use Tests\TestCase;
 
 class AdminTest extends TestCase
 {
@@ -22,7 +22,7 @@ class AdminTest extends TestCase
     public function index_admin()
     {
         $admin = factory(Admin::class)->create();
-        $user  = factory(User::class)->create();
+        $user = factory(User::class)->create();
         $this->get(action('User\Controllers\Admin\AdminController@index'))
              ->assertSee($admin->email)
              ->assertDontSee($user->email);
@@ -36,10 +36,10 @@ class AdminTest extends TestCase
         $adminMustBeShow = factory(Admin::class)->state('withRole')->create([
             'email'      => 'admin@admin.com',
             'first_name' => 'test',
-            'last_name'  => 'testian'
+            'last_name'  => 'testian',
         ]);
         $adminDoesntShow = factory(Admin::class)->create();
-        $user            = factory(User::class)->create();
+        $user = factory(User::class)->create();
         $this->get(action('User\Controllers\Admin\AdminController@index', ['email' => $adminMustBeShow->email]))
              ->assertSee($adminMustBeShow->email)
              ->assertDontSee($user->email)
@@ -93,7 +93,7 @@ class AdminTest extends TestCase
         $role = factory(Role::class)->create();
         $this->post(action('User\Controllers\Admin\AdminController@store'), $item->toArray() + [
             'password' => '123456',
-            'role'     => [$role->id]
+            'role'     => [$role->id],
         ])
              ->assertSessionhas('success')
              ->assertRedirect(action('User\Controllers\Admin\AdminController@index'));
@@ -118,12 +118,12 @@ class AdminTest extends TestCase
      */
     public function can_edit_admin()
     {
-        $item     = factory(Admin::class)->state('withRole')->create();
-        $data     = factory(Admin::class)->make()->toArray();
+        $item = factory(Admin::class)->state('withRole')->create();
+        $data = factory(Admin::class)->make()->toArray();
         $oldRoles = $item->roles->pluck('id')->toArray();
-        $newRole  = factory(Role::class)->create();
+        $newRole = factory(Role::class)->create();
         $this->patch(action('User\Controllers\Admin\AdminController@update', [$item->id]), $data + [
-            'role' => [$newRole->id]
+            'role' => [$newRole->id],
         ])->assertSessionhas('success')
             ->assertRedirect(action('User\Controllers\Admin\AdminController@index'));
         $this->assertDatabaseHas('admins', $data);
@@ -138,11 +138,11 @@ class AdminTest extends TestCase
     {
         $item = factory(Admin::class)->state('withRole')->create();
         $this->delete(action('User\Controllers\Admin\AdminController@destroy', [$item->id]), [
-            'deleteId' => [$item->id]
+            'deleteId' => [$item->id],
         ])->assertSessionhas('success')
             ->assertRedirect(action('User\Controllers\Admin\AdminController@index'));
         $this->assertSoftDeleted('admins', [
-            'id'    => $item->id
+            'id'    => $item->id,
         ]);
     }
 }

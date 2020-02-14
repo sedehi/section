@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Role\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use App\Http\Controllers\User\Models\Admin;
+use Illuminate\Database\Eloquent\Model;
 
 class Role extends Model
 {
-    protected $table   = 'roles';
+    protected $table = 'roles';
 
     public function users()
     {
@@ -21,6 +21,7 @@ class Role extends Model
         foreach ($list as $dir) {
             $role += include $dir;
         }
+
         return $role;
     }
 }

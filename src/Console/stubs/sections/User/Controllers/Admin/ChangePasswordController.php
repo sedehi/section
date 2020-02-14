@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\User\Controllers\Admin;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class ChangePasswordController extends Controller
@@ -25,9 +25,9 @@ class ChangePasswordController extends Controller
                         $fail('رمز عبور فعلی اشتباه می باشد.');
                     }
                 },
-            ]
+            ],
         ]);
-        $user           = auth('admin')->user();
+        $user = auth('admin')->user();
         $user->password = bcrypt($request->get('password'));
         $user->save();
 

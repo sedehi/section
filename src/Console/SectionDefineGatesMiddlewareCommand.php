@@ -12,11 +12,8 @@ class SectionDefineGatesMiddlewareCommand extends MiddlewareMakeCommand
 
     protected $description = 'Create define gates middleware class';
 
-
     protected function getStub()
     {
         return __DIR__.'/stubs/define-gates-middleware.stub';
     }
-
-
 }

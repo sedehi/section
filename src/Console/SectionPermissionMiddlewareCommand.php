@@ -12,11 +12,8 @@ class SectionPermissionMiddlewareCommand extends MiddlewareMakeCommand
 
     protected $description = 'Create permission middleware class';
 
-
     protected function getStub()
     {
         return __DIR__.'/stubs/permission-middleware.stub';
     }
-
-
 }

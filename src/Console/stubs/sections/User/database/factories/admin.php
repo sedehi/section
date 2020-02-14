@@ -1,8 +1,8 @@
 <?php
 
-use Faker\Generator as Faker;
 use App\Http\Controllers\Role\Models\Role;
 use App\Http\Controllers\User\Models\Admin;
+use Faker\Generator as Faker;
 
 $factory->define(Admin::class, function (Faker $faker) {
     return [

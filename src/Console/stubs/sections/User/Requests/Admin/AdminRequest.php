@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\User\Requests\Admin;
 
-use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class AdminRequest extends FormRequest
 {
-
     /**
      * Determine if the user is authorized to make this request.
+     *
      * @return bool
      */
     public function authorize()
@@ -19,6 +19,7 @@ class AdminRequest extends FormRequest
 
     /**
      * Get the validation rules that apply to the request.
+     *
      * @return array
      */
     public function rules()
@@ -49,13 +50,13 @@ class AdminRequest extends FormRequest
                         'bail',
                         'numeric',
                         'iran_mobile',
-                        Rule::unique('admins')->ignore($this->route()->parameter('admin'))->whereNull('deleted_at')
+                        Rule::unique('admins')->ignore($this->route()->parameter('admin'))->whereNull('deleted_at'),
                     ],
                     'email'      => [
                         'required',
                         'email',
                         Rule::unique('admins')->ignore($this->route()->parameter('admin'))->whereNull('deleted_at'),
-                        'max:150'
+                        'max:150',
                     ],
                     'password'   => 'nullable|min:6|max:150',
                     'role'       => 'required|array|min:1',
