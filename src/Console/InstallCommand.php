@@ -74,6 +74,8 @@ class InstallCommand extends Command
                 }
 
                 $this->info('Admin account created successfully.');
+            if ($this->confirm('Do you want to create role section ? [y|n]', false)) {
+                $this->publishRoleSection();
             }
 
             if ($this->confirm('Do you want to publish assets sources ? [y|n]', false)) {
@@ -268,7 +270,7 @@ class InstallCommand extends Command
             file_put_contents($viewConfigPath, $viewConfig);
         }
     }
-
+      
     private function updateAuthConfig()
     {
         $authConfigData = config('auth');
@@ -336,5 +338,13 @@ class InstallCommand extends Command
     private function publishUserSection()
     {
         return $this->call('vendor:publish', ['--tag' =>  'section-user-directory']);
+      
+    }
+      
+    private function publishRoleSection()
+    {
+      return  $this->call('section:define-gates-middleware', [
+            'name' => 'DefineGates'
+        ]);
     }
 }
