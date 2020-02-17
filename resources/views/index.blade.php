@@ -10,7 +10,7 @@
 @section('title',trans('admin.name'))
 @section('content')
     <div class="row">
-        @includeIf('admin.search')
+        @includeIf('vendor.section.search')
         <div class="col-md-12">
             <div class="card">
                 @yield('table_header',View::make('admin.index-table-header',compact([
