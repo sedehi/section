@@ -11,7 +11,7 @@
                             <button type="button" class="btn btn-primary table-header-btn" data-toggle="collapse" data-target="#searchCollapse" role="button" aria-expanded="false" aria-controls="collapseExample">
                                 <i class="fa fa-search"></i>
                             </button>
-                        
+
                             @if(Gate::allows('{{{section}}}.{{{controller}}}.destroy'))
                                 <button type="submit" class="btn btn-danger table-header-btn d-none delete-btn">
                                         حذف
@@ -70,7 +70,7 @@
                     </table>
                 </div>
                 <div class="card-footer">
-                    @include('admin.pagination', ['items' => $items])
+                    @include('vendor.section.pagination', ['items' => $items])
                 </div>
             </div>
         </div>
