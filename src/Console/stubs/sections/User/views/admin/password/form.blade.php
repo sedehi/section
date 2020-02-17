@@ -1,4 +1,4 @@
-@extends('admin.master')
+@extends('vendor.section.master')
 @section('content')
     <div class="row gap-20 pos-r">
         <div class="col-md-12">
@@ -8,23 +8,23 @@
                         @csrf
                         <div class="row">
                             <div class="form-group col-md-5">
-                                <lable for="old_password">رمز عبور فعلی</lable>
+                                <lable for="old_password">@lang('validation.attributes.current_password')</lable>
                                 <input type="password" name="old_password" class="form-control">
                             </div>
                         </div>
                         <div class="row">
                             <div class="form-group col-md-5">
-                                <lable for="password">رمز جدید</lable>
+                                <lable for="password">@lang('validation.attributes.password')</lable>
                                 <input type="password" name="password" class="form-control">
                             </div>
                         </div>
                         <div class="row">
                             <div class="form-group col-md-5">
-                                <lable for="password_confirmation">تکرار رمز جدید</lable>
+                                <lable for="password_confirmation">@lang('validation.attributes.password_confirmation')</lable>
                                 <input type="password" name="password_confirmation" class="form-control">
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-primary">تغییر رمز عبور</button>
+                        <button type="submit" class="btn btn-primary">@lang('admin.submit')</button>
                     </form>
                 </div>
             </div>

@@ -19,6 +19,11 @@
                 </a>
                 <ul class="dropdown-menu fsz-sm">
                     <li>
+                        <a href="{!! route('admin.password.index') !!}" class="d-b td-n pY-5 bgcH-grey-100 c-grey-700">
+                            <span>{{ __('admin.change_password') }}</span>
+                        </a>
+                    </li>
+                    <li>
                         <a href="{!! route('logout') !!}" class="d-b td-n pY-5 bgcH-grey-100 c-grey-700">
                             <span>{{ __('admin.logout') }}</span>
                         </a>

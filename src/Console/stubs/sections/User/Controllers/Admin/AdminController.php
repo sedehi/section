@@ -9,10 +9,13 @@ use App\Http\Controllers\User\Requests\Admin\AdminRequest;
 
 class AdminController extends Controller
 {
+    public static $viewForm = 'admin';
+
     public function index()
     {
         $items = Admin::with('roles')->latest('id')->paginate(10);
-        $roles = $this->roles()->pluck('name', 'id')->prepend('...', '');
+
+        $roles = $this->roles()->pluck('title', 'id')->prepend('...', '');
 
         return view('User.views.admin.admin.index', compact('items', 'roles'));
     }
@@ -21,7 +24,7 @@ class AdminController extends Controller
     {
         $roles = $this->roles();
 
-        return view('User.views.admin.admin.add', compact('roles'));
+        return view('vendor.section.create', compact('roles'));
     }
 
     public function store(AdminRequest $request)
@@ -46,7 +49,7 @@ class AdminController extends Controller
         $roles = $this->roles();
         $relatedRoles = $item->roles()->allRelatedIds()->toArray();
 
-        return view('User.views.admin.admin.edit', compact('item', 'roles', 'relatedRoles'));
+        return view('vendor.section.edit', compact('item', 'roles', 'relatedRoles'));
     }
 
     public function update(AdminRequest $request, $id)
