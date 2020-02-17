@@ -6,7 +6,7 @@
     $sectionName = $action[3];
     $controllerName = $action[6];
 @endphp
-@extends('admin.master')
+@extends('vendor.section.master')
 @section('title',trans('admin.name'))
 @section('content')
     <div class="row">

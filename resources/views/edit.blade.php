@@ -6,7 +6,7 @@
     $sectionName = $ns[0];
     $controllerName = $ns[3];
 @endphp
-@extends('admin.master')
+@extends('vendor.section.master')
 @section('title',trans('admin.sections.'.strtolower($sectionName)).' | '.trans('admin.edit').' '.trans('admin.'.strtolower($controllerName)))
 @section('content')
     <div class="row gap-20 pos-r">
