@@ -1,1 +1,1 @@
-@extends('admin.index')
+@extends('vendor.section.index')
