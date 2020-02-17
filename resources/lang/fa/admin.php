@@ -39,4 +39,9 @@ return [
     'modification_only_by_owner'    => 'ویرایش یا حذف فقط توسط سازنده',
     'manager'                       => 'مدیر',
     'super_admin'                   => 'مدیریت کل',
+    'validation'                  => [
+      'role'  =>  [
+          'required'  =>  'حداقل باید یک گروه کاربری انتخاب شود'
+      ]
+    ],
 ];

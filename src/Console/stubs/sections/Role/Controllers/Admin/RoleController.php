@@ -20,7 +20,7 @@ class RoleController extends Controller
 
     public function create()
     {
-        return view('admin.create')->with('item', null);
+        return view('vendor.section.create')->with('item', null);
     }
 
     public function store(RoleRequest $request)
@@ -39,7 +39,7 @@ class RoleController extends Controller
         $item = Role::findOrFail($id);
         $item->permission = unserialize($item->permission);
 
-        return view('admin.edit', compact('item'));
+        return view('vendor.section.edit', compact('item'));
     }
 
     public function update(RoleRequest $request, $id)

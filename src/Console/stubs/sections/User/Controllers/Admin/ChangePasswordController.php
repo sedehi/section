@@ -16,13 +16,13 @@ class ChangePasswordController extends Controller
     public function change(Request $request)
     {
         $request->validate([
-            'password'     => 'required|min:6|confirmed',
+            'password'     => 'required|min:8|confirmed',
             'old_password' => [
                 'required',
                 'min:8',
                 function ($attribute, $value, $fail) {
                     if (!Hash::check($value, auth('admin')->user()->password)) {
-                        $fail('رمز عبور فعلی اشتباه می باشد.');
+                        $fail(trans('user.validation.wrong_current_password'));
                     }
                 },
             ],
@@ -31,6 +31,6 @@ class ChangePasswordController extends Controller
         $user->password = bcrypt($request->get('password'));
         $user->save();
 
-        return redirect()->route('admin.homepage')->with('success', 'رمز عبور با موفقیت تغییر کرد.');
+        return redirect()->route('admin.homepage')->with('success', trans('user.password_updated_successfully'));
     }
 }

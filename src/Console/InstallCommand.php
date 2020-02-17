@@ -332,6 +332,17 @@ class InstallCommand extends Command
 
     private function publishUserSection()
     {
-        return $this->call('vendor:publish', ['--tag' =>  'section-user-directory']);
+        $this->call('vendor:publish', ['--tag' =>  'section-user-directory']);
+
+        // create user section language file
+        if (! File::exists(resource_path('lang/fa/user.php'))) {
+            if(!File::isDirectory(resource_path('lang/fa'))){
+                File::makeDirectory(resource_path('lang/fa'), 0755, true, true);
+            }
+            file_put_contents(
+                resource_path('lang/fa/user.php'),
+                file_get_contents(__DIR__.'/stubs/user-lang.stub')
+            );
+        }
     }
 }
