@@ -35,9 +35,7 @@
                                 'controllerName'
                             ])))
                         @empty
-                            <tr>
-                                <td colspan="20" class="text-center">@lang('admin.no_data_to_show')</td>
-                            </tr>
+                           @include('vendor.section.table-empty-row')
                         @endforelse
                         </tbody>
                     </table>
