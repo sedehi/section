@@ -10,7 +10,7 @@
         <h6 class="c-grey-900">@lang('admin.search')</h6>
         <div class="mT-30">
             <form method="get">
-                @include("$sectionName.views.admin.".$controllerClass::$viewForm.".search-form")
+                @includeIf("$sectionName.views.admin.".$controllerClass::$viewForm.".search-form")
                 <button type="submit" class="btn btn-primary">@lang('admin.search')</button>
             </form>
         </div>

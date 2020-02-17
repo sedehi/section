@@ -2,14 +2,14 @@
 
 namespace Sedehi\Section\Console;
 
-use App\Http\Kernel;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
-use Illuminate\Console\Command;
-use Illuminate\Support\Facades\File;
+use App\Http\Controllers\Role\database\seeds\RoleTableSeeder;
 use App\Http\Controllers\Role\Models\Role;
 use App\Http\Controllers\User\Models\Admin;
-use App\Http\Controllers\Role\database\seeds\RoleTableSeeder;
+use App\Http\Kernel;
+use Illuminate\Console\Command;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 
 class InstallCommand extends Command
 {
@@ -43,8 +43,7 @@ class InstallCommand extends Command
             $this->publishAdminFiles();
 
             if ($this->confirm('Do you want to create admin account ? [y|n]', false)) {
-
-                $email = $this->ask('What`s the admin email ?','admin@example.com');
+                $email = $this->ask('What`s the admin email ?', 'admin@example.com');
                 $password = $this->secret('What`s the admin password ? [default: 12345678]');
 
                 $this->updateAuthConfig();
@@ -52,23 +51,23 @@ class InstallCommand extends Command
                 $this->publishRoleSection();
                 $this->publishUserSection();
 
-                $this->call('migrate',[
+                $this->call('migrate', [
                     '--path' => [
                         'database/migrations',
                         'app/Http/Controllers/User/database/migrations',
                         'app/Http/Controllers/Role/database/migrations',
-                    ]
+                    ],
                 ]);
 
-                $admin = Admin::where('email',$email)->first();
+                $admin = Admin::where('email', $email)->first();
 
                 if (is_null($admin)) {
                     $admin = Admin::create([
-                        'email' => $email,
-                        'password' => bcrypt($password ?? '12345678')
+                        'email'    => $email,
+                        'password' => bcrypt($password ?? '12345678'),
                     ]);
-                    $this->call('db:seed',[
-                        '--class' => RoleTableSeeder::class
+                    $this->call('db:seed', [
+                        '--class' => RoleTableSeeder::class,
                     ]);
                     $admin->roles()->attach(Role::first());
                 }
@@ -276,8 +275,7 @@ class InstallCommand extends Command
         $authConfig = file_get_contents($authConfigPath);
         $eol = $this->EOL($authConfig);
 
-        if (! Arr::has($authConfigData,'guards.admin')) {
-
+        if (!Arr::has($authConfigData, 'guards.admin')) {
             $authConfig = str_replace(
                 "'guards' => [".$eol,
                 "'guards' => [".$eol."\t\t'admin' => [
@@ -290,7 +288,7 @@ class InstallCommand extends Command
             file_put_contents($authConfigPath, $authConfig);
         }
 
-        if (! Arr::has($authConfigData,'providers.admins')) {
+        if (!Arr::has($authConfigData, 'providers.admins')) {
             file_put_contents($authConfigPath, str_replace(
                 "'providers' => [".$eol,
                 "'providers' => [".$eol."\t\t'admins' => [
@@ -309,8 +307,7 @@ class InstallCommand extends Command
         $kernel = file_get_contents($kernelPath);
         $eol = $this->EOL($kernel);
 
-        if (! Arr::has($middlewareGroups,'admin')) {
-
+        if (!Arr::has($middlewareGroups, 'admin')) {
             $kernel = str_replace(
                 "'web' => [".$eol,
                 "'admin'  =>  [
@@ -348,5 +345,4 @@ class InstallCommand extends Command
             );
         }
     }
-
 }

@@ -17,7 +17,7 @@ class SectionServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__.'/../resources/views' => resource_path('views/admin'),
+                __DIR__.'/../resources/views' => resource_path('views/vendor/section'),
             ], 'section-views');
             $this->publishes([
                 __DIR__.'/../resources/assets/dist' => public_path('assets/admin'),
