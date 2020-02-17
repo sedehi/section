@@ -8,7 +8,7 @@
     <title>
         @lang('admin.name')
         @if (trim($__env->yieldContent('title')))
-        - @yield('title')
+            - @yield('title')
         @endif
     </title>
     <link href="{!! asset('assets/admin/css/app.css') !!}" rel="stylesheet">
@@ -42,9 +42,9 @@
     });
 </script>
 <div>
-    @include('admin.partials.sidebar')
+    @include('vendor.section.partials.sidebar')
     <div class="page-container">
-        @include('  admin.partials.header')
+        @include('vendor.section.partials.header')
         <main class="main-content bgc-grey-100">
             <div id="mainContent">
                 <div class="container-fluid">
@@ -59,7 +59,7 @@
 <script>
     $ = window.jquery;
 </script>
-@include('admin.partials.notifications')
+@include('vendor.section.partials.notifications')
 <script>
     $(document).ready(function ($) {
         $('.clickable-row td').on('click', function (e) {
