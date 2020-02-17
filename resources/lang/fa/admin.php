@@ -13,7 +13,7 @@ return [
     'deleted'                     => 'اطلاعات با موفقیت حذف شد',
     'setting'                     => 'تنظیمات',
     'active'                      => 'فعال',
-    'deactive'                    => 'غیر فعال',
+    'deactivate'                    => 'غیر فعال',
     'submit'                      => 'ثبت و ذخیره',
     'admins_groups'               => 'گروه مدیریتی',
     'list'                        => 'لیست',
