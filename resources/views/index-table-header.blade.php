@@ -5,7 +5,7 @@
     <div class="row">
         <h4 class="c-grey-900 col-md-6">
             <span>@yield('title')</span>
-            @include('admin.partials.pagination-info',$items)
+            @include('vendor.section.partials.pagination-info',$items)
         </h4>
         <div class="col-md-6">
             @if (view()->exists("$sectionName.views.admin.".$controllerClass::$viewForm.".search-form"))

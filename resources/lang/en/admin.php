@@ -10,7 +10,7 @@ return [
     'deleted'                     => 'Data deleted successfully',
     'setting'                     => 'Settings',
     'active'                      => 'Active',
-    'deactive'                    => 'Deactive',
+    'deactivate'                  => 'Deactivate',
     'submit'                      => 'Save',
     'admins_groups'               => 'Admin groups',
     'list'                        => 'List',

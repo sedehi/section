@@ -20,7 +20,7 @@ class DummyClass extends Controller
 
 	public function create()
 	{
-	   return view('admin.create');
+	   return view('vendor.section.create');
 	}
 
 	public function store(DummyRequestClass $request)
@@ -50,7 +50,7 @@ class DummyClass extends Controller
     public function edit($id)
     {
         $item = DummyModelClass::findOrFail($id);
-        return view('admin.edit', compact('item'));
+        return view('vendor.section.edit', compact('item'));
     }
 
     public function show($id)

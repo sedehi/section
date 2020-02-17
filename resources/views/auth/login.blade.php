@@ -28,6 +28,6 @@
     </div>
 </div>
 <script type="text/javascript" src="{!! asset('assets/admin/js/app.js') !!}"></script>
-@include('admin.partials.notifications')
+@include('vendor.section.partials.notifications')
 </body>
 </html>
