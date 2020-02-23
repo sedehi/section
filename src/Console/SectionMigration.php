@@ -19,6 +19,7 @@ class SectionMigration extends MigrateMakeCommand
         if ($section !== '') {
             $path = $this->laravel->basePath().'/app/Http/Controllers/'.$section.'/database/migrations';
             $this->makeDirectory($path);
+
             return $path;
         }
         if (($targetPath = $this->input->getOption('path')) !== null) {
