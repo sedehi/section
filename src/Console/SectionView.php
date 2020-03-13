@@ -8,8 +8,6 @@ use Illuminate\Support\Facades\File;
 
 class SectionView extends Command
 {
-    use DetectsApplicationNamespace;
-
     /**
      * The name and signature of the console command.
      *
